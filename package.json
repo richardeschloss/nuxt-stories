@@ -37,10 +37,12 @@
     "postinstall.js"
   ],
   "dependencies": {
-    "gently-copy": "^3.2.0"
+    "gently-copy": "^3.2.0",
+    "glob": "^7.1.5",
+    "pify": "^4.0.1",
+    "@nuxt/utils": "^2.10.2"
   },
   "devDependencies": {
-    "@nuxt/utils": "^2.10.2",
     "@nuxtjs/eslint-config": "^1.0.1",
     "@nuxtjs/eslint-module": "^1.0.0",
     "@vue/test-utils": "^1.0.0-beta.27",
@@ -57,10 +59,8 @@
     "eslint-plugin-nuxt": ">=0.4.2",
     "eslint-plugin-prettier": "^3.0.1",
     "express": "^4.16.4",
-    "glob": "^7.1.5",
     "nodemon": "^1.18.9",
     "nuxt": "^2.0.0",
-    "pify": "^4.0.1",
     "prettier": "^1.16.4",
     "require-extension-hooks": "^0.3.3",
     "require-extension-hooks-babel": "^1.0.0",
