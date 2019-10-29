@@ -29,7 +29,8 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "test": "ava",
     "test:unit": "cross-env TEST=unit ava --config unit.config.js",
-    "test:e2e": "cross-env TEST=e2e ava --config e2e.config.js"
+    "test:e2e": "cross-env TEST=e2e ava --config e2e.config.js",
+    "postinstall": "node postinstall.js"
   },
   "files": [
     "modules/stories.module.js",

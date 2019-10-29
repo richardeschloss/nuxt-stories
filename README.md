@@ -2,6 +2,8 @@
 
 > Nuxt stories module -- Painless storybooking for Nuxt
 
+Current status: bleeding-edge. Works ok for me, but may not be ready for primetime yet.
+
 ## Introduction
 
 Much respect goes to storybookjs. I really like their idea, however, when it came time to using storybook with Nuxt, I found myself running into several roadblocks and problems that this module intends to solve:
@@ -59,5 +61,6 @@ $ npm run generate
 - I think I can do better with the sidebar navigation. Perhaps it can be an accordian that drills down into children.
 - May want to have a nuxt-stories store in Vuex, that's only enabled when the buildModule is being used. Not sure yet.
 - [Someday, requires a bit more thought] Provide a right pane that allows people to jot down specs alongside their stories. The idea would be to auto-save those notes as they are typed in on the UI.
+- Automated tests would be nice
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
