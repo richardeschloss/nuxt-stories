@@ -1,6 +1,6 @@
 {
   "name": "nuxt-stories",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Nuxt stories module -- Painless storybooking for Nuxt",
   "author": "Richard Schloss",
   "main": "modules/stories.module.js",
@@ -36,7 +36,9 @@
     "modules/stories.module.js",
     "postinstall.js"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "gently-copy": "^3.2.0"
+  },
   "devDependencies": {
     "@nuxt/utils": "^2.10.2",
     "@nuxtjs/eslint-config": "^1.0.1",
@@ -55,7 +57,6 @@
     "eslint-plugin-nuxt": ">=0.4.2",
     "eslint-plugin-prettier": "^3.0.1",
     "express": "^4.16.4",
-    "gently-copy": "^3.2.0",
     "glob": "^7.1.5",
     "nodemon": "^1.18.9",
     "nuxt": "^2.0.0",
