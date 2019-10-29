@@ -1,6 +1,6 @@
 {
   "name": "nuxt-stories",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Nuxt stories module -- Painless storybooking for Nuxt",
   "author": "Richard Schloss",
   "main": "modules/stories.module.js",
@@ -33,6 +33,7 @@
     "postinstall": "node postinstall.js"
   },
   "files": [
+    ".stories",
     "modules/stories.module.js",
     "postinstall.js"
   ],
