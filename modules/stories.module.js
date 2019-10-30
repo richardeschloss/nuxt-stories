@@ -17,7 +17,6 @@ export default function(moduleOptions) {
   }
 
   this.nuxt.hook('modules:done', async (moduleContainer) => {
-    console.log(moduleContainer)
     const { srcDir } = this.options
     const files = await glob(`${srcDir}/.stories/**/*.{vue,js}`)
     const [storyRoutes] = createRoutes({
