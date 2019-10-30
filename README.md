@@ -7,7 +7,7 @@
 
 > Nuxt stories module -- Painless storybooking for Nuxt
 
-Current status: bleeding-edge. Works ok for me, but may not be ready for primetime yet.
+Current status: Works ok for me pretty well, but usage over time will help dictate our needs of this module. Some brainstorming notes are at the bottom.
 
 ## Introduction
 
