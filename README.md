@@ -1,3 +1,8 @@
+![npm](https://img.shields.io/npm/v/nuxt-stories)
+![npm](https://img.shields.io/npm/dt/nuxt-stories)
+[![](https://gitlab.com/richardeschloss/nuxt-stories/badges/master/pipeline.svg)](https://gitlab.com/richardeschloss/nuxt-stories)
+![NPM](https://img.shields.io/npm/l/nuxt-stories)
+
 # nuxt-stories
 
 > Nuxt stories module -- Painless storybooking for Nuxt
@@ -15,7 +20,12 @@ Much respect goes to storybookjs. I really like their idea, however, when it cam
 
 ## Installation
 
-> npm i -D nuxt-stories
+1. Pre-reqs: (note: these should have already been installed if you used create-nuxt-app, but if in doubt, re-run)
+
+   > npm i -D glob pify @nuxt/utils
+
+2. This module: (note: this will also install gently-copy which is used by the postinstall script)
+   > npm i -D nuxt-stories
 
 ## Post-installation (automatic)
 
