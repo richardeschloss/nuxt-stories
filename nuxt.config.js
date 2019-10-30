@@ -35,7 +35,7 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/richardeschloss/nuxt-stories
-    'modules/stories.module'
+    ['modules/stories.module', { forceBuild: true }]
   ],
   /*
    ** Nuxt.js modules

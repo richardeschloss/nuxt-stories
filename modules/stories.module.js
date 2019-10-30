@@ -1,3 +1,9 @@
+/*
+ * nuxt-stories module (https:// )
+   Copyright 2019 Richard Schloss (https://github.com/richardeschloss)
+   Licensed under MIT (https://github.com/richardeschloss/nuxt-stories/blob/master/LICENSE)
+ */
+
 import consola from 'consola'
 import Glob from 'glob'
 import pify from 'pify'

@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Stories</a>
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#" @click="storiesHome(story)">Stories</a>
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
           <a class="nav-link" href="/">Back to APP</a>
@@ -19,7 +19,17 @@
             </b-card-header>
             <b-collapse :id="storyId(story.name)" :visible="story.visible" accordion="my-accordion" role="tabpanel">
               <b-card-body>
-                <b-card-text>Child stories would probably show here</b-card-text>
+                <b-card-text>
+                  <b-nav vertical class="story-child-nav-item" v-for="child in story.children" :key="child.name">
+                    <b-list-group>
+                      <b-list-group-item :active="childActive(child)" @click="showChild(child)"> 
+                        {{ cleanName(child.name) }}
+                      </b-list-group-item>
+                      <b-list-group-item>Child 2 (add file to {{story.name}} dir</b-list-group-item>
+                      <b-list-group-item>Child 3 (add file to {{story.name}} dir</b-list-group-item>
+                    </b-list-group>
+                  </b-nav>
+                </b-card-text>
               </b-card-body>
             </b-collapse>
           </b-card>
@@ -42,6 +52,18 @@ export default {
     }
   },
   computed: {
+    childActive() {
+      return (child) => {
+        const { fullPath } = this.$route
+        const childFullPath = child.name
+          .replace('index-', '/.stories/')
+          .replace('-', '/')
+        return fullPath === childFullPath
+      }
+    },
+    cleanName() {
+      return (name) => (name ? name.split('-').slice(-1)[0] : '')
+    },
     storyId() {
       return (name) => `accordion-${name}`
     }
@@ -50,19 +72,37 @@ export default {
     const storyRoutes = this.$router.options.routes.find(
       ({ name }) => name === '.stories'
     )
+    const currentRoute = this.$route.name
     if (storyRoutes && storyRoutes.children && storyRoutes.children.length) {
       this.stories = storyRoutes.children.map((child) => {
         if (!child.path.startsWith('/.stories/')) {
           child.path = `/.stories/${child.path}`
         }
-        child.name = child.name.replace('root-', '')
+        child.name = this.cleanName(child.name)
         child.visible = false
+        if (child.children && child.children.length) {
+          child.children.forEach((c) => {
+            c.active = false
+            if (currentRoute.includes(c.name)) {
+              c.active = true
+            }
+          })
+        }
         return child
       })
-      console.log('stories', this.stories)
     }
   },
   methods: {
+    showChild(child) {
+      if (this.childActive(child)) return
+      const toPath = child.name
+        .replace('index-', '/.stories/')
+        .replace('-', '/')
+      this.$router.push(toPath)
+    },
+    storiesHome() {
+      this.$router.push('/.stories')
+    },
     toggleVisibility(story) {
       this.stories.forEach((s) => {
         if (s.name !== story.name) {
@@ -76,4 +116,7 @@ export default {
 </script>
 
 <style>
+.story-child-nav-item {
+  cursor: pointer;
+}
 </style>

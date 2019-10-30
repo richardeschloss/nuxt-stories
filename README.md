@@ -9,6 +9,8 @@
 
 Current status: Works ok for me pretty well, but usage over time will help dictate our needs of this module. Some brainstorming notes are at the bottom.
 
+See it in ACTION: [DEMO](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
+
 ## Introduction
 
 Much respect goes to storybookjs. I really like their idea, however, when it came time to using storybook with Nuxt, I found myself running into several roadblocks and problems that this module intends to solve:
