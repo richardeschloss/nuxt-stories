@@ -20,7 +20,8 @@
           </b-card>
           </div>
         </nav>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">         
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+          <h2>Story content goes here! Click items in the left sidebar...</h2>
           <nuxt-child></nuxt-child>
         </main>
       </div>

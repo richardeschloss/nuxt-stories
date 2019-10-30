@@ -10,14 +10,15 @@ test('Story routes created ok', (t) => {
     const sampleRoutes = []
     const modContainer = {
       extendRoutes(fn) {
-        fn(sampleRoutes)
+        fn(sampleRoutes, path.resolve)
         const storyRoute = sampleRoutes[0]
         console.log('storyRoute', storyRoute)
         t.is(storyRoute.name, '.stories')
         t.is(storyRoute.path, '/.stories')
         t.is(storyRoute.component, path.resolve(srcDir, '.stories/root.vue'))
         t.is(storyRoute.chunkName, '.stories/root')
-        t.pass()
+        t.truthy(storyRoute.children)
+        t.true(storyRoute.children.length > 0)
         resolve()
       }
     }

@@ -10,6 +10,7 @@ export default function(moduleOptions) {
   const { forceBuild } = moduleOptions
   if (process.env.NODE_ENV !== 'development' && !forceBuild) return
 
+  const { srcDir } = this.options
   const bootstrapMod = 'bootstrap-vue/nuxt'
   if (!this.options.modules.includes(bootstrapMod)) {
     consola.info('Bootstrap not included, adding it for nuxt-stories module')
@@ -17,15 +18,16 @@ export default function(moduleOptions) {
   }
 
   this.nuxt.hook('modules:done', async (moduleContainer) => {
-    const { srcDir } = this.options
     const files = await glob(`${srcDir}/.stories/**/*.{vue,js}`)
-    const [storyRoutes] = createRoutes({
-      files: files.map((f) => f.replace(`${srcDir}/`, '')),
-      srcDir
-    })
-    storyRoutes.name = '.stories'
-    storyRoutes.path = `/${storyRoutes.name}`
-    moduleContainer.extendRoutes((routes) => {
+    moduleContainer.extendRoutes((routes, resolve) => {
+      const srcDirResolved = resolve(srcDir).replace(/\\\\/g, '/')
+      const [storyRoutes] = createRoutes({
+        files: files.map((f) => f.replace(`${srcDirResolved}/`, '')),
+        pagesDir: '.stories',
+        srcDir
+      })
+      storyRoutes.name = '.stories'
+      storyRoutes.path = `/${storyRoutes.name}`
       routes.push(storyRoutes)
     })
   })
