@@ -12,7 +12,7 @@
               <b-button block @click="toggleVisibility(story)" variant="info">
                 <nuxt-link :to="story.path" style="color:white;">{{ story.name }}</nuxt-link></b-button>
             </b-card-header>
-            <b-collapse :visible="story.visible" accordion="my-accordion" role="tabpanel">
+            <b-collapse :id="storyId(story.name)" :visible="story.visible" accordion="my-accordion" role="tabpanel">
               <b-card-body>
                 <b-card-text>Child stories would probably show here</b-card-text>
               </b-card-body>
@@ -35,11 +35,16 @@ export default {
       stories: []
     }
   },
+  computed: {
+    storyId() {
+      return (name) => `accordion-${name}`
+    }
+  },
   mounted() {
     const storyRoutes = this.$router.options.routes.find(
       ({ name }) => name === '.stories'
     )
-    if (storyRoutes) {
+    if (storyRoutes && storyRoutes.children && storyRoutes.children.length) {
       this.stories = storyRoutes.children.map((child) => {
         if (!child.path.startsWith('/.stories/')) {
           child.path = `/.stories/${child.path}`
