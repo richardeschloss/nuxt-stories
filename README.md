@@ -24,7 +24,7 @@ Much respect goes to storybookjs. I really like their idea, however, when it cam
 
    > npm i -D glob pify @nuxt/utils
 
-2. This module: (note: this will also install gently-copy which is used by the postinstall script)
+2. This module: (note: this will also install gently-copy which is used by the postinstall script. It will also install vue-bootstrap to ensure sample stories are styled correctly)
    > npm i -D nuxt-stories
 
 ## Post-installation (automatic)
