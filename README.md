@@ -38,7 +38,7 @@ In your `nuxt.config.js` file, just specify `nuxt-stories` as one of your `build
 ```
 ...
 buildModules: [
-  'nuxt-stories', { forceBuild: false }
+  [ 'nuxt-stories', { forceBuild: false } ]
 ]
 ...
 ```
