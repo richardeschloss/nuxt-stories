@@ -36,7 +36,6 @@ module.exports = {
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/richardeschloss/nuxt-stories
     'modules/stories.module' // Enabled for dev mode only
-    // ['modules/stories.module', { forceBuild: true }] // <-- To force include in static site, use this instead
   ],
   /*
    ** Nuxt.js modules
@@ -56,5 +55,8 @@ module.exports = {
     parallel: true,
     cache: true,
     hardSource: true
+  },
+  generate: {
+    routes: ['/.stories']
   }
 }
