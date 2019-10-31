@@ -9,6 +9,8 @@
 
 Current status: Works ok for me pretty well, but usage over time will help dictate our needs of this module. Some brainstorming notes are at the bottom.
 
+Important change that may affect users of version <=0.0.6: The ".stories/root" folder has been changed to ".stories/index" to follow Nuxt conventions. If you updated ".stories/root.vue" since installing, just copy that contents to ".stories/index.vue" and things should be fine.
+
 See it in ACTION: [DEMO](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
 
 ## Introduction
