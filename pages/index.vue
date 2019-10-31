@@ -9,6 +9,13 @@
         Nuxt Stories Module -- Painless storybooking for Nuxt!
       </h2>
       <div class="links">
+        <b-button
+          class="button--grey"
+          style="color:lightyellow;"
+          @click="toStories(story)"
+        >
+          Nuxt Stories: See it in action!
+        </b-button>
         <a
           href="https://github.com/richardeschloss/nuxt-stories"
           target="_blank"
@@ -16,7 +23,6 @@
         >
           GitHub
         </a>
-        <nuxt-link to=".stories">Nuxt Stories: See it in action!</nuxt-link>
       </div>
     </div>
   </div>
@@ -28,6 +34,11 @@ import Logo from '~/components/Logo.vue'
 export default {
   components: {
     Logo
+  },
+  methods: {
+    toStories() {
+      this.$router.push('/.stories')
+    }
   }
 }
 </script>

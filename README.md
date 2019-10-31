@@ -9,6 +9,10 @@
 
 Current status: Works ok for me pretty well, but usage over time will help dictate our needs of this module. Some brainstorming notes are at the bottom.
 
+Important change that may affect users of version <=0.0.6: The ".stories/root" folder has been changed to ".stories/index" to follow Nuxt conventions. If you updated ".stories/root.vue" since installing, just copy that contents to ".stories/index.vue" and things should be fine.
+
+See it in ACTION: [DEMO](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
+
 ## Introduction
 
 Much respect goes to storybookjs. I really like their idea, however, when it came time to using storybook with Nuxt, I found myself running into several roadblocks and problems that this module intends to solve:
@@ -68,8 +72,9 @@ $ npm run generate
 
 ## Todo Items and Notes
 
-- I think I can do better with the sidebar navigation. Perhaps it can be an accordian that drills down into children.
+- I think I can do better with the sidebar navigation. It currently only auto-generates for 2 levels of stories. Not sure how clean it can be when the depth gets insanely large though :/.
 - May want to have a nuxt-stories store in Vuex, that's only enabled when the buildModule is being used. Not sure yet.
+- Might want to have the main content set as a tabbed-view? One tab for components, another for tests? (to be thought out...)
 - [Someday, requires a bit more thought] Provide a right pane that allows people to jot down specs alongside their stories. The idea would be to auto-save those notes as they are typed in on the UI.
 - Automated tests would be nice
 
