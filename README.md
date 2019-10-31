@@ -70,8 +70,9 @@ $ npm run generate
 
 ## Todo Items and Notes
 
-- I think I can do better with the sidebar navigation. Perhaps it can be an accordian that drills down into children.
+- I think I can do better with the sidebar navigation. It currently only auto-generates for 2 levels of stories. Not sure how clean it can be when the depth gets insanely large though :/.
 - May want to have a nuxt-stories store in Vuex, that's only enabled when the buildModule is being used. Not sure yet.
+- Might want to have the main content set as a tabbed-view? One tab for components, another for tests? (to be thought out...)
 - [Someday, requires a bit more thought] Provide a right pane that allows people to jot down specs alongside their stories. The idea would be to auto-save those notes as they are typed in on the UI.
 - Automated tests would be nice
 
