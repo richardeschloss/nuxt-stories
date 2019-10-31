@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     toStories() {
-      this.$router.push('.stories')
+      this.$router.push('/.stories')
     }
   }
 }
