@@ -1,7 +1,12 @@
 <template>
   <div>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#" @click="storiesHome(story)">Stories</a>
+      <a
+        class="navbar-brand col-sm-3 col-md-2 mr-0"
+        href="#"
+        @click="storiesHome(story)"
+        >Stories</a
+      >
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
           <a class="nav-link" href="/">Back to APP</a>
@@ -11,28 +16,55 @@
     <div class="container-fluid">
       <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-          <div class="sidebar-sticky">  
-          <b-card no-body class="mb-1 nav flex-column" v-for="story in stories" :key="story.name">
-            <b-card-header header-tag="header" class="p-1" role="tab">
-              <b-button block @click="toggleVisibility(story)" variant="info">
-                <nuxt-link :to="story.path" style="color:white;">{{ story.name }}</nuxt-link></b-button>
-            </b-card-header>
-            <b-collapse :id="storyId(story.name)" :visible="story.visible" accordion="my-accordion" role="tabpanel">
-              <b-card-body>
-                <b-card-text>
-                  <b-nav vertical class="story-child-nav-item" v-for="child in story.children" :key="child.name">
-                    <b-list-group>
-                      <b-list-group-item :active="childActive(child)" @click="showChild(child)"> 
-                        {{ cleanName(child.name) }}
-                      </b-list-group-item>
-                      <b-list-group-item>Child 2 (add file to {{story.name}} dir</b-list-group-item>
-                      <b-list-group-item>Child 3 (add file to {{story.name}} dir</b-list-group-item>
-                    </b-list-group>
-                  </b-nav>
-                </b-card-text>
-              </b-card-body>
-            </b-collapse>
-          </b-card>
+          <div class="sidebar-sticky">
+            <b-card
+              v-for="story in stories"
+              :key="story.name"
+              no-body
+              class="mb-1 nav flex-column"
+            >
+              <b-card-header header-tag="header" class="p-1" role="tab">
+                <b-button block variant="info" @click="toggleVisibility(story)">
+                  <nuxt-link :to="story.path" style="color:white;">{{
+                    story.name
+                  }}</nuxt-link></b-button
+                >
+              </b-card-header>
+              <b-collapse
+                :id="storyId(story.name)"
+                :visible="story.visible"
+                accordion="my-accordion"
+                role="tabpanel"
+              >
+                <b-card-body>
+                  <b-card-text>
+                    <b-nav
+                      v-for="child in story.children"
+                      :key="child.name"
+                      vertical
+                      class="story-child-nav-item"
+                    >
+                      <b-list-group>
+                        <b-list-group-item
+                          :active="childActive(child)"
+                          @click="showChild(child)"
+                        >
+                          {{ cleanName(child.name) }}
+                        </b-list-group-item>
+                        <b-list-group-item
+                          >Child 2 (add file to
+                          {{ story.name }} dir</b-list-group-item
+                        >
+                        <b-list-group-item
+                          >Child 3 (add file to
+                          {{ story.name }} dir</b-list-group-item
+                        >
+                      </b-list-group>
+                    </b-nav>
+                  </b-card-text>
+                </b-card-body>
+              </b-collapse>
+            </b-card>
           </div>
         </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
