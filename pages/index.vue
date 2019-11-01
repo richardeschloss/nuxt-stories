@@ -12,7 +12,7 @@
         <b-button
           class="button--grey"
           style="color:lightyellow;"
-          @click="toStories(story)"
+          @click="toStories()"
         >
           Nuxt Stories: See it in action!
         </b-button>
@@ -37,7 +37,9 @@ export default {
   },
   methods: {
     toStories() {
-      this.$router.push('/.stories')
+      const { options } = this.$nuxtStories({})
+      const { storiesAnchor } = options
+      this.$router.push(`/${storiesAnchor}`)
     }
   }
 }

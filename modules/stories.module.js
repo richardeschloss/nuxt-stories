@@ -14,7 +14,11 @@ const glob = pify(Glob)
 
 /* eslint-disable no-console */
 module.exports = function(moduleOptions) {
-  const { forceBuild, storiesDir = '.stories' } = moduleOptions
+  const {
+    forceBuild,
+    storiesDir = '.stories',
+    storiesAnchor = storiesDir
+  } = moduleOptions
 
   if (process.env.NODE_ENV !== 'development' && !forceBuild) return
 
@@ -40,7 +44,7 @@ module.exports = function(moduleOptions) {
         )
         return
       }
-      storyRoutes.name = storiesDir
+      storyRoutes.name = storiesAnchor
       storyRoutes.path = `/${storyRoutes.name}`
       routes.push(storyRoutes)
     })
@@ -51,7 +55,8 @@ module.exports = function(moduleOptions) {
     src: pResolve(__dirname, 'stories.plugin.js'),
     fileName: 'nuxt-stories.js',
     options: {
-      storiesDir
+      storiesDir,
+      storiesAnchor
     }
   })
 }

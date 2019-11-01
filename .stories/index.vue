@@ -3,8 +3,7 @@
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
       <a
         class="navbar-brand col-sm-3 col-md-2 mr-0"
-        href="#"
-        @click="storiesHome(story)"
+        :href="storiesHome"
         >Stories</a
       >
       <ul class="navbar-nav px-3">
@@ -80,16 +79,16 @@
 export default {
   data() {
     return {
-      stories: []
+      stories: [],
+      storyCfg: {},
+      storiesHome: ''
     }
   },
   computed: {
     childActive() {
       return (child) => {
         const { fullPath } = this.$route
-        const childFullPath = child.name
-          .replace('index-', '/.stories/')
-          .replace('-', '/')
+        const childFullPath = this.nameToPath(child.name)
         return fullPath === childFullPath
       }
     },
@@ -101,39 +100,46 @@ export default {
     }
   },
   mounted() {
-    const storyRoutes = this.$router.options.routes.find(
-      ({ name }) => name === '.stories'
-    )
-    const currentRoute = this.$route.name
-    if (storyRoutes && storyRoutes.children && storyRoutes.children.length) {
-      this.stories = storyRoutes.children.map((child) => {
-        if (!child.path.startsWith('/.stories/')) {
-          child.path = `/.stories/${child.path}`
-        }
-        child.name = this.cleanName(child.name)
-        child.visible = false
-        if (child.children && child.children.length) {
-          child.children.forEach((c) => {
-            c.active = false
-            if (currentRoute.includes(c.name)) {
-              c.active = true
-            }
-          })
-        }
-        return child
-      })
-    }
+    Object.assign(this.storyCfg, this.$nuxtStories({}).options)
+    const { storiesAnchor } = this.storyCfg
+    this.storiesHome = `/${storiesAnchor}`
+    this.buildStories({ routeRoot: storiesAnchor })
   },
   methods: {
+    buildStories({ routeRoot }) {
+      const storyRoutes = this.$router.options.routes.find(
+        ({ name }) => name === routeRoot
+      )
+      const currentRoute = this.$route.name
+      if (storyRoutes && storyRoutes.children && storyRoutes.children.length) {
+        this.stories = storyRoutes.children.map((child) => {
+          if (!child.path.startsWith(`/${routeRoot}/`)) {
+            child.path = `/${routeRoot}/${child.path}`
+          }
+          child.name = this.cleanName(child.name)
+          child.visible = false
+          if (child.children && child.children.length) {
+            child.children.forEach((c) => {
+              c.active = false
+              if (currentRoute.includes(c.name)) {
+                c.active = true
+              }
+            })
+          }
+          return child
+        })
+      }
+    },
+    nameToPath(name) {
+      return `${this.storiesHome}/${name
+        .split('-')
+        .slice(1)
+        .join('/')}`
+    },
     showChild(child) {
       if (this.childActive(child)) return
-      const toPath = child.name
-        .replace('index-', '/.stories/')
-        .replace('-', '/')
+      const toPath = this.nameToPath(child.name)
       this.$router.push(toPath)
-    },
-    storiesHome() {
-      this.$router.push('/.stories')
     },
     toggleVisibility(story) {
       this.stories.forEach((s) => {
