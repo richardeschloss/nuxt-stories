@@ -4,15 +4,16 @@
    Licensed under MIT (https://github.com/richardeschloss/nuxt-stories/blob/master/LICENSE)
  */
 
-import consola from 'consola'
-import Glob from 'glob'
-import pify from 'pify'
-import { createRoutes } from '@nuxt/utils'
+const { resolve: pResolve } = require('path')
+const consola = require('consola')
+const Glob = require('glob')
+const pify = require('pify')
+const { createRoutes } = require('@nuxt/utils')
 
 const glob = pify(Glob)
 
 /* eslint-disable no-console */
-export default function(moduleOptions) {
+module.exports = function(moduleOptions) {
   const { forceBuild, storiesDir = '.stories' } = moduleOptions
 
   if (process.env.NODE_ENV !== 'development' && !forceBuild) return
@@ -44,4 +45,15 @@ export default function(moduleOptions) {
       routes.push(storyRoutes)
     })
   })
+
+  this.addPlugin({
+    ssr: false,
+    src: pResolve(__dirname, 'stories.plugin.js'),
+    fileName: 'nuxt-stories.js',
+    options: {
+      storiesDir
+    }
+  })
 }
+
+module.exports.meta = require('../package.json')
