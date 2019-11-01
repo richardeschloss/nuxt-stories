@@ -4,16 +4,22 @@
    Licensed under MIT (https://github.com/richardeschloss/nuxt-stories/blob/master/LICENSE)
  */
 
-import consola from 'consola'
-import Glob from 'glob'
-import pify from 'pify'
-import { createRoutes } from '@nuxt/utils'
+const { resolve: pResolve } = require('path')
+const consola = require('consola')
+const Glob = require('glob')
+const pify = require('pify')
+const { createRoutes } = require('@nuxt/utils')
 
 const glob = pify(Glob)
 
 /* eslint-disable no-console */
-export default function(moduleOptions) {
-  const { forceBuild } = moduleOptions
+module.exports = function(moduleOptions) {
+  const {
+    forceBuild,
+    storiesDir = '.stories',
+    storiesAnchor = storiesDir
+  } = moduleOptions
+
   if (process.env.NODE_ENV !== 'development' && !forceBuild) return
 
   const { srcDir } = this.options
@@ -24,17 +30,35 @@ export default function(moduleOptions) {
   }
 
   this.nuxt.hook('modules:done', async (moduleContainer) => {
-    const files = await glob(`${srcDir}/.stories/**/*.{vue,js}`)
+    const files = await glob(`${srcDir}/${storiesDir}/**/*.{vue,js}`)
     moduleContainer.extendRoutes((routes, resolve) => {
       const srcDirResolved = resolve(srcDir).replace(/\\\\/g, '/')
       const [storyRoutes] = createRoutes({
         files: files.map((f) => f.replace(`${srcDirResolved}/`, '')),
-        pagesDir: '.stories',
+        pagesDir: storiesDir,
         srcDir
       })
-      storyRoutes.name = '.stories'
+      if (!storyRoutes) {
+        consola.error(
+          `Error: Story routes not created. Does the stories directory ${storiesDir} exist?`
+        )
+        return
+      }
+      storyRoutes.name = storiesAnchor
       storyRoutes.path = `/${storyRoutes.name}`
       routes.push(storyRoutes)
     })
   })
+
+  this.addPlugin({
+    ssr: false,
+    src: pResolve(__dirname, 'stories.plugin.js'),
+    fileName: 'nuxt-stories.js',
+    options: {
+      storiesDir,
+      storiesAnchor
+    }
+  })
 }
+
+module.exports.meta = require('../package.json')
