@@ -20,3 +20,25 @@ export function nuxtClose(t) {
   const { nuxt } = t.context
   nuxt.close()
 }
+
+export function getModuleOptions(moduleName) {
+  const opts = {}
+  const containers = ['buildModules', 'modules']
+  containers.some((container) => {
+    const arr = config[container]
+    const mod = arr.find((item) => {
+      if (typeof item === 'string') {
+        return item === moduleName
+      } else if (item.length) {
+        return item[0] === moduleName
+      }
+    })
+    if (mod) {
+      if (mod.length) {
+        Object.assign(opts, mod[1])
+      }
+      return true
+    }
+  })
+  return opts
+}

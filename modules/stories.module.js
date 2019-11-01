@@ -12,7 +12,6 @@ const { createRoutes } = require('@nuxt/utils')
 
 const glob = pify(Glob)
 
-/* eslint-disable no-console */
 module.exports = function(moduleOptions) {
   const {
     forceBuild,

@@ -1,18 +1,17 @@
-/* eslint-disable no-console */
 import { readdirSync } from 'fs'
 import path from 'path'
+import consola from 'consola'
 import test from 'ava'
 import NuxtStoriesMod from '@/modules/stories.module'
+import { getModuleOptions } from '@/test/utils'
 
 const srcDir = path.resolve('.')
+const modOptions = getModuleOptions('modules/stories.module')
 
 test('Story routes created ok', (t) => {
-  const storiesDir = '.stories'
-  const forceBuild = true
-  const modOptions = {
-    forceBuild,
-    storiesDir
-  }
+  const { storiesDir } = modOptions
+  modOptions.forceBuild = true
+  consola.log('Testing with moduleOptions:', modOptions)
   const files = readdirSync(storiesDir)
   const storiesRoot = files[0]
   return new Promise((resolve) => {
@@ -24,9 +23,10 @@ test('Story routes created ok', (t) => {
     const sampleRoutes = []
     const modContainer = {
       extendRoutes(fn) {
+        consola.log('extendRoutes')
         fn(sampleRoutes, path.resolve)
         const storyRoute = sampleRoutes[0]
-        console.log('storyRoute', storyRoute)
+        consola.log('storyRoute', storyRoute)
         t.is(storyRoute.name, storiesDir)
         t.is(storyRoute.path, `/${storiesDir}`)
         t.is(
@@ -41,7 +41,7 @@ test('Story routes created ok', (t) => {
     }
     const simpleNuxt = {
       addPlugin({ src, fileName, options }) {
-        console.log('options', options)
+        consola.log('options', options)
         t.is(src, path.resolve(srcDir, 'modules/stories.plugin.js'))
         t.is(fileName, 'nuxt-stories.js')
         t.is(options.storiesDir, storiesDir)
@@ -54,9 +54,9 @@ test('Story routes created ok', (t) => {
       },
       nuxt: {
         hook(evt, fn) {
-          console.log('hook', evt)
+          consola.log('hook', evt)
           if (evt === 'modules:done') {
-            console.log('run hook')
+            consola.log('run hook')
             fn(modContainer)
           }
         }

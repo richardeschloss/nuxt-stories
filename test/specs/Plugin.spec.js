@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
 import fs from 'fs'
 import path from 'path'
+import consola from 'consola'
 import test from 'ava'
 import template from 'lodash/template'
 
@@ -18,7 +18,7 @@ test('Stories plugin', async (t) => {
     const pluginJs = compiled({ options: pluginOptions })
     fs.writeFileSync(tmpFile, pluginJs)
     const { default: Plugin } = await import(tmpFile).catch((err) => {
-      console.error('Err importing plugin', err)
+      consola.error('Err importing plugin', err)
       t.fail()
     })
 
@@ -30,7 +30,7 @@ test('Stories plugin', async (t) => {
       fs.unlinkSync(tmpFile)
     })
   } catch (e) {
-    console.error('Could not compile plugin :(', e)
+    consola.error('Could not compile plugin :(', e)
     t.fail()
   }
 })
