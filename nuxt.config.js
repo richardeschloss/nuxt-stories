@@ -35,7 +35,8 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/richardeschloss/nuxt-stories
-    'modules/stories.module' // Enabled for dev mode only
+    // 'modules/stories.module' // Enabled for dev mode only
+    ['modules/stories.module', { storiesDir: '.stories' }]
   ],
   /*
    ** Nuxt.js modules
@@ -57,6 +58,7 @@ module.exports = {
     hardSource: true
   },
   generate: {
-    routes: ['/.stories']
+    routes: ['/.stories'],
+    dir: 'public'
   }
 }

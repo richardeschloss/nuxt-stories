@@ -13,3 +13,13 @@ test_unit:
   script:
     - npm install
     - npm run test:unit
+
+pages:
+  stage: deploy
+  script:
+    - echo 'Deploying public folder...'
+  artifacts:
+    paths:
+      - public
+  only:
+    - gh-pages
