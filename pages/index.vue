@@ -39,7 +39,7 @@ export default {
     toStories() {
       const { options } = this.$nuxtStories({})
       const { storiesAnchor } = options
-      this.$router.push(`/${storiesAnchor}`)
+      this.$router.push(`${storiesAnchor}`)
     }
   }
 }
