@@ -9,9 +9,9 @@
 
 Current status: Works ok for me pretty well, but usage over time will help dictate our needs of this module. Some brainstorming notes are at the bottom.
 
-Important change that may affect users of version <=0.0.6: The ".stories/root" folder has been changed to ".stories/index" to follow Nuxt conventions. If you updated ".stories/root.vue" since installing, just copy that contents to ".stories/index.vue" and things should be fine.
+Update in 0.0.8: The "root" .vue file will be the first .vue file found in the stories folder. By default, this is ".stories/index.vue". 
 
-See it in ACTION: [DEMO](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
+See it in ACTION on DESKTOP (not mobile-ready yet): [DEMO](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
 
 ## Introduction
 
@@ -67,6 +67,10 @@ buildModules: [
 ...
 ```
 
+Other options include: (see `nuxt.config` in `gh-pages` branch for example usage)
+- `storiesDir`: if your stories directory relative to src directory (omit the "/" prefix). Default to ".stories"
+- `storiesAnchor`: where you want the stories routes to start (defaults to whatever storiesDir is)
+
 2. Tell Nuxt to include the .stories routes: (only needed if you want to create a .stories/index.html file. See NOTES below for known quirks and workarounds)
 
 ```
@@ -119,6 +123,7 @@ $ npm run generate
 
 1. Static deploys running off the `http-server` node module work perfectly!
 2. Github and Gitlab can host the app ok, but can't seem handle the routing correctly (my guess is it treats "." prefixed files as hidden?). Routing works pretty well on Netlify the best. However, you have to navigate to the _app_ first and then route to the ".stories" routes. My guess is they also treat the ".stories" folder as hidden, because when I try to download the artifacts I upload, it doesn't include the .stories :(. All this means is that while you can easily navigate to your .stories _through_ the app, it means you can't navigate directly to the "/.stories" route in your browser's URL box and can't click browser refresh button :(. However, based on how the stories routing works, there shouldn't ever be a need to click browser refresh (hopefully!); ideally, components would send AJAX requests to refresh their data. (if there's a better static hosting solution, I'm all ears!)
+--> OK UPDATE 11/01/2019: when in doubt, just see the `gh-pages`. The config used there is what was used to create the pages at nuxt-stories.netlify.com. There, it defintely seemed that changing ".stories" to "stories" unhid the files and allowed for easier redirecting / refreshing. Just remember to use good names for the "stories" routes to avoid conflicting with any pages routes that might also be named "stories".
 
 - I think I can do better with the sidebar navigation. It currently only auto-generates for 2 levels of stories. Not sure how clean it can be when the depth gets insanely large though :/.
 - May want to have a nuxt-stories store in Vuex, that's only enabled when the buildModule is being used. Not sure yet.
