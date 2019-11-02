@@ -119,6 +119,7 @@ $ npm run generate
 
 ## Todo Items and Notes
 
+- Will probably want to fix the sidebar so it's collapsible and viewable in mobile layout. 
 - KNOWN QUIRK with static deploys:
 
 1. Static deploys running off the `http-server` node module work perfectly!
