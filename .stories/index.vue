@@ -1,9 +1,7 @@
 <template>
   <div>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-      <a
-        class="navbar-brand col-sm-3 col-md-2 mr-0"
-        :href="storiesHome"
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" :href="storiesHome"
         >Stories</a
       >
       <ul class="navbar-nav px-3">
@@ -89,7 +87,7 @@ export default {
       return (child) => {
         const { fullPath } = this.$route
         const childFullPath = this.nameToPath(child.name)
-        return fullPath === childFullPath
+        return fullPath.toLowerCase() === childFullPath.toLowerCase()
       }
     },
     cleanName() {
