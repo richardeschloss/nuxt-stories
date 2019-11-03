@@ -1,11 +1,20 @@
 <template>
   <div>
+    <button
+      id="stories-nav-toggle"
+      class="btn btn-outline-primary btn-sm"
+      @click="toggleStoriesNav"
+    >
+      {{ showStoriesNav ? '\u2196' : '\u2198' }}
+    </button>
     <transition name="fade-stories-nav">
       <nav
         v-show="showStoriesNav"
         class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0"
       >
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" :href="storiesHome"
+        <a
+          class="navbar-brand col-sm-3 col-md-2 mr-0 stories-home"
+          :href="storiesHome"
           >Stories</a
         >
         <ul class="navbar-nav px-3">
@@ -76,13 +85,6 @@
           </nav>
         </transition>
         <main role="main" :class="mainCss">
-          <button
-            id="stories-nav-toggle"
-            class="btn btn-outline-primary btn-sm sticky-top"
-            @click="toggleStoriesNav"
-          >
-            {{ showStoriesNav ? '\u2196' : '\u2198' }}
-          </button>
           <h2>Story content goes here! Click items in the left sidebar...</h2>
           <nuxt-child></nuxt-child>
         </main>
@@ -115,7 +117,7 @@ export default {
     mainCss() {
       return this.showStoriesNav
         ? 'col-md-9 ml-sm-auto col-lg-10 pt-3 px-4'
-        : 'col-md-12 ml-sm-auto col-lg-12 pt-3 px-4'
+        : 'col-md-12 ml-sm-auto col-lg-12 pt-3 px-4 main-top'
     },
     sidebarNav() {
       return this.showStoriesNav
@@ -184,16 +186,35 @@ export default {
 </script>
 
 <style>
+.main-top {
+  margin-top: 20px;
+}
+.stories-home {
+  padding-left: 40px;
+}
+
 .story-child-nav-item {
   cursor: pointer;
+}
+
+#stories-nav-toggle {
+  position: fixed;
+  background-color: white;
+  color: #007bff;
+  z-index: 1022;
+  margin-top: 5px;
+}
+#stories-nav-toggle:hover {
+  background-color: #007bff;
+  color: white;
 }
 
 .fade-stories-nav-enter-active,
 .fade-stories-nav-leave-active {
   transition: all 0.25s ease-in-out;
 }
-.fade-stories-nav-enter, 
-.fade-stories-nav-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-stories-nav-enter,
+.fade-stories-nav-leave-to {
   opacity: 0;
 }
 
