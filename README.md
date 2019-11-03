@@ -9,9 +9,10 @@
 
 Current status: Works ok for me pretty well, but usage over time will help dictate our needs of this module. Some brainstorming notes are at the bottom.
 
+Update in 0.0.9: A toggle button has been added to make it easy to show / hide the stories navbars. Now it's easier to use on both desktop and mobile platforms.
 Update in 0.0.8: The "root" .vue file will be the first .vue file found in the stories folder. By default, this is ".stories/index.vue". 
 
-See it in ACTION on DESKTOP (not mobile-ready yet): [DEMO](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
+See it in ACTION: [DEMO](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
 
 ## Introduction
 
@@ -119,7 +120,6 @@ $ npm run generate
 
 ## Todo Items and Notes
 
-- Will probably want to fix the sidebar so it's collapsible and viewable in mobile layout. 
 - KNOWN QUIRK with static deploys:
 
 1. Static deploys running off the `http-server` node module work perfectly!
