@@ -18,5 +18,12 @@ module.exports = {
   // add your custom rules here
   rules: {
     'nuxt/no-cjs-in-config': 'off'
-  }
+  },
+  overrides: [
+    {
+      files: ['modules/*.plugin.js'],
+      plugins: ['ignore-erb-mogix'],
+      processor: 'ignore-erb-mogix/.erb'
+    }
+  ]
 }
