@@ -127,6 +127,8 @@ $ npm run generate
 --> OK UPDATE 11/01/2019: when in doubt, just see the `gh-pages`. The config used there is what was used to create the pages at nuxt-stories.netlify.com. There, it defintely seemed that changing ".stories" to "stories" unhid the files and allowed for easier redirecting / refreshing. Just remember to use good names for the "stories" routes to avoid conflicting with any pages routes that might also be named "stories".
 
 - I think I can do better with the sidebar navigation. It currently only auto-generates for 2 levels of stories. Not sure how clean it can be when the depth gets insanely large though :/.
+--> UPDATE: Ok, the more I thought about this, I think something like "story themes" belong in its own repo. The goal of this module is to remain tiny and fast. While the sample stories can be made more exciting, I think the excitement belongs in a separate project. Ideally, there would be a good number of themes that people can just pull as desired, without bloating this repo. 
+
 - May want to have a nuxt-stories store in Vuex, that's only enabled when the buildModule is being used. Not sure yet.
 - Might want to have the main content set as a tabbed-view? One tab for components, another for tests? (to be thought out...)
 - [Someday, requires a bit more thought] Provide a right pane that allows people to jot down specs alongside their stories. The idea would be to auto-save those notes as they are typed in on the UI.
