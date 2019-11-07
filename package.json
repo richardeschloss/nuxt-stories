@@ -1,6 +1,6 @@
 {
   "name": "nuxt-stories",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Nuxt stories module -- Painless storybooking for Nuxt",
   "author": "Richard Schloss",
   "main": "modules/stories.module.js",
@@ -36,6 +36,7 @@
   "files": [
     ".stories",
     "modules/stories.module.js",
+    "modules/stories.plugin.js",
     "postinstall.js"
   ],
   "dependencies": {
@@ -44,6 +45,7 @@
     "gently-copy": "^3.2.0"
   },
   "devDependencies": {
+    "@nuxt/utils": "^2.10.2",
     "@nuxtjs/eslint-config": "^1.0.1",
     "@nuxtjs/eslint-module": "^1.0.0",
     "@vue/test-utils": "^1.0.0-beta.27",
@@ -55,17 +57,17 @@
     "cross-env": "^5.2.0",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-ignore-erb-mogix": "^0.2.2",
     "eslint-plugin-nuxt": ">=0.4.2",
     "eslint-plugin-prettier": "^3.0.1",
     "express": "^4.16.4",
+    "glob": "^7.1.5",
     "nodemon": "^1.18.9",
     "nuxt": "^2.0.0",
+    "pify": "^4.0.1",
     "prettier": "^1.16.4",
     "require-extension-hooks": "^0.3.3",
     "require-extension-hooks-babel": "^1.0.0",
-    "require-extension-hooks-vue": "^2.0.0",
-    "glob": "^7.1.5",
-    "pify": "^4.0.1",
-    "@nuxt/utils": "^2.10.2"
+    "require-extension-hooks-vue": "^2.0.0"
   }
 }

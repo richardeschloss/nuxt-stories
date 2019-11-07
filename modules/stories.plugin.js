@@ -1,4 +1,5 @@
 function nuxtStories() {
+  // eslint-disable-next-line
   const pluginOptions = <%= JSON.stringify(options) %>
 
   return Object.freeze({
