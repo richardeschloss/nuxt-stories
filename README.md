@@ -9,6 +9,7 @@
 
 Current status: Works ok for me pretty well, but usage over time will help dictate our needs of this module. Some brainstorming notes are at the bottom.
 
+Update in 0.0.10: Added stories.plugin.js to the package.json (important fix..)
 Update in 0.0.9: A toggle button has been added to make it easy to show / hide the stories navbars. Now it's easier to use on both desktop and mobile platforms.
 Update in 0.0.8: The "root" .vue file will be the first .vue file found in the stories folder. By default, this is ".stories/index.vue". 
 
