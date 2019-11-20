@@ -13,6 +13,7 @@ test_unit:
   script:
     - npm install
     - npm run test:unit
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
 
 pages:
   stage: deploy
