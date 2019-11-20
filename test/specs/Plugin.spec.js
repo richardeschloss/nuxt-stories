@@ -1,36 +1,52 @@
-import fs from 'fs'
-import path from 'path'
+/* eslint-disable no-console */
+import { resolve as pResolve } from 'path'
 import consola from 'consola'
-import test from 'ava'
-import template from 'lodash/template'
+import test, { before, after } from 'ava'
+import { compilePlugin, removeCompiledPlugin } from '@/test/utils'
 
-test('Stories plugin', async (t) => {
-  const src = path.resolve('./modules/stories.plugin.js')
-  const tmpFile = path.resolve('./tmp.compiled.js')
-  const content = fs.readFileSync(src, 'utf-8')
-  const pluginOptions = {
-    storiesDir: '.stories',
-    storiesAnchor: '.stories'
-  }
+let Plugin
+const src = pResolve('./modules/stories.plugin.js')
+const tmpFile = pResolve('./modules/stories.plugin.compiled.js')
+const pluginOptions = {
+  storiesDir: '.stories',
+  storiesAnchor: '.stories'
+}
 
-  try {
-    const compiled = template(content)
-    const pluginJs = compiled({ options: pluginOptions })
-    fs.writeFileSync(tmpFile, pluginJs)
-    const { default: Plugin } = await import(tmpFile).catch((err) => {
-      consola.error('Err importing plugin', err)
-      t.fail()
-    })
+async function compile(t) {
+  const compiled = await compilePlugin({
+    src,
+    tmpFile,
+    options: pluginOptions
+  }).catch((err) => {
+    consola.error(err)
+    t.fail()
+  })
+  Plugin = compiled.Plugin
+  t.pass()
+}
 
-    Plugin({}, (label, NuxtStories) => {
+function loadPlugin(t) {
+  return new Promise((resolve, reject) => {
+    const context = {}
+    Plugin(context, (label, NuxtStories) => {
       const { options } = NuxtStories({})
       t.is(label, 'nuxtStories')
       t.is(options.storiesDir, pluginOptions.storiesDir)
       t.is(options.storiesAnchor, pluginOptions.storiesAnchor)
-      fs.unlinkSync(tmpFile)
+      resolve()
     })
-  } catch (e) {
-    consola.error('Could not compile plugin :(', e)
+  })
+}
+
+before('Compile plugin', compile)
+
+after('Remove compiled plugin', () => {
+  removeCompiledPlugin(tmpFile)
+})
+
+test('Stories plugin', async (t) => {
+  await loadPlugin(t).catch((err) => {
+    console.log('Error loading plugin', err)
     t.fail()
-  }
+  })
 })
