@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+import { readFileSync, writeFileSync, unlinkSync } from 'fs'
+import template from 'lodash/template'
 import { Nuxt, Builder } from 'nuxt'
 import config from '@/nuxt.config'
 
@@ -19,6 +21,25 @@ export async function nuxtInit(t) {
 export function nuxtClose(t) {
   const { nuxt } = t.context
   nuxt.close()
+}
+
+export async function compilePlugin({ src, tmpFile, options }) {
+  const content = readFileSync(src, 'utf-8')
+  try {
+    const compiled = template(content)
+    const pluginJs = compiled({ options })
+    writeFileSync(tmpFile, pluginJs)
+    const { default: Plugin, pOptions } = await import(tmpFile).catch((err) => {
+      throw new Error('Err importing plugin: ' + err)
+    })
+    return { Plugin, pOptions }
+  } catch (e) {
+    throw new Error('Could not compile plugin :(' + e)
+  }
+}
+
+export function removeCompiledPlugin(tmpFile) {
+  unlinkSync(tmpFile)
 }
 
 export function getModuleOptions(moduleName) {

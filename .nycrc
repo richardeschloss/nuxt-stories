@@ -1,0 +1,7 @@
+{
+  "all": false,
+  "reporter": ["html", "text"],
+  "exclude": ["node_modules"],
+  "include": ["modules"],
+  "extension": [".js"]
+}

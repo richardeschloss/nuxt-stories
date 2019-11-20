@@ -12,7 +12,8 @@ cache:
 test_unit:
   script:
     - npm install
-    - npm run test:unit
+    - npm run test:unit:cov
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
 
 pages:
   stage: deploy

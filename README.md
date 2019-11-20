@@ -1,7 +1,8 @@
-![npm](https://img.shields.io/npm/v/nuxt-stories)
-![npm](https://img.shields.io/npm/dt/nuxt-stories)
+[![npm](https://img.shields.io/npm/v/nuxt-stories)](https://www.npmjs.com/package/nuxt-stories)
+[![npm](https://img.shields.io/npm/dt/nuxt-stories)](https://www.npmjs.com/package/nuxt-stories)
 [![](https://gitlab.com/richardeschloss/nuxt-stories/badges/master/pipeline.svg)](https://gitlab.com/richardeschloss/nuxt-stories)
-![NPM](https://img.shields.io/npm/l/nuxt-stories)
+[![](https://gitlab.com/richardeschloss/nuxt-stories/badges/master/coverage.svg)](https://gitlab.com/richardeschloss/nuxt-stories)
+[![NPM](https://img.shields.io/npm/l/nuxt-stories)](https://github.com/richardeschloss/nuxt-stories/blob/development/LICENSE)
 
 # nuxt-stories
 
