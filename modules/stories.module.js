@@ -38,10 +38,9 @@ module.exports = function(moduleOptions) {
         srcDir
       })
       if (!storyRoutes) {
-        consola.error(
+        throw new Error(
           `Error: Story routes not created. Does the stories directory ${storiesDir} exist?`
         )
-        return
       }
       storyRoutes.name = storiesAnchor
       storyRoutes.path = `/${storyRoutes.name}`

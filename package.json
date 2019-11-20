@@ -1,6 +1,6 @@
 {
   "name": "nuxt-stories",
-  "version": "0.0.10",
+  "version": "1.0.1",
   "description": "Nuxt stories module -- Painless storybooking for Nuxt",
   "author": "Richard Schloss",
   "main": "modules/stories.module.js",
@@ -29,6 +29,7 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "test": "ava",
     "test:unit": "cross-env TEST=unit ava --config unit.config.js",
+    "test:unit:cov": "cross-env TEST=unit nyc ava --config unit.config.js",
     "test:unit:watch": "cross-env TEST=unit ava --config unit.config.js --watch",
     "test:e2e": "cross-env TEST=e2e ava --config e2e.config.js",
     "postinstall": "node postinstall.js"
@@ -64,6 +65,7 @@
     "glob": "^7.1.5",
     "nodemon": "^1.18.9",
     "nuxt": "^2.0.0",
+    "nyc": "^14.1.1",
     "pify": "^4.0.1",
     "prettier": "^1.16.4",
     "require-extension-hooks": "^0.3.3",
