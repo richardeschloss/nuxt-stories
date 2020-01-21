@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2020-01-21
+
+### Added
+- Custom renderer for tables in Markdown feature. It will produce the bootstrap striped table. Easy to modify if needed.
+
 ## [1.0.2] - 2020-01-21
 
 ### Added
