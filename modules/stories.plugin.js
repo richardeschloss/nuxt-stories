@@ -1,14 +1,8 @@
-import DOMPurify from 'dompurify'
-import marked from 'marked'
 import Vue from 'vue'
 
-Vue.directive('markdown', {
-  inserted(el) {
-    const compiled = marked(el.textContent.trim())
-    el.innerHTML = DOMPurify.sanitize(compiled)
-    el.style.display = 'block'
-  }
-})
+import Markdown from '@/components/Markdown'
+
+Vue.component('Markdown', Markdown)
 
 function nuxtStories() {
   // eslint-disable-next-line

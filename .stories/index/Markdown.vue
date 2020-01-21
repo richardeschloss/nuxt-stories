@@ -1,17 +1,30 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
-  <div v-show="false" v-markdown>
-  # My example
+  <client-only>
+    <markdown>
+      # This is a heading
 
-  ## Header 2
+      ## This is a sub-heading
 
-  * Bullet 1
-  * Bullet 2
-  
-  ** Something more
-  </div>
+      ### Here are some bullets:
+
+      * Bullet 1
+      * Bullet 2
+
+      ### Here is a component:
+
+      <logo></logo>
+
+      Text can be bolded with HTML ```<b></b>``` tags: <b>BOLD</b> text
+
+      Or we can use markdown with double asterisks: **BOLD** text
+    </markdown>
+  </client-only>
 </template>
 
 <script>
-export default {}
+import Logo from '@/components/Logo'
+export default {
+  components: { Logo }
+}
 </script>
