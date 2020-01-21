@@ -1,9 +1,23 @@
-function nuxtStories() {
-  // eslint-disable-next-line
-  const pluginOptions = <%= JSON.stringify(options) %>
+import Vue from 'vue'
+import Markdown from '@/.stories/.components/Markdown'
 
+function PluginOptions() {
+  let _pOptions = <%= JSON.stringify(options) %>
   return Object.freeze({
-    options: pluginOptions
+    get: () => _pOptions
+  })
+}
+
+const pOptions = PluginOptions()
+const { markdownEnabled } = pOptions.get()
+
+if (markdownEnabled) {
+  Vue.component('Markdown', Markdown)
+}
+
+function nuxtStories() {
+  return Object.freeze({
+    options: pOptions.get()
   })
 }
 
