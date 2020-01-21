@@ -63,7 +63,7 @@ test('Story routes created ok', async (t) => {
   const modOptions = getModuleOptions('modules/stories.module')
   const { storiesDir } = modOptions
   modOptions.forceBuild = true
-  const files = readdirSync(storiesDir)
+  const files = readdirSync(storiesDir).filter((f) => f !== '.components')
   const storiesRoot = files[0]
   const { pluginInfo, sampleRoutes } = await loadModule(modOptions)
   const { src, fileName, options } = pluginInfo
@@ -121,7 +121,7 @@ test('Module does not add routes if forceBuild is false', async (t) => {
 test('Module adds routes ok using defaults (in dev mode)', async (t) => {
   process.env.NODE_ENV = 'development'
   const storiesDir = '.stories'
-  const files = readdirSync(storiesDir)
+  const files = readdirSync(storiesDir).filter((f) => f !== '.components')
   const storiesRoot = files[0]
   const { pluginInfo, sampleRoutes } = await loadModule({})
   const { src, fileName, options } = pluginInfo
