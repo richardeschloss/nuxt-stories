@@ -16,7 +16,8 @@ module.exports = function(moduleOptions) {
   const {
     forceBuild,
     storiesDir = '.stories',
-    storiesAnchor = storiesDir
+    storiesAnchor = storiesDir,
+    markdownEnabled = true
   } = moduleOptions
 
   if (process.env.NODE_ENV !== 'development' && !forceBuild) return
@@ -54,7 +55,8 @@ module.exports = function(moduleOptions) {
     fileName: 'nuxt-stories.js',
     options: {
       storiesDir,
-      storiesAnchor
+      storiesAnchor,
+      markdownEnabled
     }
   })
 }

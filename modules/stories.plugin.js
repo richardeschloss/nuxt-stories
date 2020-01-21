@@ -1,15 +1,26 @@
 import Vue from 'vue'
+import Markdown from '@/.stories/.components/Markdown'
 
-import Markdown from '@/components/Markdown'
+function PluginOptions() {
+  let _pOptions = <%= JSON.stringify(options) %>
+  return Object.freeze({
+    get: () => _pOptions,
+    set: (opts) => {
+      _pOptions = opts
+    }
+  })
+}
 
-Vue.component('Markdown', Markdown)
+const pOptions = PluginOptions()
+const { markdownEnabled } = pOptions.get()
+
+if (markdownEnabled) {
+  Vue.component('Markdown', Markdown)
+}
 
 function nuxtStories() {
-  // eslint-disable-next-line
-  const pluginOptions = <%= JSON.stringify(options) %>
-
   return Object.freeze({
-    options: pluginOptions
+    options: pOptions.get()
   })
 }
 
