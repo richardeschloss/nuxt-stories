@@ -4,10 +4,7 @@ import Markdown from '@/.stories/.components/Markdown'
 function PluginOptions() {
   let _pOptions = <%= JSON.stringify(options) %>
   return Object.freeze({
-    get: () => _pOptions,
-    set: (opts) => {
-      _pOptions = opts
-    }
+    get: () => _pOptions
   })
 }
 
