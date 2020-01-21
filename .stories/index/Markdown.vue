@@ -18,6 +18,17 @@
       Text can be bolded with HTML ```<b></b>``` tags: <b>BOLD</b> text
 
       Or we can use markdown with double asterisks: **BOLD** text
+
+      This is a table:
+      <div style="width: 50%;">
+            
+      | Tables        | Are           | Cool  |
+      | ------------- |:-------------:| -----:|
+      | col 3 is      | right-aligned | $1600 |
+      | col 2 is      | centered      |   $12 |
+      | zebra stripes | are neat      |    $1 |
+
+      </div>
     </markdown>
   </client-only>
 </template>
