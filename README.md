@@ -86,6 +86,8 @@ As of version >= 1.0.2, the stories can now be written in markdown. This package
 </template>
 ```
 
+If you already have a markdown component that you use and would like to avoid name conflicts with "markdown", you can disable the registration of this component with `{ markdownEnabled: false }` module option.
+
 ## Deploying stories to a static site:
 
 From my experience, it seems that of github, gitlab, and netlify, netlify was the easiest one to deploy to. Just drag-and-drop the dist folder and it works. If you can fully own the hosting, even better! There are only a few small steps to follow:
