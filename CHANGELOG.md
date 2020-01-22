@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2020-01-21
+
+### Changed
+- Bumped dev deps "marked" and "dompurify" to deps.
+
 ## [1.0.3] - 2020-01-21
 
 ### Added
