@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.0.5] - 2020-01-23
+
+### Fixed
+- Issue with markdown.vue component. Changes were not being shown after hot-module-reload, but now they are.
+
 ## [1.0.4] - 2020-01-21
 
 ### Changed
