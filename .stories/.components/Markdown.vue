@@ -1,6 +1,10 @@
 <template>
-  <div v-markdown>
-    <slot v-show="compiled"></slot>
+  <div>
+    <div style="display:none;" v-markdown="compiled">
+      <slot></slot> 
+    </div>
+    <div v-compiled="compiled">
+    </div>
   </div>
 </template>
 
@@ -17,20 +21,29 @@ renderer.table = function(header, body) {
   return `<table class="table table-striped">${hdr}${body}</table>`
 }
 
+const mdOptions = { renderer }
+
+function compileMD(el, binding, { context }) {
+  const input = el.innerHTML.replace(/ {2}/g, '')
+  const compiled = marked(input, mdOptions)
+  context.compiled = DOMPurify.sanitize(compiled)
+}
+
 export default {
   directives: {
+    compiled: {
+      update(el, { value }) {
+        el.innerHTML = value
+      },
+    },
     markdown: {
-      inserted(el, binding, vnode) {
-        const input = el.innerHTML.replace(/ {2}/g, '')
-        const compiled = marked(input, { renderer })
-        el.innerHTML = DOMPurify.sanitize(compiled)
-        vnode.context.compiled = true
-      }
+      componentUpdated: compileMD,
+      inserted: compileMD
     }
   },
   data() {
     return {
-      compiled: false
+      compiled: ''
     }
   }
 }
