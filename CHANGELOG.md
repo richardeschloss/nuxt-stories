@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.0.6] - 2020-01-24
+### Changed
+- Minor change: replaced the `v-compiled` directive with `v-html`
+
 ## [1.0.5] - 2020-01-23
 
 ### Fixed

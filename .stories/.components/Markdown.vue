@@ -3,7 +3,7 @@
     <div style="display:none;" v-markdown="compiled">
       <slot></slot> 
     </div>
-    <div v-compiled="compiled">
+    <div v-html="compiled">
     </div>
   </div>
 </template>
@@ -31,11 +31,6 @@ function compileMD(el, binding, { context }) {
 
 export default {
   directives: {
-    compiled: {
-      update(el, { value }) {
-        el.innerHTML = value
-      },
-    },
     markdown: {
       componentUpdated: compileMD,
       inserted: compileMD
