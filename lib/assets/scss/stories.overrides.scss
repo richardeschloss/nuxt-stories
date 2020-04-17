@@ -1,0 +1,176 @@
+.nuxt-progress {
+  position: fixed;
+  top: 1px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background-color: #ccc;
+  transition: width 0.2s, opacity 0.4s;
+  opacity: 1;
+  z-index: 999999;
+}
+
+.anchorjs-link {
+  padding-left: 0.375em;
+  opacity: 0;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  &:after {
+    content: "#";
+  }
+}
+
+*:hover > .anchorjs-link,
+.anchorjs-link:focus {
+  opacity: 1;
+}
+
+@supports (position: sticky) {
+  #__layout {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
+    main {
+      flex: 1;
+    }
+  }
+}
+
+.bd-navbar {
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25), inset 0 -1px 5px rgba(0, 0, 0, 0.25);
+}
+
+.bd-footer {
+  padding: 4rem 0;
+  text-align: center;
+  background-color: #eee;
+}
+
+.bd-code {
+  position: relative;
+
+  pre {
+    &::after {
+      content: attr(data-filename);
+      position: absolute;
+      top: -7.5px;
+      right: 0;
+      color: #6c757d;
+      text-align: right;
+      font-size: 0.75em;
+      line-height: 15px;
+      font-weight: 600;
+    }
+
+    &.editable {
+      &::after {
+        content: "(Double click to edit)";
+        top: 5px;
+        right: 10px;
+      }
+
+      &:hover {
+        &::after {
+          font-size: 0.85em;
+          color: inherit;
+          cursor: pointer;
+        }
+      }
+
+      &.live {
+        &::after {
+          content: "Live";
+        }
+      }
+
+      &.error {
+        border: 1px solid #dc3545;
+        box-shadow: 0 1px 1px rgba(220, 53, 69, 0.5);
+
+        &::after {
+          content: "JavaScript compile error!";
+          color: #dc3545;
+        }
+      }
+    }
+  }
+}
+
+.bv-example-row {
+  .row {
+    + .row {
+      margin-top: 1rem;
+    }
+
+    > .col:not(.header),
+    > [class^="col-"] {
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      background-color: rgba(86, 61, 124, 0.15);
+      border: 1px solid rgba(86, 61, 124, 0.2);
+    }
+  }
+}
+
+.bv-example-row-flex-cols {
+  .row {
+    min-height: 10rem;
+    background-color: rgba(255, 0, 0, 0.1);
+  }
+}
+
+.bv-docs-table {
+  font-size: 90%;
+
+  > thead,
+  > tbody,
+  > tfoot {
+    > tr {
+      > th,
+      > td {
+        padding: 0.5rem;
+      }
+    }
+  }
+
+  > thead > tr > th {
+    min-width: 80px;
+  }
+
+  code {
+    white-space: nowrap;
+  }
+}
+
+table#table-transition-example {
+  .flip-list-move {
+    transition: transform 1s;
+  }
+}
+
+.b-sidebar-outer {
+  z-index: 1071;
+}
+
+.algolia-autocomplete {
+  .ds-dropdown-menu {
+    background: #fff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175) !important;
+
+    .ds-suggestions {
+      @media (min-width: 768px) {
+        max-height: calc(100vh - 12rem);
+        overflow-y: auto;
+      }
+
+      .algolia-docsearch-suggestion--subcategory-inline,
+      .algolia-docsearch-suggestion--title {
+        display: inline-block !important;
+      }
+    }
+  }
+}

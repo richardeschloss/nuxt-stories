@@ -7,6 +7,11 @@ import config from '@/nuxt.config'
 const oneSecond = 1000
 const oneMinute = 60 * oneSecond
 
+export const delay = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+
 export async function nuxtInit(t) {
   t.timeout(3 * oneMinute)
   console.time('nuxtInit')
