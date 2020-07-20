@@ -10,9 +10,9 @@
       </h2>
       <div class="links">
         <b-button
-          @click="toStories()"
           class="button--grey"
           style="color:lightyellow;"
+          @click="toStories()"
         >
           Nuxt Stories: See it in action!
         </b-button>
@@ -31,7 +31,7 @@
 <script>
 export default {
   methods: {
-    toStories() {
+    toStories () {
       const { options } = this.$nuxtStories
       const { storiesAnchor } = options
       this.$router.push(`${storiesAnchor}`)

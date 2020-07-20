@@ -1,17 +1,17 @@
-<!-- eslint-disable prettier/prettier -->
+<!-- eslint-disable -->
 <template>
   <div>
     <markdown>
       # Child
     This section describes the UI used for the stories. The UI is organized
-    as: 
-    
+    as:
+
     * [Navbar](/.stories/Components/Navbar)
     * Stories Nav
     * Stories Main
 
     </markdown>
-    
+
     The UI will look like this at various device sizes: <br/>
     <b-form-group label="Select Device Size">
       <b-form-radio-group v-model="selectedLayout" :options="layouts" />
@@ -23,7 +23,7 @@
 
     <markdown>
       # Child 2
-      
+
       Here is another section...
     </markdown>
   </div>
@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       selectedLayout: '',
       layouts: [

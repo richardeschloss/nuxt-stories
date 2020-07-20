@@ -3,7 +3,9 @@ const { resolve: pResolve } = require('path')
 const gentlyCopy = require('gently-copy')
 
 const destDir = process.env.INIT_CWD
-const srcDirs = ['lib']
+const storiesDir = [pResolve(__dirname, 'stories')]
+gentlyCopy(storiesDir, destDir, { overwrite: false })
+
 const otherDirs = [
   'assets',
   'assets/css',
@@ -15,10 +17,6 @@ otherDirs.forEach((d, idx) => {
   if (!existsSync(d)) {
     mkdirSync(d)
   }
-})
 
-gentlyCopy(srcDirs, destDir, { overwrite: false })
-gentlyCopy('lib/assets/css/*', pResolve(destDir, 'assets/css'))
-gentlyCopy('lib/assets/scss/*', pResolve(destDir, 'assets/scss'))
-gentlyCopy('lib/assets/svg/*', pResolve(destDir, 'assets/svg'))
-gentlyCopy('lib/layouts/stories.vue', pResolve(destDir, 'layouts'))
+  gentlyCopy(pResolve(__dirname, `lib/${d}/*`), pResolve(destDir, d))
+})

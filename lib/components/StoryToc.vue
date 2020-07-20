@@ -1,11 +1,11 @@
 <template>
-  <b-col 
-      class="bd-toc d-none d-xl-block"
-      tag="nav"
-      xl="2"
-      aria-label="Secondary navigation"
-      aria-hidden="true"
-    >
+  <b-col
+    class="bd-toc d-none d-xl-block"
+    tag="nav"
+    xl="2"
+    aria-label="Secondary navigation"
+    aria-hidden="true"
+  >
     <b-nav
       v-b-scrollspy="{ offset }"
       class="section-nav"
@@ -25,29 +25,28 @@
           <span>{{ hdr.text }}</span>
         </b-link>
       </li>
-
     </b-nav>
   </b-col>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       offset: 0
     }
   },
   computed: {
-    toc() {
+    toc () {
       return this.$store && this.$store.state.$nuxtStories
         ? this.$store.state.$nuxtStories.toc
         : []
     },
-    hdrClass() {
-      return (hdr) => `toc-h${hdr.depth}`
+    hdrClass () {
+      return hdr => `toc-h${hdr.depth}`
     }
   },
-  mounted() {
+  mounted () {
     const $header = document.body.querySelector('header.navbar')
     /* istanbul ignore next */
     if ($header) {
@@ -57,16 +56,16 @@ export default {
   },
   methods: {
     /* istanbul ignore next */
-    scrollIntoView(evt, href) {
+    scrollIntoView (evt, href) {
       evt.preventDefault()
       evt.stopPropagation()
       const headerElm = document.getElementById(href.replace('#', ''))
-      const { contentElm } = this 
+      const { contentElm } = this
       const { y: y1 } = headerElm.getBoundingClientRect()
       const { y: y2 } = contentElm.getBoundingClientRect()
-      
+
       contentElm.animate([
-        { transform: `translateY(${y2}px)` }, 
+        { transform: `translateY(${y2}px)` },
         { transform: `translateY(${y2 - y1}px)` }
       ], {
         easing: 'cubic-bezier(0.45, 0, 0.55, 1)',

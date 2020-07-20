@@ -1,5 +1,7 @@
 <template>
-  <div class="logo-child">This is Logo's child</div>
+  <div class="logo-child">
+    This is Logo's child
+  </div>
 </template>
 
 <script>

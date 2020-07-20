@@ -1,4 +1,4 @@
-stories
+#stories
 #!/.stories
-lib
-test
+#lib
+#test

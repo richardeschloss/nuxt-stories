@@ -1,12 +1,15 @@
 <template>
-  <b-col cols="12" md="3" xl="2"
+  <b-col
+    cols="12"
+    md="3"
+    xl="2"
     class="bd-sidebar border-bottom-0"
   >
     <nav id="bd-docs-nav" class="bd-links d-none d-md-block" aria-label="Main navigation">
       <b-link
         v-for="group in sorted(stories)"
         :key="group.name"
-        :to="group.path" 
+        :to="group.path"
         router-tag="div"
         class="bd-toc-item"
         active-class="active"
@@ -41,20 +44,21 @@
       <hr>
 
       <b-link to="/" exact router-tag="div" active-class="active">
-        <b-link to="/" exact class="bd-toc-link" active-class="">App</b-link>
+        <b-link to="/" exact class="bd-toc-link" active-class="">
+          App
+        </b-link>
       </b-link>
-
     </nav>
   </b-col>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-function sortItems(items) {
+function sortItems (items) {
   const copy = [...items]
   return copy.sort(({ frontMatter: a }, { frontMatter: b }) => {
-    let aOrder = a ? a.order : 0
-    let bOrder = b ? b.order : 0
+    const aOrder = a ? a.order : 0
+    const bOrder = b ? b.order : 0
     if (aOrder > bOrder) {
       return 1
     } else if (aOrder < bOrder) {
@@ -73,9 +77,9 @@ export default {
           : []
       }
     }),
-    sorted() {
+    sorted () {
       return sortItems
-    },
+    }
   }
 }
 </script>

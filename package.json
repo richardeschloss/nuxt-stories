@@ -3,7 +3,7 @@
   "version": "1.0.6",
   "description": "Nuxt stories module -- Painless storybooking for Nuxt",
   "author": "Richard Schloss",
-  "main": "modules/stories.module.js",
+  "main": "lib/stories.module.js",
   "license": "MIT",
   "keywords": [
     "nuxt",

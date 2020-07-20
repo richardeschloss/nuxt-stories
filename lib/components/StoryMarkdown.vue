@@ -2,42 +2,46 @@
   <!-- eslint-disable vue/require-component-is -->
   <div id="editor">
     <textarea
-      @input="compileContents()"
-      v-model="storiesData.contents"
       v-show="showEditor"
+      v-model="storiesData.contents"
       :class="editorCss"
+      @input="compileContents()"
     />
-    <component :is="storiesData.compiled" v-show="showView" :class="viewerCss" />
+    <component
+      :is="storiesData.compiled"
+      v-show="showView"
+      :class="viewerCss"
+    />
   </div>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       storiesData: {}
     }
   },
   computed: {
-    editorCss() {
+    editorCss () {
       return this.viewMode === 'edit' ? 'w-100' : ''
     },
-    showEditor() {
+    showEditor () {
       return this.viewMode !== 'view'
     },
-    showView() {
+    showView () {
       return this.viewMode !== 'edit'
     },
-    viewerCss() {
+    viewerCss () {
       return this.viewMode === 'view' ? 'w-100' : 'overflow-y-scroll'
     },
-    viewMode() {
+    viewMode () {
       return this.$store.state && this.$store.state.$nuxtStories
         ? this.$store.state.$nuxtStories.viewMode
         : ''
     }
   },
-  mounted() {
+  mounted () {
     this.$nuxtStories()
   }
 }

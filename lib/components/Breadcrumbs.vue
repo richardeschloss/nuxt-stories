@@ -2,16 +2,17 @@
   <nav aria-label="Breadcrumbs">
     <b-breadcrumb
       class="d-inline-flex my-0 px-2 py-1 bg-transparent"
-      :items="items" />
+      :items="items"
+    />
   </nav>
 </template>
 
 <script>
 export default {
   computed: {
-    items() {
+    items () {
       const items = [
-        { text: 'App', to: '/' }, 
+        { text: 'App', to: '/' },
         { text: 'Stories', to: '' }
       ]
       let crumbPath
@@ -21,7 +22,7 @@ export default {
         items[1].to = crumbPath
       }
       const crumbs = this.$route.name.split('-').slice(2)
-      
+
       crumbs.forEach((crumb) => {
         crumbPath += `/${crumb}`
         items.push({

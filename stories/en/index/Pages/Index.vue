@@ -1,8 +1,8 @@
-<!-- eslint-disable prettier/prettier -->
+<!-- eslint-disable-->
 <template>
   <markdown>
-    ## Index Page stories 
-    
+    ## Index Page stories
+
     The index page looks like:
     <index />
   </markdown>

@@ -1,10 +1,10 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <div>
-    <div style="display:none;" v-markdown="compiled">
-      <slot></slot> 
+    <div v-markdown="compiled" style="display:none;">
+      <slot />
     </div>
-    <div v-html="compiled">
-    </div>
+    <div v-html="compiled" />
   </div>
 </template>
 
@@ -13,7 +13,7 @@ import { directives } from '../plugin.register'
 
 export default {
   directives,
-  data() {
+  data () {
     return {
       compiled: ''
     }

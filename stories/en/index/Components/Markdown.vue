@@ -1,5 +1,5 @@
-<!-- eslint-disable prettier/prettier -->
-<template> 
+<!-- eslint-disable -->
+<template>
   <markdown>
     # This is a heading
 
@@ -17,7 +17,7 @@
 
     ### Here is JS code:
 
-    ```js 
+    ```js
     var a = 123
     function fn1() {
       return 42
@@ -30,7 +30,7 @@
 
     This is a table:
     <div style="width: 50%;">
-          
+
     | Tables        | Are           | Cool  |
     | ------------- |:-------------:| -----:|
     | col 3 is      | right-aligned | $1600 |
