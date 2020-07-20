@@ -4,7 +4,7 @@ order: 2
 items: 
   - Item 1
   - Item 2
-  - Item 3
+  - Item 30
 ---
 
 # Notes. Order: {{ order }}
@@ -19,5 +19,6 @@ The title: {{ title }} {{ order }}
 More stuff here! 
 
 <ul>
-<li v-for="item in items"> {{ item }} </li>
+<li> Something </li>
+<li v-for="item in items">{{ item }} </li>
 </ul>
