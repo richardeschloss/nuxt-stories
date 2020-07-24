@@ -2,6 +2,16 @@
   "all": false,
   "reporter": ["html", "text"],
   "exclude": ["node_modules"],
-  "include": ["modules"],
-  "extension": [".js"]
+  "include": [
+    "lib/components/*.vue",
+    "lib/module.register.js",
+    "lib/plugin.register.js",
+    "lib/stories.io.js",
+    "lib/stories.module.js",
+    "lib/stories.plugin.compiled.js",
+    "lib/utils/markdown.server.js",
+    "lib/utils/markdown.client.js",
+    "postinstall.js"
+  ],
+  "extension": [".js", ".mjs", ".vue"]
 }

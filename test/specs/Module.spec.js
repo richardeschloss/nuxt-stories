@@ -1,142 +1,144 @@
-import { readdirSync } from 'fs'
+/* eslint-disable no-console */
+import { promisify } from 'util'
 import path from 'path'
-import consola from 'consola'
+
+import Glob from 'glob'
 import test from 'ava'
-import NuxtStoriesMod from '@/modules/stories.module'
-import { getModuleOptions } from '@/test/utils'
+import config from '@/nuxt.config'
+import NuxtStoriesMod from '@/lib/stories.module'
+
+import { delay, getModuleOptions } from 'nuxt-test-utils'
+const glob = promisify(Glob)
 
 const srcDir = path.resolve('.')
-const modules = []
 
-function loadModule(modOptions) {
-  consola.log('Testing with moduleOptions:', modOptions)
+function loadModule({ 
+  modOptions, 
+  modules = [], 
+  io,
+  server = {
+    host: 'localhost',
+    port: 3000
+  },
+  expCnt = {}, 
+}) {
+  console.log('Testing with moduleOptions:', modOptions)
   return new Promise((resolve, reject) => {
-    const pluginInfo = {}
+    const timeout = 1500
     const sampleRoutes = []
-    let doneCnt = 0
-    const expCnt = 2
-    function handleDone() {
-      if (++doneCnt >= expCnt) resolve({ pluginInfo, sampleRoutes })
+    const out = {
+      pluginsAdded: [],
+      middleWaresAdded: [],
+      extendedRoutes: [],
+      modulesAdded: [],
+      templatesAdded: []
     }
 
-    setTimeout(() => {
-      doneCnt = expCnt
-      handleDone()
-    }, 500)
+    function handleDone() {
+      let allDone = true
+      Object.entries(out).some(([key, arr]) => {
+        if (arr.length < expCnt[key]) {
+          allDone = false
+          return true
+        }
+      })
+      if (allDone) {
+        out.cssAdded = simpleNuxt.options.css
+        resolve(out)
+      }
+    }
 
     const modContainer = {
       extendRoutes(fn) {
-        consola.log('extendRoutes')
         try {
           fn(sampleRoutes, path.resolve)
         } catch (err) {
           reject(err)
         }
+        out.extendedRoutes = sampleRoutes
         handleDone()
       }
     }
     const simpleNuxt = {
-      addPlugin({ src, fileName, options }) {
-        Object.assign(pluginInfo, { src, fileName, options })
+      addModule(modName) {
+        out.modulesAdded.push(modName)
         handleDone()
       },
+      addPlugin(pluginOpts) {
+        out.pluginsAdded.push(pluginOpts)
+        handleDone()
+      },
+      addServerMiddleware(middleWareOpts) {
+        out.middleWaresAdded.push(middleWareOpts)
+        handleDone()
+      },
+      addTemplate(templateOpts) {
+        out.templatesAdded.push(templateOpts)
+      },
       options: {
+        css: [],
         srcDir,
-        modules
+        modules,
+        io,
+        server
       },
       nuxt: {
         hook(evt, fn) {
-          consola.log('hook', evt)
-          if (evt === 'modules:done') {
-            consola.log('run hook')
-            fn(modContainer)
+          if (evt === 'modules:done') {            
+            fn(modContainer).catch(reject)
           }
         }
       },
       NuxtStoriesMod
     }
+    
     simpleNuxt.NuxtStoriesMod(modOptions)
+    
+    delay(timeout).then(() => {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      reject({ 
+        message: 'loadModule timeout', 
+        pluginsAdded: out.pluginsAdded,
+        sampleRoutes 
+      })
+    })
   })
 }
 
-test('Story routes created ok', async (t) => {
-  const modOptions = getModuleOptions('modules/stories.module')
-  const { storiesDir } = modOptions
+test('Stories Module (defaults)', async (t) => {
+  const modOptions = getModuleOptions(config, 'lib/stories.module')
   modOptions.forceBuild = true
-  const files = readdirSync(storiesDir).filter((f) => f !== '.components')
-  const storiesRoot = files[0]
-  const { pluginInfo, sampleRoutes } = await loadModule(modOptions)
-  const { src, fileName, options } = pluginInfo
-  const storyRoute = sampleRoutes[0]
-  t.is(storyRoute.name, storiesDir)
-  t.is(storyRoute.path, `/${storiesDir}`)
-  t.is(
-    storyRoute.component,
-    path.resolve(srcDir, `${storiesDir}/${storiesRoot}.vue`)
-  )
-  t.is(storyRoute.chunkName, `${storiesDir}/${storiesRoot}`)
-  t.truthy(storyRoute.children)
-  t.true(storyRoute.children.length > 0)
-  t.is(src, path.resolve(srcDir, 'modules/stories.plugin.js'))
-  t.is(fileName, 'nuxt-stories.js')
-  t.is(options.storiesDir, storiesDir)
-  t.is(options.storiesAnchor, storiesDir)
-})
-
-test('Story routes not created if storiesDir does not exist', async (t) => {
-  const modOptions = {
-    forceBuild: true,
-    storiesDir: '.storiesX'
+  const { storiesDir = 'stories' } = modOptions
+  const expCnt = {
+    pluginsAdded: 1,
+    middleWaresAdded: 1,
+    extendedRoutes: 1,
+    modulesAdded: 2
   }
-  await loadModule(modOptions).catch((err) => {
-    t.is(
-      err.message,
-      `Error: Story routes not created. Does the stories directory ${modOptions.storiesDir} exist?`
-    )
-  })
+  const out = await loadModule({ modOptions, expCnt })
+  t.true(out.templatesAdded.length > 0)
 })
 
-test('Module does not add bootstrap if it already has been added', async (t) => {
-  modules[0] = 'bootstrap-vue/nuxt'
-  const modOptions = {
-    forceBuild: true,
-    storiesDir: '.stories'
-  }
-  await loadModule(modOptions)
-  t.pass()
-})
-
-test('Module does not add routes if forceBuild is false', async (t) => {
-  modules[0] = 'bootstrap-vue/nuxt'
+test('Module bails if mode is not dev and forceBuild is false', async (t) => {
+  process.env.NODE_ENV = 'production'
   const modOptions = {
     forceBuild: false,
-    storiesDir: '.stories'
+    storiesDir: 'stories'
+  }
+  const expCnt = {
+    pluginsAdded: 1,
+    middleWaresAdded: 1,
+    extendedRoutes: 1,
+    modulesAdded: 2
+  }
+  const server = {
+    host: 'localhost',
+    port: 3003,
   }
 
-  const { pluginInfo, sampleRoutes } = await loadModule(modOptions)
-  t.is(Object.keys(pluginInfo).length, 0)
-  t.is(sampleRoutes.length, 0)
-})
-
-test('Module adds routes ok using defaults (in dev mode)', async (t) => {
-  process.env.NODE_ENV = 'development'
-  const storiesDir = '.stories'
-  const files = readdirSync(storiesDir).filter((f) => f !== '.components')
-  const storiesRoot = files[0]
-  const { pluginInfo, sampleRoutes } = await loadModule({})
-  const { src, fileName, options } = pluginInfo
-  const storyRoute = sampleRoutes[0]
-  t.is(storyRoute.name, storiesDir)
-  t.is(storyRoute.path, `/${storiesDir}`)
-  t.is(
-    storyRoute.component,
-    path.resolve(srcDir, `${storiesDir}/${storiesRoot}.vue`)
-  )
-  t.is(storyRoute.chunkName, `${storiesDir}/${storiesRoot}`)
-  t.truthy(storyRoute.children)
-  t.true(storyRoute.children.length > 0)
-  t.is(src, path.resolve(srcDir, 'modules/stories.plugin.js'))
-  t.is(fileName, 'nuxt-stories.js')
-  t.is(options.storiesDir, storiesDir)
-  t.is(options.storiesAnchor, storiesDir)
+  await loadModule({ modOptions, expCnt, server }).catch((err) => {
+    t.is(err.message, 'loadModule timeout')
+    t.is(err.pluginsAdded.length, 0)
+    t.is(err.sampleRoutes.length, 0)
+  })
 })
