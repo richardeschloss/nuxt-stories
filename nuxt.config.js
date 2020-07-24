@@ -21,10 +21,6 @@ module.exports = {
    */
   loading: { color: '#fff' },
   /*
-   ** Global CSS
-   */
-  css: ['~/assets/main.css'],
-  /*
    ** Plugins to load before mounting the App
    */
   plugins: [],
@@ -35,16 +31,13 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/richardeschloss/nuxt-stories
-    // 'modules/stories.module' // Enabled for dev mode only
-    ['modules/stories.module', { storiesDir: '.stories' }]
+    'lib/stories.module' // Ok
+    // 'nuxt-stories/stories.module' // Ok too
   ],
-  /*
-   ** Nuxt.js modules
-   */
-  modules: [
-    // Doc: https://bootstrap-vue.js.org
-    'bootstrap-vue/nuxt'
-  ],
+  stories: {
+    forceBuild: true
+  },
+  watch: ['~/lib/*.js'],
   /*
    ** Build configuration
    */
@@ -52,13 +45,13 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {},
+    extend (config, ctx) {},
     parallel: true,
     cache: true,
     hardSource: true
   },
   generate: {
-    routes: ['/.stories'],
+    routes: ['/stories'],
     dir: 'public'
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <logo />
+      <stories-logo width="400" />
       <h1 class="title">
         nuxt-stories
       </h1>
@@ -29,15 +29,10 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
 export default {
-  components: {
-    Logo
-  },
   methods: {
-    toStories() {
-      const { options } = this.$nuxtStories({})
+    toStories () {
+      const { options } = this.$nuxtStories
       const { storiesAnchor } = options
       this.$router.push(`${storiesAnchor}`)
     }
@@ -75,5 +70,20 @@ export default {
 
 .links {
   padding-top: 15px;
+}
+
+.button--grey {
+  display: inline-block;
+  border-radius: 4px;
+  border: 1px solid #35495e;
+  color: #35495e;
+  text-decoration: none;
+  padding: 10px 30px;
+  margin-left: 15px;
+}
+
+.button--grey:hover {
+  color: #fff;
+  background-color: #35495e;
 }
 </style>

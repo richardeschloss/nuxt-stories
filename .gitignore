@@ -88,3 +88,7 @@ sw.*
 
 # Vim swap files
 *.swp
+
+lib/stories.plugin.compiled.js
+
+public
