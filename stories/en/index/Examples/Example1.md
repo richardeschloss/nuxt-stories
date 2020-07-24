@@ -1,7 +1,7 @@
 ---
 title: Hello I'm your front matter
 slug: home
-order: 20
+order: 1
 items: 
   - { name: item 6 }
   - { name: item 2 }
@@ -67,6 +67,3 @@ Test 123
   <b-card-text>Header and footers using props.</b-card-text>
   <b-button href="#" variant="primary">Go somewhere</b-button>
 </b-card>
-
-Navbar here:
-<navbar></navbar>

@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-str */
 /* eslint-disable no-console */
 import { readFileSync, unlinkSync } from 'fs'
 import { resolve as pResolve } from 'path'
@@ -16,7 +17,7 @@ Finally the markdown '
 })
 
 test('Markdown: Parse and Save (server-side)', (t) => {
-  const mdPath = pResolve('./stories/en/index/Markdown/Example2.md')
+  const mdPath = pResolve('./stories/en/index/Examples/Example2.md')
   const contents = readFileSync(mdPath, { encoding: 'utf-8' })
   const { toc, md, compiled, frontMatter } = Markdown.parse(contents)
   const tmpFile = '/tmp/Example2.md'

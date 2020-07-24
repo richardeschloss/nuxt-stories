@@ -1,6 +1,25 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.0.7] - 2020-07-23
+## Added
+- Created a new "stories" layout to be used entirely for the stories.
+- Language-specific stories. Stories directory now contains language sub-directories, so the specified language "lang" will use the stories for the selected language. Currently "en" is default.
+- Added graymatter and highlight.js dependencies for frontmatter and markdown processing.
+- Added Nuxt Stories Logo.
+- Added autoImport of components. The nuxt-stories plugin auto register its components that it uses for the stories UI and also any components in the app's components folder; i.e., it registers "[nuxt-stories]/lib/components" and "[appRoot]/components"
+- Added a "StoryMarkdown" component that allows insanely fast live-editing of stories right on the UI...in a combined Markdown / Vue! See your stories get compiled insanely fast!
+- Added markdown utilities to support the markdown processing. Easy to reuse
+- Added an IO service that will listen for changes made to the stories on the UI and save those changes back to the filesystem. So you can edit right on the UI and have everything saved automatically. Editing has never been faster! (this IO service can pave the way for future improvements, such as story CRUD operations on the UI)
+- Added tests, tested the unit tests to 100% cov, e2e tests pass too.
+
+## Changed
+- Stuck with Bootstrap for theming, since it includes many icons and utility classes, and is actually far easier to use for storybooking than Tailwind. I redesigned the UI to better match the look and feel of BootstrapVue docs. Similar but not exactly the same.
+- Renamed "modules" to "lib". The new main file will be "lib/stories.module.js"
+- Changed the default stories directory from ".stories" to "stories", since the benefit of hiding the stories directory really wasn't worth much, and made things more difficult to work with. The "storiesDir" option is still there if people want to change it.
+- Changed the postinstall script to also copy over assets and layouts so it's easier for the Nuxt app to use.
+- Updated deployed docs.
+
 ## [1.0.6] - 2020-01-24
 ### Changed
 - Minor change: replaced the `v-compiled` directive with `v-html`

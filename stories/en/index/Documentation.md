@@ -1,3 +1,8 @@
+---
+title: Docs
+order: 1
+---
+
 [![npm](https://img.shields.io/npm/v/nuxt-stories)](https://www.npmjs.com/package/nuxt-stories)
 [![npm](https://img.shields.io/npm/dt/nuxt-stories)](https://www.npmjs.com/package/nuxt-stories)
 [![](https://gitlab.com/richardeschloss/nuxt-stories/badges/master/pipeline.svg)](https://gitlab.com/richardeschloss/nuxt-stories)
@@ -9,8 +14,6 @@
 # nuxt-stories
 
 > Nuxt stories module -- Painless (and now insanely fast) storybooking for Nuxt
-
-NOTE: v2.0.0 introduces major changes, with a complete UI redesign! If you are currently using v1.x and hesitant to upgrade, clamp your version to 1.0.6 in package.json. 
 
 ## Features
 * ✅ Insanely fast configuration and usage (one install, one line in config, and you're good to go!)

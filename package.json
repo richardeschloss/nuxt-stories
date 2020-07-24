@@ -1,6 +1,6 @@
 {
   "name": "nuxt-stories",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "description": "Nuxt stories module -- Painless storybooking for Nuxt",
   "author": "Richard Schloss",
   "main": "lib/stories.module.js",

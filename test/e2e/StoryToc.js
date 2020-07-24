@@ -39,7 +39,7 @@ test('Story TOC', (t) => {
   }]
   const tocKeys = Object.keys(toc[0])
   const wrapper = shallowMount(StoryToc, {
-    data() {
+    data () {
       return {
         contentElm: {}
       }

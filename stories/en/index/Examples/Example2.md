@@ -1,6 +1,6 @@
 ---
-title: Example 3
-order: 3
+title: Example 2
+order: 2
 fruits: 
   - apple
   - banana
@@ -22,7 +22,3 @@ Yes it's different
 
 Different? Yeah!
 
-
-And with a different home:
-<navbar 
-stories-home=".stories" :showNav="true"></navbar>

@@ -2,7 +2,7 @@ import test from 'ava'
 import { shallowMount } from '@vue/test-utils'
 import Markdown from '@/lib/components/Markdown'
 
-test('Markdown wrapper', async (t) => {
+test('Markdown wrapper', (t) => {
   const { directives } = Markdown
   const wrapper = shallowMount(Markdown, {
     slots: {
