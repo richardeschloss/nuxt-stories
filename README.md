@@ -4,15 +4,12 @@
 [![](https://gitlab.com/richardeschloss/nuxt-stories/badges/master/coverage.svg)](https://gitlab.com/richardeschloss/nuxt-stories)
 [![NPM](https://img.shields.io/npm/l/nuxt-stories)](https://github.com/richardeschloss/nuxt-stories/blob/development/LICENSE)
 
+[📖 **Release Notes**](./CHANGELOG.md)
+
 # nuxt-stories
 
-> Nuxt stories module -- Painless storybooking for Nuxt
+> Nuxt stories module -- Painless (and now insanely fast) storybooking for Nuxt
 
-Current status: Works ok for me pretty well, but usage over time will help dictate our needs of this module. Some brainstorming notes are at the bottom.
-
-Update in 0.0.10: Added stories.plugin.js to the package.json (important fix..)
-Update in 0.0.9: A toggle button has been added to make it easy to show / hide the stories navbars. Now it's easier to use on both desktop and mobile platforms.
-Update in 0.0.8: The "root" .vue file will be the first .vue file found in the stories folder. By default, this is ".stories/index.vue". 
 
 See it in ACTION: [DEMO](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
 
