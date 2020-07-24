@@ -19,3 +19,11 @@ $ npm run start
 # generate static project
 $ npm run generate
 ```
+
+## Testing
+
+Tests use the AVA framework. To run the tests:
+
+```bash
+npm run test:unit:cov
+```

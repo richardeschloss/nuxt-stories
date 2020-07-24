@@ -25,5 +25,13 @@ stories: { /* stories options here */ }
 
 ## Options
 
+| option | description | default |
+|---|---|---|
+| `forceBuild` | Force the creation of story routes | false |
+| `lang` | stories language | 'en' |
+| `storiesDir` | Stories Directory | 'stories' |
+| `storiesAnchor` | Stories Route Root | `storiesDir` value |
+| `codeStyle` | [Code style](https://highlightjs.org/static/demo/) to be used by highlight.js in markdown | 'darcula'
+
 
 
