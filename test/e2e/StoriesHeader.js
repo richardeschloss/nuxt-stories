@@ -30,7 +30,7 @@ test('Stories Header', (t) => {
       },
       $store: {
         state,
-        commit(label, data) {
+        commit (label, data) {
           committed[label] = data
           Object.assign(state, {
             $nuxtStories: {

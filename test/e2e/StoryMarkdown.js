@@ -7,13 +7,13 @@ test('Story Markdown (state undef)', (t) => {
   const wrapper = shallowMount(StoryMarkdown, {
     mocks: {
       $store: {},
-      $nuxtStories() {
+      $nuxtStories () {
         called.$nuxtStories = true
       }
     }
   })
   const ctx = wrapper.vm
-  t.true(called.$nuxtStories)  
+  t.true(called.$nuxtStories)
   t.is(ctx.editorCss, '')
   t.true(ctx.showEditor)
   t.true(ctx.showView)
@@ -28,13 +28,13 @@ test('Story Markdown (state defined, $nuxtStories state undef)', (t) => {
       $store: {
         state: {}
       },
-      $nuxtStories() {
+      $nuxtStories () {
         called.$nuxtStories = true
       }
     }
   })
   const ctx = wrapper.vm
-  t.true(called.$nuxtStories)  
+  t.true(called.$nuxtStories)
   t.is(ctx.editorCss, '')
   t.true(ctx.showEditor)
   t.true(ctx.showView)
@@ -53,13 +53,13 @@ test('Story Markdown (viewMode === "view")', (t) => {
           }
         }
       },
-      $nuxtStories() {
+      $nuxtStories () {
         called.$nuxtStories = true
       }
     }
   })
   const ctx = wrapper.vm
-  t.true(called.$nuxtStories)  
+  t.true(called.$nuxtStories)
   t.is(ctx.editorCss, '')
   t.false(ctx.showEditor)
   t.true(ctx.showView)
@@ -78,13 +78,13 @@ test('Story Markdown (viewMode === "edit")', (t) => {
           }
         }
       },
-      $nuxtStories() {
+      $nuxtStories () {
         called.$nuxtStories = true
       }
     }
   })
   const ctx = wrapper.vm
-  t.true(called.$nuxtStories)  
+  t.true(called.$nuxtStories)
   t.is(ctx.editorCss, 'w-100')
   t.true(ctx.showEditor)
   t.false(ctx.showView)

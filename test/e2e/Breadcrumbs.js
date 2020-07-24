@@ -3,12 +3,12 @@ import Breadcrumbs from '@/lib/components/Breadcrumbs'
 import { shallowMount } from '@vue/test-utils'
 
 const bBreadcrumb = () => ({
-  render(h) {
+  render (h) {
     return h('div')
-  } 
+  }
 })
 
-function validateItems(t, expected, actual) {
+function validateItems (t, expected, actual) {
   expected.forEach((item, idx) => {
     t.is(item.text, actual[idx].text)
     t.is(item.to, actual[idx].to)

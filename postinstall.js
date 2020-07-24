@@ -14,6 +14,7 @@ const otherDirs = [
   'layouts'
 ]
 
+/* istanbul ignore next */
 if (!existsSync('components')) {
   mkdirSync('components')
 }

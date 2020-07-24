@@ -8,14 +8,14 @@ import { register } from '@/lib/module.register'
 
 const glob = promisify(Glob)
 
-async function getStoriesRoot(srcDir, storiesDir, lang = 'en') {
+async function getStoriesRoot (srcDir, storiesDir, lang = 'en') {
   const files = await glob(`${srcDir}/${storiesDir}/${lang}/**/*.{vue,js}`)
   return pParse(files[0]).base.replace('.vue', '')
 }
 
 test('Register css', (t) => {
   const ctx = {
-    options: { 
+    options: {
       css: []
     }
   }
@@ -63,9 +63,9 @@ test('Register io', (t) => {
 test('Register middlewares', (t) => {
   const middlewares = []
   const ctx = {
-    addServerMiddleware(middleware) {
+    addServerMiddleware (middleware) {
       middlewares.push(middleware)
-    }  
+    }
   }
   register.middlewares(ctx, 'stories')
   t.is(middlewares[0].path, '/markdown')
@@ -80,7 +80,7 @@ test('Register modules', (t) => {
       server: serverOpts,
       modules: []
     },
-    addModule(mod) {
+    addModule (mod) {
       ctx.options.modules.push(mod)
     }
   }
@@ -103,7 +103,7 @@ test('Register plugins', (t) => {
     someData: 123
   }
   const ctx = {
-    addPlugin(plugin) {
+    addPlugin (plugin) {
       plugins.push(plugin)
     }
   }
@@ -119,7 +119,7 @@ test('Register templates', (t) => {
   const files = ['plugin.register.js']
   const templates = []
   const ctx = {
-    addTemplate(template) {
+    addTemplate (template) {
       templates.push(template)
     }
   }
@@ -162,7 +162,7 @@ test('Register routes', async (t) => {
   t.truthy(storyRoute.children)
   t.true(storyRoute.children.length > 0)
 
-  function testChild(child) {
+  function testChild (child) {
     if (child.meta) {
       // We only add meta on the Markdown routes
       // And we re-use the same Markdown Vue component to load
@@ -172,7 +172,7 @@ test('Register routes', async (t) => {
       t.truthy(child.meta.mdSavePath)
       t.truthy(child.meta.frontMatter)
       t.true(child.meta.idxs.length > 0)
-        
+
       if (child.children) {
         child.children.forEach(testChild)
       }

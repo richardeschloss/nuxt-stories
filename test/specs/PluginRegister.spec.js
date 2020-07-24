@@ -1,10 +1,10 @@
-require('jsdom-global')()
 import test from 'ava'
 import { delay } from 'nuxt-test-utils'
 import { register, methods, directives } from '@/lib/plugin.register'
+require('jsdom-global')()
 
 test('Register: components', (t) => {
-  try { 
+  try {
     register.components()
   } catch (err) {
     t.is(err.message, 'require.context is not a function')
@@ -12,7 +12,7 @@ test('Register: components', (t) => {
 })
 
 test('Register: icons', (t) => {
-  try  {
+  try {
     register.icons()
     t.pass()
   } catch (err) {
@@ -31,15 +31,15 @@ test('Register: stories (no children)', (t) => {
       }]
     }
   }
-  
+
   const store = {
-    commit(label, stories) {
+    commit (label, stories) {
       t.is(label, '$nuxtStories/SET_STORIES')
       console.log('stories', stories)
     }
   }
   register.stories(store, router, routeRoot)
-  
+
   t.pass()
 })
 
@@ -67,9 +67,9 @@ test('Register: stories (children)', (t) => {
       }]
     }
   }
-  
+
   const store = {
-    commit(label, stories) {
+    commit (label, stories) {
       t.is(label, '$nuxtStories/SET_STORIES')
       router.options.routes[1].children.forEach((story, idx) => {
         t.is(story.name, stories[idx].name)
@@ -83,18 +83,17 @@ test('Register: stories (children)', (t) => {
           })
         }
       })
-      
     }
   }
   register.stories(store, router, routeRoot)
-  
+
   t.pass()
 })
 
 test('Register: vuex module', (t) => {
   let _options
   const store = {
-    registerModule(label, options) {
+    registerModule (label, options) {
       Object.assign(store, options)
       t.is(label, '$nuxtStories')
       t.true(options.namespaced)
@@ -164,15 +163,15 @@ test('Register: watchers', (t) => {
   let _info
   const ctx = {
     $store: {
-      commit(label, info) {
+      commit (label, info) {
         t.is(label, '$nuxtStories/SET_STORY_ORDER')
         _info = info
       }
     },
-    $watch(label, cb) {
+    $watch (label, cb) {
       watchers[label] = cb
     },
-    updateStory() {
+    updateStory () {
       called.updateStory = true
     }
   }
@@ -186,7 +185,7 @@ test('Register: watchers', (t) => {
   watchers['storiesData.frontMatter.order'](false)
   t.falsy(_info)
 
-  ctx.$route = { 
+  ctx.$route = {
     meta: {
       idxs: [2]
     }
@@ -204,11 +203,11 @@ test('Methods: $destroy', (t) => {
   const ctx = {
     ...methods,
     $store: {
-      commit(label, val) {
-        state[label] = val  
+      commit (label, val) {
+        state[label] = val
       }
     },
-    componentDestroy() {
+    componentDestroy () {
       called.componentDestroy = true
     }
   }
@@ -219,7 +218,7 @@ test('Methods: $destroy', (t) => {
 })
 
 test('Methods: Compile Markdown', async (t) => {
-  function validateToc(expected) {
+  function validateToc (expected) {
     const tocKeys = Object.keys(expected[0])
     expected.forEach((entry, idx) => {
       tocKeys.forEach((key) => {
@@ -227,7 +226,7 @@ test('Methods: Compile Markdown', async (t) => {
       })
     })
   }
-  
+
   const state = {}
   const called = {}
   const ctx = {
@@ -237,15 +236,15 @@ test('Methods: Compile Markdown', async (t) => {
         mdSavePath: 'somePath'
       }
     },
-    $set(obj, prop, data) {
+    $set (obj, prop, data) {
       obj[prop] = data
     },
     $store: {
-      commit(label, data) {
+      commit (label, data) {
         state[label] = data
       }
     },
-    saveMarkdown() {
+    saveMarkdown () {
       called.saveMarkdown = true
     },
     storiesData: {
@@ -267,7 +266,7 @@ test('Methods: Compile Markdown', async (t) => {
   }]
 
   validateToc(expectedToc)
- 
+
   ctx.storiesData.contents = '## Hi I changed'
   const expectedToc2 = [{
     type: 'heading',
@@ -280,10 +279,10 @@ test('Methods: Compile Markdown', async (t) => {
   t.truthy(ctx.storiesData.compiled.data())
 
   validateToc(expectedToc2)
-  
-  global.fetch = async function(path) {
+
+  global.fetch = async function (path) {
     return {
-      text() {
+      text () {
         return '# Some fetched markdown'
       }
     }

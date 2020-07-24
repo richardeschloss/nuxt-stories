@@ -15,7 +15,7 @@ test('Stories Nav ($nuxtStories undef)', (t) => {
       $store: {}
     }
   })
-  t.is(wrapper.vm.stories.length, 0)  
+  t.is(wrapper.vm.stories.length, 0)
 })
 
 test('Stories Nav (frontMatter undef)', (t) => {
@@ -36,7 +36,7 @@ test('Stories Nav (frontMatter undef)', (t) => {
       }
     }
   })
-  // t.is(wrapper.vm.stories.length, 0)  
+  // t.is(wrapper.vm.stories.length, 0)
   t.pass()
 })
 

@@ -2,25 +2,23 @@
 import { promisify } from 'util'
 import path from 'path'
 
-import Glob from 'glob'
 import test from 'ava'
 import config from '@/nuxt.config'
 import NuxtStoriesMod from '@/lib/stories.module'
 
 import { delay, getModuleOptions } from 'nuxt-test-utils'
-const glob = promisify(Glob)
 
 const srcDir = path.resolve('.')
 
-function loadModule({ 
-  modOptions, 
-  modules = [], 
+function loadModule ({
+  modOptions,
+  modules = [],
   io,
   server = {
     host: 'localhost',
     port: 3000
   },
-  expCnt = {}, 
+  expCnt = {}
 }) {
   console.log('Testing with moduleOptions:', modOptions)
   return new Promise((resolve, reject) => {
@@ -34,7 +32,7 @@ function loadModule({
       templatesAdded: []
     }
 
-    function handleDone() {
+    function handleDone () {
       let allDone = true
       Object.entries(out).some(([key, arr]) => {
         if (arr.length < expCnt[key]) {
@@ -49,7 +47,7 @@ function loadModule({
     }
 
     const modContainer = {
-      extendRoutes(fn) {
+      extendRoutes (fn) {
         try {
           fn(sampleRoutes, path.resolve)
         } catch (err) {
@@ -60,19 +58,19 @@ function loadModule({
       }
     }
     const simpleNuxt = {
-      addModule(modName) {
+      addModule (modName) {
         out.modulesAdded.push(modName)
         handleDone()
       },
-      addPlugin(pluginOpts) {
+      addPlugin (pluginOpts) {
         out.pluginsAdded.push(pluginOpts)
         handleDone()
       },
-      addServerMiddleware(middleWareOpts) {
+      addServerMiddleware (middleWareOpts) {
         out.middleWaresAdded.push(middleWareOpts)
         handleDone()
       },
-      addTemplate(templateOpts) {
+      addTemplate (templateOpts) {
         out.templatesAdded.push(templateOpts)
       },
       options: {
@@ -83,23 +81,23 @@ function loadModule({
         server
       },
       nuxt: {
-        hook(evt, fn) {
-          if (evt === 'modules:done') {            
+        hook (evt, fn) {
+          if (evt === 'modules:done') {
             fn(modContainer).catch(reject)
           }
         }
       },
       NuxtStoriesMod
     }
-    
+
     simpleNuxt.NuxtStoriesMod(modOptions)
-    
+
     delay(timeout).then(() => {
       // eslint-disable-next-line prefer-promise-reject-errors
-      reject({ 
-        message: 'loadModule timeout', 
+      reject({
+        message: 'loadModule timeout',
         pluginsAdded: out.pluginsAdded,
-        sampleRoutes 
+        sampleRoutes
       })
     })
   })
@@ -133,7 +131,7 @@ test('Module bails if mode is not dev and forceBuild is false', async (t) => {
   }
   const server = {
     host: 'localhost',
-    port: 3003,
+    port: 3003
   }
 
   await loadModule({ modOptions, expCnt, server }).catch((err) => {

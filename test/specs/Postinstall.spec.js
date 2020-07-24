@@ -25,7 +25,7 @@ test('Files are not overwritten', async (t) => {
   try {
     delete require.cache[require.resolve('@/postinstall')]
   } catch (err) {
-    
+
   }
   require('@/postinstall')
   await delay(3000)

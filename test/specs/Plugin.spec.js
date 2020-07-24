@@ -1,19 +1,17 @@
 /* eslint-disable no-console */
 import { resolve as pResolve } from 'path'
-import consola from 'consola'
 import { serial as test } from 'ava'
-import { compilePlugin, delay, watchP } from 'nuxt-test-utils'
+import { compilePlugin, delay } from 'nuxt-test-utils'
 require('jsdom-global')()
 
-global.fetch = function(path) {
+global.fetch = function (path) {
   return Promise.resolve({
-    text() {
+    text () {
       return '# Example Markdown'
     }
   })
 }
 
-let Plugin
 const src = pResolve('./lib/stories.plugin.js')
 const tmpFile = pResolve('./lib/stories.plugin.compiled.js')
 
@@ -29,17 +27,17 @@ test('Stories plugin', async (t) => {
   const mutations = []
   const watchers = []
   const expectedWatchers = [
-    '$route.meta.mdPath', 
+    '$route.meta.mdPath',
     'storiesData.frontMatter.order'
   ]
   let destroyed = 0
   let nuxtSocketCfg = {}
   let markdownSaved = false
   const ctx = {
-    $destroy() {
+    $destroy () {
       destroyed++
     },
-    $nuxtSocket(cfg) {
+    $nuxtSocket (cfg) {
       nuxtSocketCfg = cfg
       return { status: 'created' }
     },
@@ -49,26 +47,26 @@ test('Stories plugin', async (t) => {
         mdSavePath: 'http://localhost:3000'
       }
     },
-    $set(obj, prop, val) {
+    $set (obj, prop, val) {
       obj[prop] = val
     },
-    $watch(watcher) {
+    $watch (watcher) {
       watchers.push(watcher)
     },
-    saveMarkdown() {
+    saveMarkdown () {
       markdownSaved = true
     },
     storiesData: {},
     socket: {},
     store: {
-      commit(mutation, data) {
+      commit (mutation, data) {
         mutations.push(mutation)
       },
-      registerModule(name) {
+      registerModule (name) {
         modulesRegistered.push(name)
       }
     },
-    inject(label, obj) {
+    inject (label, obj) {
       ctx['$' + label] = obj
     }
   }
@@ -89,7 +87,7 @@ test('Stories plugin', async (t) => {
     }
   }
   Plugin(ctx, ctx.inject)
-  t.truthy(ctx['$nuxtStories'])
+  t.truthy(ctx.$nuxtStories)
   t.is(mutations[0], '$nuxtStories/SET_STORIES')
   t.is(modulesRegistered[0], '$nuxtStories')
 
@@ -113,7 +111,7 @@ test('Stories plugin (register components)', async (t) => {
   delete require.cache[tmpFile]
   delete process.env.TEST
   await import(tmpFile).catch((err) => {
-    // It's ok. Mocking require.context is a pain, but at 
+    // It's ok. Mocking require.context is a pain, but at
     // least we know the plugin is trying to call it, and we know
     // it works (because everyone uses require.context)
     t.is(err.message, 'require.context is not a function')
