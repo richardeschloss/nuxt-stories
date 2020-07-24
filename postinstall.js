@@ -13,6 +13,11 @@ const otherDirs = [
   'assets/svg',
   'layouts'
 ]
+
+if (!existsSync('components')) {
+  mkdirSync('components')
+}
+
 otherDirs.forEach((d, idx) => {
   if (!existsSync(d)) {
     mkdirSync(d)
