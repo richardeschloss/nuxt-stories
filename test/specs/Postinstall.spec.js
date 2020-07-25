@@ -6,7 +6,8 @@ import test, { before } from 'ava'
 import { delay } from 'nuxt-test-utils'
 
 before('Start clean', () => {
-  const otherDirs = ['assets', 'assets/css', 'assets/scss']
+  process.env.INIT_CWD = '.'
+  const otherDirs = ['components', 'assets', 'assets/css', 'assets/scss']
   otherDirs.forEach(async (d) => {
     exec(`rm -rf ${d}`)
     await delay(100)

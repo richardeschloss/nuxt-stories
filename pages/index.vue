@@ -6,7 +6,7 @@
         nuxt-stories
       </h1>
       <h2 class="subtitle">
-        Nuxt Stories Module -- Painless storybooking for Nuxt!
+        Painless (and now insanely fast) storybooking for Nuxt
       </h2>
       <div class="links">
         <b-button
