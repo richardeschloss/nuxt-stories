@@ -44,7 +44,7 @@ yarn add --dev nuxt-stories # or npm i -D nuxt-stories
 You may also need to install the following deps if they didn't get installed when you first created your nuxt app:
 
 ```bash
-npm i -D glob pify @nuxt/utils bootstrap bootstrap-vue dompurify gently-copy gray-matter highlight.js marked node-sass sass-loader
+npm i -D glob pify @nuxt/utils bootstrap bootstrap-vue dompurify gently-copy gray-matter highlight.js marked nuxt-socket-io node-sass sass-loader
 ```
 
 After installing, a postinstall script will run to "gently copy" sample stories, assets, and layout(s) to your workspace to get you setup asap.  It will also create a "components" directory if it doesn't already exist.

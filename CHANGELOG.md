@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.2] - 2020-07-25
+### Added
+- Notes about dompurity (and recommendations)
+- Setup notes for nuxt-socket-io
+
+### Changed
+- README.md is now a symbolic link to the docs front page. Avoid duplicated efforts
+
 ## [2.0.1] - 2020-07-24
 ### Added
 - Added to postinstall script to auto-create vuex store and components folder if they don't already exist.
