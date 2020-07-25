@@ -2,7 +2,7 @@ const { existsSync, mkdirSync } = require('fs')
 const { resolve: pResolve } = require('path')
 const gentlyCopy = require('gently-copy')
 
-const destDir = process.env.INIT_CWD
+const destDir = pResolve(process.env.INIT_CWD)
 const storiesDir = [pResolve(__dirname, 'stories')]
 gentlyCopy(storiesDir, destDir, { overwrite: false })
 
@@ -11,18 +11,18 @@ const otherDirs = [
   'assets/css',
   'assets/scss',
   'assets/svg',
-  'layouts'
+  'components',
+  'layouts',
+  'store'
 ]
 
-/* istanbul ignore next */
-if (!existsSync('components')) {
-  mkdirSync('components')
-}
-
 otherDirs.forEach((d, idx) => {
-  if (!existsSync(d)) {
-    mkdirSync(d)
+  const resolvedDir = pResolve(destDir, d)
+  if (!existsSync(resolvedDir)) {
+    mkdirSync(resolvedDir)
   }
 
-  gentlyCopy(pResolve(__dirname, `lib/${d}/*`), pResolve(destDir, d))
+  if (d !== 'components') {
+    gentlyCopy(pResolve(__dirname, `lib/${d}/*`), pResolve(destDir, d))
+  }
 })
