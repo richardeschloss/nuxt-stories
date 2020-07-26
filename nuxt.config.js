@@ -46,14 +46,17 @@ module.exports = {
      ** You can extend webpack config here
      */
     extend (config, ctx) {},
-    parallel: true,
-    cache: true,
-    hardSource: true
+    parallel: false,
+    cache: false,
+    hardSource: false
   },
   generate: {
-    routes: [
-      '/stories', 
-      '/stories/documentation'
+    routes: [ // TBD: utility to auto-create this...
+      '/stories',
+      '/stories/components', 
+      '/stories/documentation',
+      '/stories/examples',
+      '/stories/pages',
     ],
     dir: 'public'
   }
