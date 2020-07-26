@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.3] - 2020-07-26
+### Added
+- A dummy "hello" component to this project. Type `<hello />` in the online demo to see it appear. Nothing exciting, just the easiest thing to quickly see. 
+
+### Fixed
+- Issue with vue stories missing (i.e., only markdown stories)
+- Issue with generated routes
+
 ## [2.0.2] - 2020-07-25
 ### Added
 - Notes about dompurity (and recommendations)
