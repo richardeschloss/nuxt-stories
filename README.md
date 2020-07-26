@@ -1,8 +1,3 @@
----
-title: Docs
-order: 1
----
-
 [![npm](https://img.shields.io/npm/v/nuxt-stories)](https://www.npmjs.com/package/nuxt-stories)
 [![npm](https://img.shields.io/npm/dt/nuxt-stories)](https://www.npmjs.com/package/nuxt-stories)
 [![](https://gitlab.com/richardeschloss/nuxt-stories/badges/master/pipeline.svg)](https://gitlab.com/richardeschloss/nuxt-stories)
