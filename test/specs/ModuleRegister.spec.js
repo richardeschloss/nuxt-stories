@@ -1,5 +1,4 @@
-import { readdirSync, mkdirSync, writeFileSync, unlinkSync } from 'fs'
-import { exec } from 'child_process'
+import { readdirSync } from 'fs'
 import http from 'http'
 import { resolve as pResolve, parse as pParse } from 'path'
 import { promisify } from 'util'
@@ -189,17 +188,14 @@ test('Register routes', async (t) => {
     storiesDir: badDir,
     storiesAnchor
   }).catch((err) => {
-    t.is(err.message, `Error: Story routes not created. Does the stories directory ${badDir} exist?`)
+    t.is(err.message, `Error: Story routes not created. Does the stories directory "${badDir}" exist?`)
   })
 })
 
-test.only('Register routes (bad path)', async (t) => {
-  mkdirSync('/tmp/stories')
-  mkdirSync('/tmp/stories/en')
-  writeFileSync('/tmp/stories/en/index.vue')
-  const srcDir = pResolve('/tmp')
+test('Register routes (no vue-based stories)', async (t) => {
+  const srcDir = pResolve('.')
   const storiesDir = 'stories'
-  const lang = 'en'
+  const lang = 'es'
   const storiesAnchor = storiesDir
   const storiesRoot = await getStoriesRoot(srcDir, storiesDir)
   const storyRoute = await register.routes({
@@ -209,5 +205,4 @@ test.only('Register routes (bad path)', async (t) => {
     storiesAnchor
   })
   t.is(storyRoute.children.length, 0)
-  exec('rm -rf /tmp/stories')   
 })
