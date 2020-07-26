@@ -19,10 +19,8 @@ pages:
   stage: deploy
   script:
     - echo 'Deploying public folder...'
-    - npm run generate
   artifacts:
     paths:
       - public
   only:
     - gh-pages
-    - docs
