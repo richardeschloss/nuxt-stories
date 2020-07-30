@@ -3,8 +3,13 @@ const { resolve: pResolve } = require('path')
 const gentlyCopy = require('gently-copy')
 
 const destDir = pResolve(process.env.INIT_CWD)
-const storiesDir = [pResolve(__dirname, 'stories')]
-gentlyCopy(storiesDir, destDir, { overwrite: false })
+const storiesDir = pResolve(__dirname, 'stories')
+const resolvedStoriesDir = pResolve(destDir, 'stories')
+
+if (!existsSync(resolvedStoriesDir)) {
+  mkdirSync(resolvedStoriesDir)
+  gentlyCopy(storiesDir, resolvedStoriesDir, { overwrite: false })
+}
 
 const otherDirs = [
   'assets',
