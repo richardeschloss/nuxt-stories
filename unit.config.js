@@ -10,7 +10,7 @@ export default {
     'test/specs/Postinstall.spec.js'
   ],
   serial: true,
-  ignoredByWatcher: ['lib/stories.plugin.compiled.js'],
+  ignoredByWatcher: ['lib/stories.plugin.compiled.js', 'tmp'],
   tap: false,
   verbose: true
 }
