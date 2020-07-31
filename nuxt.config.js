@@ -51,13 +51,13 @@ module.exports = {
     hardSource: false
   },
   generate: {
-    routes: [ // TBD: utility to auto-create this...
-      '/stories',
-      '/stories/components', 
-      '/stories/documentation',
-      '/stories/examples',
-      '/stories/pages',
-    ],
+    // routes: [ // TBD: utility to auto-create this...
+    //   '/stories',
+    //   '/stories/components',
+    //   '/stories/documentation',
+    //   '/stories/examples',
+    //   '/stories/pages',
+    // ],
     dir: 'public'
   }
 }
