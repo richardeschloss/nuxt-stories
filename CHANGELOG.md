@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.6] - 2020-07-31
+### Changed
+- Upgraded dependencies, including Nuxt to 2.14. So nuxt generate uses the new full static target.
+- Updated nuxt.config to use the new nuxt generate.
+- Ran security audit, addressed the issues.
+
 ## [2.0.5] - 2020-07-30
 ### Fixed
 - postinstall script only copies sample stories once now

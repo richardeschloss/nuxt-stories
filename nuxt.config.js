@@ -1,5 +1,7 @@
 module.exports = {
-  mode: 'universal',
+  target: process.env.NODE_ENV === 'production'
+    ? 'static'
+    : 'universal',
   /*
    ** Headers of the page
    */
@@ -51,13 +53,6 @@ module.exports = {
     hardSource: false
   },
   generate: {
-    routes: [ // TBD: utility to auto-create this...
-      '/stories',
-      '/stories/components', 
-      '/stories/documentation',
-      '/stories/examples',
-      '/stories/pages',
-    ],
     dir: 'public'
   }
 }
