@@ -1,8 +1,35 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.0.7] - 2020-07-23
-## Added
+## [2.0.4] - 2020-07-26
+### Changed
+- README.md is back to a hard file. Not a symlink (npm doesn't like that)
+
+## [2.0.3] - 2020-07-26
+### Added
+- A dummy "hello" component to this project. Type `<hello />` in the online demo to see it appear. Nothing exciting, just the easiest thing to quickly see. 
+
+### Fixed
+- Issue with vue stories missing (i.e., only markdown stories)
+- Issue with generated routes
+
+## [2.0.2] - 2020-07-25
+### Added
+- Notes about dompurity (and recommendations)
+- Setup notes for nuxt-socket-io
+
+### Changed
+- README.md is now a symbolic link to the docs front page. Avoid duplicated efforts
+
+## [2.0.1] - 2020-07-24
+### Added
+- Added to postinstall script to auto-create vuex store and components folder if they don't already exist.
+
+### Changed
+- Upgraded some devDeps to deps so hopefully they get installed with just installing "nuxt-stories". If not, the deps were listed on step 1 of the setup docs.
+
+## [2.0.0] - 2020-07-23
+### Added
 - Created a new "stories" layout to be used entirely for the stories.
 - Language-specific stories. Stories directory now contains language sub-directories, so the specified language "lang" will use the stories for the selected language. Currently "en" is default.
 - Added graymatter and highlight.js dependencies for frontmatter and markdown processing.
@@ -13,7 +40,7 @@ All notable changes to this project will be documented in this file.
 - Added an IO service that will listen for changes made to the stories on the UI and save those changes back to the filesystem. So you can edit right on the UI and have everything saved automatically. Editing has never been faster! (this IO service can pave the way for future improvements, such as story CRUD operations on the UI)
 - Added tests, tested the unit tests to 100% cov, e2e tests pass too.
 
-## Changed
+### Changed
 - Stuck with Bootstrap for theming, since it includes many icons and utility classes, and is actually far easier to use for storybooking than Tailwind. I redesigned the UI to better match the look and feel of BootstrapVue docs. Similar but not exactly the same.
 - Renamed "modules" to "lib". The new main file will be "lib/stories.module.js"
 - Changed the default stories directory from ".stories" to "stories", since the benefit of hiding the stories directory really wasn't worth much, and made things more difficult to work with. The "storiesDir" option is still there if people want to change it.

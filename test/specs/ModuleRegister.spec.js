@@ -188,6 +188,21 @@ test('Register routes', async (t) => {
     storiesDir: badDir,
     storiesAnchor
   }).catch((err) => {
-    t.is(err.message, `Error: Story routes not created. Does the stories directory ${badDir} exist?`)
+    t.is(err.message, `Error: Story routes not created. Does the stories directory "${badDir}" exist?`)
   })
+})
+
+test('Register routes (no vue-based stories)', async (t) => {
+  const srcDir = pResolve('.')
+  const storiesDir = 'stories'
+  const lang = 'es'
+  const storiesAnchor = storiesDir
+  const storiesRoot = await getStoriesRoot(srcDir, storiesDir)
+  const storyRoute = await register.routes({
+    srcDir,
+    lang,
+    storiesDir,
+    storiesAnchor
+  })
+  t.is(storyRoute.children.length, 0)
 })

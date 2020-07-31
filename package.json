@@ -1,6 +1,6 @@
 {
   "name": "nuxt-stories",
-  "version": "2.0.0",
+  "version": "2.0.4",
   "description": "Nuxt stories module -- Painless storybooking for Nuxt",
   "author": "Richard Schloss",
   "main": "lib/stories.module.js",
@@ -47,7 +47,12 @@
     "bootstrap-vue": "^2.15.0",
     "dompurify": "^2.0.7",
     "gently-copy": "^3.2.0",
-    "marked": "0.8.0"
+    "gray-matter": "^4.0.2",
+    "highlight.js": "^10.1.0",
+    "marked": "0.8.0",
+    "node-sass": "^4.14.1",
+    "nuxt-socket-io": "^1.1.5",
+    "sass-loader": "^8.0.2"
   },
   "devDependencies": {
     "@ava/babel": "^1.0.1",
@@ -70,22 +75,17 @@
     "esm": "^3.2.25",
     "express": "^4.16.4",
     "glob": "^7.1.5",
-    "gray-matter": "^4.0.2",
-    "highlight.js": "^10.1.0",
     "jsdom": "^16.2.2",
     "jsdom-global": "^3.0.2",
     "module-alias": "^2.2.2",
-    "node-sass": "^4.14.1",
     "nodemon": "^1.18.9",
     "nuxt": "^2.0.0",
-    "nuxt-socket-io": "^1.1.5",
     "nuxt-test-utils": "0.0.1",
     "nyc": "^14.1.1",
     "prettier": "^1.16.4",
     "require-extension-hooks": "^0.3.3",
     "require-extension-hooks-babel": "^1.0.0",
-    "require-extension-hooks-vue": "^2.0.0",
-    "sass-loader": "^8.0.2"
+    "require-extension-hooks-vue": "^2.0.0"
   },
   "_moduleAliases": {
     "@": ".",

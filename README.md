@@ -10,8 +10,6 @@
 
 > Nuxt stories module -- Painless (and now insanely fast) storybooking for Nuxt
 
-NOTE: v2.0.0 introduces major changes, with a complete UI redesign! If you are currently using v1.x and hesitant to upgrade, clamp your version to 1.0.6 in package.json. 
-
 ## Features
 * ✅ Insanely fast configuration and usage (one install, one line in config, and you're good to go!)
 * ✅ Live markdown editing and previewing directly on the UI! Faster than Hot Module Reloading!
@@ -41,7 +39,7 @@ yarn add --dev nuxt-stories # or npm i -D nuxt-stories
 You may also need to install the following deps if they didn't get installed when you first created your nuxt app:
 
 ```bash
-npm i -D glob pify @nuxt/utils
+npm i -D glob pify @nuxt/utils bootstrap bootstrap-vue dompurify gently-copy gray-matter highlight.js marked nuxt-socket-io node-sass sass-loader
 ```
 
 After installing, a postinstall script will run to "gently copy" sample stories, assets, and layout(s) to your workspace to get you setup asap.  It will also create a "components" directory if it doesn't already exist.
@@ -58,6 +56,16 @@ After installing, a postinstall script will run to "gently copy" sample stories,
   }
 }
 ```
+
+Also make sure you have Vuex enabled the "Nuxt way", since nuxt-stories will register a vuex module for persisting stories, table of contents and selected view mode. After you install nuxt-stories, a postinstall script will automatically try to create the following for you, if your store hasn't yet been enabled:
+
+store/index.js:
+```js
+export const state = () => ({})
+```
+
+If this already exists, it won't get overwritten.
+
 
 3. There is no step 3! You're good to go! Try it out!
 

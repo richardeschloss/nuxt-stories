@@ -136,7 +136,8 @@ And here is a the nuxt-stories logo:
 1. Since the UI is allowing you to do live editing and real-time compiling, there is technically a lot of rule-breaking going on, but it's ok, because this is simply a *dev tool* primarily used *locally*. Expect to see console log statements going haywire. As you type, naturally, compilation will fail as the component name is incomplete. My best recommendation is to temporarily mute console errors, or disable the "error" log level in dev tools.
 1. The table-of-contents on the right only gets updated for "Markdown first" stories. 
 1. The table-of-contents "scrollspy" feature that highlights the actively viewed story works primarily in "view" mode. 
-1. To get code syntax highlighting to work, don't forget to include the code language identifier:
+1. To get code syntax highlighting to work, don't forget to include the code language
+ identifier:
 
 Highlighted (with "js"):
 ```js
@@ -149,5 +150,5 @@ var str = "Hi, I'm not highlighted :("
 ```
 
 And lastly, at any time you don't like the UI...it's ok! You're a developer and you're not locked in to using my design! You can tweak it as you need!
-
+1. dompurify is included as a dependency, but is commented out in the markdown utils since it interferes with the live-editing. This shouldn't be an issue for local development purposes only. You may wish to uncomment the lines in the utility if you think you'll need to sanitize the input.
 
