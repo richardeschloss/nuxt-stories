@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.5] - 2020-07-30
+### Fixed
+- postinstall script only copies sample stories once now
+
 ## [2.0.4] - 2020-07-26
 ### Changed
 - README.md is back to a hard file. Not a symlink (npm doesn't like that)
