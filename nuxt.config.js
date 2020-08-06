@@ -1,7 +1,7 @@
 module.exports = {
   target: process.env.NODE_ENV === 'production'
     ? 'static'
-    : 'universal',
+    : 'server',
   /*
    ** Headers of the page
    */
