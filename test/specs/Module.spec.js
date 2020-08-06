@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { promisify } from 'util'
 import path from 'path'
 
 import test from 'ava'
@@ -106,7 +105,6 @@ function loadModule ({
 test('Stories Module (defaults)', async (t) => {
   const modOptions = getModuleOptions(config, 'lib/stories.module')
   modOptions.forceBuild = true
-  const { storiesDir = 'stories' } = modOptions
   const expCnt = {
     pluginsAdded: 1,
     middleWaresAdded: 1,

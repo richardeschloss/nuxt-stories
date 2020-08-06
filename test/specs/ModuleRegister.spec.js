@@ -45,18 +45,25 @@ test('Register io', (t) => {
       server: serverOpts
     }
   }
-  register.io(ctx1, server)
-  const { host: h1, port: p1 } = ctx1.options.server
+  register.io({ ctx: ctx1, server })
   t.truthy(ctx1.options.io)
   t.is(ctx1.options.io.sockets[0].name, 'nuxtStories')
   t.is(ctx1.options.io.sockets[0].url, `${serverOpts.host}:${serverOpts.port + 1}`)
   server.close()
 
-  register.io(ctx2, server)
-  const { host: h2, port: p2 } = ctx2.options.server
+  register.io({ ctx: ctx2, server })
   t.truthy(ctx2.options.io)
   t.is(ctx2.options.io.sockets[1].name, 'nuxtStories')
   t.is(ctx2.options.io.sockets[1].url, `${serverOpts.host}:${serverOpts.port + 1}`)
+  server.close()
+
+  const ioOpts = {
+    port: 3002
+  }
+  register.io({ ctx: ctx2, ioOpts, server })
+  t.truthy(ctx2.options.io)
+  t.is(ctx2.options.io.sockets[2].name, 'nuxtStories')
+  t.is(ctx2.options.io.sockets[2].url, `${serverOpts.host}:${ioOpts.port}`)
   server.close()
 })
 
