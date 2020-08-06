@@ -1,42 +1,42 @@
-import test from 'ava'
-import { shallowMount } from '@vue/test-utils'
+import test, { beforeEach } from 'ava'
+import Vuex from 'vuex'
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 import StoriesHeader from '@/lib/components/StoriesHeader'
+import { state, mutations } from '@/lib/store/nuxtStories'
 
-test('Stories Header', (t) => {
-  const committed = {}
-  const state = {}
+let localVue
+let store
+const vuexModules = {
+  '$nuxtStories': {
+    namespaced: true,
+    state: state(),
+    mutations
+  }
+}
+
+beforeEach(() => {
+  localVue = createLocalVue()
+  localVue.use(Vuex)
+  localVue.use(BootstrapVue)
+  localVue.use(BootstrapVueIcons)
+  store = new Vuex.Store({
+    state: {},
+    modules: vuexModules
+  })
+})
+
+test('Stories Header (view mode controls)', (t) => {
   const wrapper = shallowMount(StoriesHeader, {
+    localVue,
+    store,
     stubs: [
-      'b-icon',
-      'b-navbar',
-      'b-navbar-brand',
-      'stories-logo',
-      'b-navbar-nav',
-      'b-button-group',
-      'b-button',
-      'b-form-input',
-      'b-navbar-toggle',
-      'b-collapse',
-      'b-nav-item-dropdown',
-      'b-nav-item',
-      'b-icon',
-      'b-dropdown-item'
+      'stories-logo'
     ],
     mocks: {
       $nuxtStories: {
         options: {
-          storiesAnchor: ''
-        }
-      },
-      $store: {
-        state,
-        commit (label, data) {
-          committed[label] = data
-          Object.assign(state, {
-            $nuxtStories: {
-              viewMode: data
-            }
-          })
+          storiesAnchor: 'stories'
         }
       }
     }
@@ -54,7 +54,29 @@ test('Stories Header', (t) => {
     t.is(wrapper.vm.modes[idx].icon, m.icon)
   })
 
-  wrapper.vm.setViewMode('split')
-  t.is(committed['$nuxtStories/SET_VIEW_MODE'], 'split')
-  t.true(wrapper.vm.modeActive('split'))
+  const { vm: ctx } = wrapper
+
+  ctx.setViewMode('split')
+  t.is(ctx.$store.state.$nuxtStories.viewMode, 'split')
+  t.true(ctx.modeActive('split'))
+
+  const brandElm = wrapper.find('#brand-link')
+  t.is(brandElm.attributes().to, '/stories')
+})
+
+test('Stories Header ($nuxtStories, store undef)', (t) => {
+  const wrapper = shallowMount(StoriesHeader, {
+    localVue,
+    store: {
+
+    },
+    stubs: [
+      'stories-logo'
+    ]
+  })
+
+  const { vm: ctx } = wrapper
+  const brandElm = wrapper.find('#brand-link')
+  t.is(brandElm.attributes().to, '')
+  t.false(ctx.modeActive('view'))
 })

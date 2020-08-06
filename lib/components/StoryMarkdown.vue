@@ -1,5 +1,4 @@
 <template>
-  <!-- eslint-disable vue/require-component-is -->
   <div id="editor">
     <textarea
       v-show="showEditor"
@@ -19,7 +18,8 @@
 export default {
   data () {
     return {
-      storiesData: {}
+      storiesData: {},
+      socketStatus: {}
     }
   },
   computed: {

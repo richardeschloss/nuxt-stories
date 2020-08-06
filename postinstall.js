@@ -27,7 +27,9 @@ otherDirs.forEach((d, idx) => {
     mkdirSync(resolvedDir)
   }
 
-  if (d !== 'components') {
+  if (d === 'store') {
+    gentlyCopy(pResolve(__dirname, `lib/${d}/index.js`), pResolve(destDir, d))
+  } else if (d !== 'components') {
     gentlyCopy(pResolve(__dirname, `lib/${d}/*`), pResolve(destDir, d))
   }
 })

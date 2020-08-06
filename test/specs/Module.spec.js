@@ -115,6 +115,20 @@ test('Stories Module (defaults)', async (t) => {
   t.true(out.templatesAdded.length > 0)
 })
 
+test('Stories Module (staticHost)', async (t) => {
+  const modOptions = getModuleOptions(config, 'lib/stories.module')
+  modOptions.staticHost = true
+  modOptions.forceBuild = true
+  const expCnt = {
+    pluginsAdded: 1,
+    middleWaresAdded: 1,
+    extendedRoutes: 1,
+    modulesAdded: 1
+  }
+  const out = await loadModule({ modOptions, expCnt })
+  t.true(out.templatesAdded.length > 0)
+})
+
 test('Module bails if mode is not dev and forceBuild is false', async (t) => {
   process.env.NODE_ENV = 'production'
   const modOptions = {

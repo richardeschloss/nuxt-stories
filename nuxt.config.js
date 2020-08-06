@@ -31,13 +31,21 @@ module.exports = {
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     // Doc: https://github.com/richardeschloss/nuxt-stories
     'lib/stories.module' // Ok
     // 'nuxt-stories/stories.module' // Ok too
   ],
   stories: {
-    forceBuild: true
+    forceBuild: true,
+    ioOpts: {
+      // port: 3002,
+      // url: 'localhost:3002'
+    },
+    markdown: {
+      sanitize: true
+    },
+    staticHost: process.env.NODE_ENV === 'production'
   },
   watch: ['~/lib/*.js'],
   /*
@@ -48,9 +56,9 @@ module.exports = {
      ** You can extend webpack config here
      */
     extend (config, ctx) {},
-    parallel: false,
-    cache: false,
-    hardSource: false
+    parallel: true,
+    cache: true,
+    hardSource: true
   },
   generate: {
     dir: 'public'

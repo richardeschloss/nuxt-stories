@@ -7,7 +7,8 @@
     class="bd-navbar shadow"
   >
     <b-navbar-brand
-      :to="$nuxtStories ? `/${$nuxtStories.options.storiesAnchor}` : ''"
+      id="brand-link"
+      :to="brandLink"
       exact
       active-class="active"
       aria-label="BootstrapVue"
@@ -102,6 +103,11 @@ export default {
     }
   },
   computed: {
+    brandLink () {
+      return this.$nuxtStories
+        ? `/${this.$nuxtStories.options.storiesAnchor}`
+        : ''
+    },
     modeActive () {
       return mode => this.$store.state && this.$store.state.$nuxtStories
         ? mode === this.$store.state.$nuxtStories.viewMode

@@ -9,38 +9,45 @@
       <b-link
         v-for="group in sorted(stories)"
         :key="group.name"
-        :to="group.path"
+        :to="group.to"
         router-tag="div"
         class="bd-toc-item"
         active-class="active"
       >
         <b-link
-          :to="group.path"
-          class="bd-toc-link"
+          v-story-hover="group"
+          :to="group.to"
+          class="bd-toc-link l0-link"
           active-class=""
           no-prefetch
         >
-          {{ group.name }}
+          <story-nav-item :story="group" :crud="showCRUD" :level="0" />
         </b-link>
         <b-nav class="bd-sidenav">
           <b-link
             v-for="child in sorted(group.children || [])"
             :key="child.name"
-            :to="child.path"
+            :to="child.to"
             router-tag="li"
             class="nav-item"
             active-class="active bd-sidenav-active"
           >
             <b-link
-              :to="child.path"
-              class="nav-link"
+              v-story-hover="child"
+              :to="child.to"
+              class="nav-link l1-link"
               active-class=""
             >
-              {{ child.name }}
+              <story-nav-item :story="child" :crud="showCRUD" :level="1" />
             </b-link>
           </b-link>
         </b-nav>
       </b-link>
+      <div v-show="showCRUD" class="centered">
+        <b-button id="addStory" @click="$store.dispatch('$nuxtStories/ADD')">
+          <b-icon icon="file-earmark-plus" /> Add Story
+        </b-button>
+      </div>
       <hr>
 
       <b-link to="/" exact router-tag="div" active-class="active">
@@ -54,21 +61,37 @@
 
 <script>
 import { mapState } from 'vuex'
-function sortItems (items) {
-  const copy = [...items]
-  return copy.sort(({ frontMatter: a }, { frontMatter: b }) => {
-    const aOrder = a ? a.order : 0
-    const bOrder = b ? b.order : 0
-    if (aOrder > bOrder) {
-      return 1
-    } else if (aOrder < bOrder) {
-      return -1
-    }
-    return 0
-  })
-}
+import { sortStories } from '../utils/sort'
 
 export default {
+  directives: {
+    storyHover: {
+      inserted (el, binding, { context }) {
+        const { staticHost } = context.$nuxtStories.options
+        const group = binding.value
+        if (!staticHost) {
+          el.addEventListener('mouseover', () => {
+            context.$store.commit(
+              '$nuxtStories/SET_STORY_DATA',
+              {
+                idxs: group.idxs,
+                data: { hovered: true }
+              }
+            )
+          })
+          el.addEventListener('mouseout', () => {
+            context.$store.commit(
+              '$nuxtStories/SET_STORY_DATA',
+              {
+                idxs: group.idxs,
+                data: { hovered: false }
+              }
+            )
+          })
+        }
+      }
+    }
+  },
   computed: {
     ...mapState({
       stories: (state) => {
@@ -78,8 +101,17 @@ export default {
       }
     }),
     sorted () {
-      return sortItems
+      return sortStories
+    },
+    showCRUD () {
+      return !this.$nuxtStories.options.staticHost
     }
   }
 }
 </script>
+
+<style scoped>
+.centered {
+  text-align: center;
+}
+</style>
