@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 export default {
   require: ['@babel/register', './test/e2e.setup'],
   files: [
@@ -10,6 +9,7 @@ export default {
     'test/e2e/StoryContent.js',
     'test/e2e/StoryMarkdown.js',
     'test/e2e/StoryNav.js',
+    'test/e2e/StoryNavItem.js',
     'test/e2e/StoryToc.js'
   ],
   tap: false,

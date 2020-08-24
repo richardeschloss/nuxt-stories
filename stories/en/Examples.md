@@ -11,7 +11,7 @@ items:
 
 No explanation really here! This is just a playground for you to toy with Markdown and Vue quickly! Have fun! (live editing will work, but auto saving will currently only work locally, not on my deployed site)
 
-...
+
 The title: {{ title }} {{ order }}
 
 More stuff here! 

@@ -32,7 +32,7 @@
     "test:unit": "cross-env TEST=unit ava --timeout=10m --config unit.config.js",
     "test:unit:cov": "cross-env TEST=unit nyc ava --timeout=10m --config unit.config.js",
     "test:unit:watch": "cross-env TEST=unit ava --timeout=10m --config unit.config.js --watch",
-    "test:e2e": "cross-env TEST=e2e ava --config e2e.config.js",
+    "test:e2e": "cross-env TEST=e2e ava --timeout=10m --config e2e.config.js",
     "test:e2e:watch": "cross-env TEST=e2e ava --timeout=10m --config e2e.config.js --watch",
     "test:e2e:cov": "cross-env TEST=e2e nyc ava --timeout=10m --config e2e.config.js",
     "postinstall": "node postinstall.js"
@@ -50,8 +50,9 @@
     "gray-matter": "^4.0.2",
     "highlight.js": "^10.1.2",
     "marked": "0.8.0",
+    "mkdirp": "latest",
     "node-sass": "^4.14.1",
-    "nuxt-socket-io": "^1.1.6",
+    "nuxt-socket-io": "^1.1.8",
     "sass-loader": "^8.0.2"
   },
   "devDependencies": {
