@@ -54,6 +54,11 @@ module.exports = {
     hardSource: false
   },
   generate: {
-    dir: 'public'
+    dir: 'public',
+    routes: [
+      '/stories',
+      '/stories/en',
+      '/stories/en/Documentation'
+    ]
   }
 }
