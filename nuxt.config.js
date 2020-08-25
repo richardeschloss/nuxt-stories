@@ -8,7 +8,6 @@ async function staticRoutes () {
       .replace('./', '/')
       .replace(/(.js|.vue|.md)/, ''))
 
-  console.log('routes', routes)
   return routes
 }
 
@@ -70,13 +69,7 @@ module.exports = {
   generate: {
     dir: 'public',
     routes () {
-      console.log('RETURN static routes')
       return staticRoutes()
-    },
-    routesx: [
-      '/stories',
-      '/stories/en',
-      '/stories/en/Documentation'
-    ]
+    }
   }
 }

@@ -18,13 +18,30 @@ buildModules: [
 2. Tell Nuxt to include the "stories" routes: 
 
 ```js
+async function staticRoutes () {
+  const { promisify } = require('util')
+  const Glob = require('glob')
+  const glob = promisify(Glob)
+  const files = await glob('./stories/**/*.{vue,js,md}')
+  const routes = files
+    .map(f => f
+      .replace('./', '/')
+      .replace(/(.js|.vue|.md)/, ''))
+
+  return routes
+}
+
 ...
 generate: {
-  routes: ['/.stories'],
-  dir: 'public' // if generating to "public" folder
+  dir: 'public', // if generating to "public" folder
+  routes () { 
+    return staticRoutes()
+  }
 }
 ...
 ```
+
+NOTE: as of Nuxt 2.14, the nuxt generate script should automatically create the routes for you and eliminate the need for specifyig the `generate.routes` options. However, from my experience, I have found that while locally serving the static routes works fine with `generate.routes` omitted, it is still needed on Netlify, should you choose to deploy there. (from my findings, if you omit the routes options here, you won't be able to go to the routes directly in the browser, only through the app from the route root.)
 
 3. Remember to disable the caching of builds, if you do so: (skip if you don't)
 
