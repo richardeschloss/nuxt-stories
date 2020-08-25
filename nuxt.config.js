@@ -1,3 +1,17 @@
+async function staticRoutes () {
+  const { promisify } = require('util')
+  const Glob = require('glob')
+  const glob = promisify(Glob)
+  const files = await glob('./stories/**/*.{vue,js,md}')
+  const routes = files
+    .map(f => f
+      .replace('./', '/')
+      .replace(/(.js|.vue|.md)/, ''))
+
+  console.log('routes', routes)
+  return routes
+}
+
 module.exports = {
   target: process.env.NODE_ENV === 'production'
     ? 'static'
@@ -55,7 +69,11 @@ module.exports = {
   },
   generate: {
     dir: 'public',
-    routes: [
+    routes () {
+      console.log('RETURN static routes')
+      return staticRoutes()
+    },
+    routesx: [
       '/stories',
       '/stories/en',
       '/stories/en/Documentation'
