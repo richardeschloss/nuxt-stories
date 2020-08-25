@@ -6,13 +6,13 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       socketStatus: {}
     }
   },
-  mounted() { 
-    this.$nuxtStories.anchorMounted()
+  mounted () {
+    this.$nuxtStories.mountedAnchor(this)
   }
 }
 </script>
