@@ -13,7 +13,7 @@ test('Files are not overwritten', async (t) => {
   t.true(existsSync(pResolve(process.env.INIT_CWD, 'assets/scss/stories.overrides.scss')))
   t.true(existsSync(pResolve(process.env.INIT_CWD, 'components')))
   t.true(existsSync(pResolve(process.env.INIT_CWD, 'layouts/stories.vue')))
-  t.true(existsSync(pResolve(process.env.INIT_CWD, 'stories')))
+  t.true(existsSync(pResolve(process.env.INIT_CWD, 'store/index.js')))
 })
 
 test('Files are copied over ok', async (t) => {
@@ -30,6 +30,6 @@ test('Files are copied over ok', async (t) => {
   t.true(existsSync(pResolve(process.env.INIT_CWD, 'assets/scss/stories.overrides.scss')))
   t.true(existsSync(pResolve(process.env.INIT_CWD, 'components')))
   t.true(existsSync(pResolve(process.env.INIT_CWD, 'layouts/stories.vue')))
-  t.true(existsSync(pResolve(process.env.INIT_CWD, 'stories')))
+  t.true(existsSync(pResolve(process.env.INIT_CWD, 'store/index.js')))
   exec(`rm -rf ./tmp`)
 })

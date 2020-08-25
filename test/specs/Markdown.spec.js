@@ -16,11 +16,18 @@ Finally the markdown '
   t.is(JSON.stringify(parsed.frontMatter), '{}')
 })
 
+test('Markdown: Load', (t) => {
+  const mdPath = pResolve('./stories/en/Examples/Example2.md')
+  const contents = Markdown.load(mdPath)
+  const contentsExp = readFileSync(mdPath, { encoding: 'utf-8' })
+  t.is(contents.length, contentsExp.length)
+})
+
 test('Markdown: Parse and Save (server-side)', (t) => {
-  const mdPath = pResolve('./stories/en/index/Examples/Example2.md')
+  const mdPath = pResolve('./stories/en/Examples/Example1.md')
   const contents = readFileSync(mdPath, { encoding: 'utf-8' })
   const { toc, md, compiled, frontMatter } = Markdown.parse(contents)
-  const tmpFile = '/tmp/Example2.md'
+  const tmpFile = '/tmp/Example1.md'
   Markdown.save({ mdPath: tmpFile, contents })
   const contents2 = readFileSync(tmpFile, { encoding: 'utf-8' })
   unlinkSync(tmpFile)

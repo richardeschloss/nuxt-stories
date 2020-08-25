@@ -1,7 +1,20 @@
+async function staticRoutes () {
+  const { promisify } = require('util')
+  const Glob = require('glob')
+  const glob = promisify(Glob)
+  const files = await glob('./stories/**/*.{vue,js,md}')
+  const routes = files
+    .map(f => f
+      .replace('./', '/')
+      .replace(/(.js|.vue|.md)/, ''))
+
+  return routes
+}
+
 module.exports = {
   target: process.env.NODE_ENV === 'production'
     ? 'static'
-    : 'universal',
+    : 'server',
   /*
    ** Headers of the page
    */
@@ -37,7 +50,8 @@ module.exports = {
     // 'nuxt-stories/stories.module' // Ok too
   ],
   stories: {
-    forceBuild: true
+    forceBuild: true,
+    staticHost: process.env.NODE_ENV === 'production'
   },
   watch: ['~/lib/*.js'],
   /*
@@ -53,6 +67,9 @@ module.exports = {
     hardSource: false
   },
   generate: {
-    dir: 'public'
+    dir: 'public',
+    routes () {
+      return staticRoutes()
+    }
   }
 }

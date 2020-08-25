@@ -21,10 +21,12 @@ export default {
         crumbPath = `/${this.$nuxtStories.options.storiesAnchor}`
         items[1].to = crumbPath
       }
-      const crumbs = this.$route.name.split('-').slice(2)
 
-      crumbs.forEach((crumb) => {
+      const crumbs = this.$route.path.split('/').slice(2)
+
+      crumbs.forEach((crumb, idx) => {
         crumbPath += `/${crumb}`
+        if (idx === 0) { return }
         items.push({
           text: crumb,
           to: crumbPath

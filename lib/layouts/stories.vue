@@ -4,6 +4,19 @@
   </div>
 </template>
 
+<script>
+export default {
+  data () {
+    return {
+      socketStatus: {}
+    }
+  },
+  mounted () {
+    this.$nuxtStories.mountedAnchor(this)
+  }
+}
+</script>
+
 <style>
 @import url('~assets/css/stories.min.css');
 .page-enter-active,

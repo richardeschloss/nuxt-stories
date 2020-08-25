@@ -11,6 +11,7 @@
     "lib/stories.plugin.compiled.js",
     "lib/utils/markdown.server.js",
     "lib/utils/markdown.client.js",
+    "lib/store/nuxtStories.js",
     "postinstall.js"
   ],
   "extension": [".js", ".mjs", ".vue"]

@@ -7,10 +7,11 @@ export default {
     'test/specs/Plugin.spec.js',
     'test/specs/PluginRegister.spec.js',
     'test/specs/StoriesIO.spec.js',
-    'test/specs/Postinstall.spec.js'
+    'test/specs/Postinstall.spec.js',
+    'test/specs/VuexModule.spec.js'
   ],
   serial: true,
-  ignoredByWatcher: ['lib/stories.plugin.compiled.js', 'tmp'],
+  ignoredByWatcher: ['lib/stories.plugin.compiled.js', 'tmp', 'stories'],
   tap: false,
   verbose: true
 }

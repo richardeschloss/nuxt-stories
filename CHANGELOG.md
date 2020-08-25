@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.7] - 2020-08-24
+### Added
+- CRUD operations for stories (add, rename, remove)
+- CRUD controls on the UI when the host is running a socket.io server
+
+### Changed
+- Changed how stories are fetched: either from a static host or a [default] socket.io host
+
 ## [2.0.6] - 2020-07-31
 ### Changed
 - Upgraded dependencies, including Nuxt to 2.14. So nuxt generate uses the new full static target.

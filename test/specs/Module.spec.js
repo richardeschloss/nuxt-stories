@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { promisify } from 'util'
 import path from 'path'
 
 import test from 'ava'
@@ -106,12 +105,25 @@ function loadModule ({
 test('Stories Module (defaults)', async (t) => {
   const modOptions = getModuleOptions(config, 'lib/stories.module')
   modOptions.forceBuild = true
-  const { storiesDir = 'stories' } = modOptions
   const expCnt = {
     pluginsAdded: 1,
     middleWaresAdded: 1,
     extendedRoutes: 1,
     modulesAdded: 2
+  }
+  const out = await loadModule({ modOptions, expCnt })
+  t.true(out.templatesAdded.length > 0)
+})
+
+test('Stories Module (staticHost)', async (t) => {
+  const modOptions = getModuleOptions(config, 'lib/stories.module')
+  modOptions.staticHost = true
+  modOptions.forceBuild = true
+  const expCnt = {
+    pluginsAdded: 1,
+    middleWaresAdded: 1,
+    extendedRoutes: 1,
+    modulesAdded: 1
   }
   const out = await loadModule({ modOptions, expCnt })
   t.true(out.templatesAdded.length > 0)

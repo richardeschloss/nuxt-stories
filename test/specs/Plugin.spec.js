@@ -1,3 +1,4 @@
+/* eslint-disable require-await */
 /* eslint-disable no-console */
 import { resolve as pResolve } from 'path'
 import { serial as test } from 'ava'
@@ -19,7 +20,8 @@ test('Stories plugin', async (t) => {
   const pluginOptions = {
     storiesDir: '.stories',
     storiesAnchor: '.stories',
-    markdownEnabled: false
+    markdownEnabled: false,
+    lang: 'en'
   }
   compilePlugin({ src, tmpFile, options: pluginOptions, overwrite: true })
   const { default: Plugin } = await import(tmpFile).catch(console.error)
@@ -27,24 +29,34 @@ test('Stories plugin', async (t) => {
   const mutations = []
   const watchers = []
   const expectedWatchers = [
-    '$route.meta.mdPath',
+    '$route.path',
     'storiesData.frontMatter.order'
   ]
-  let destroyed = 0
   let nuxtSocketCfg = {}
   let markdownSaved = false
+  let destroyed = 0
   const ctx = {
+    fetchStory ({ mdPath }) {
+      return Promise.resolve('ok')
+    },
     $destroy () {
       destroyed++
     },
     $nuxtSocket (cfg) {
       nuxtSocketCfg = cfg
-      return { status: 'created' }
+      return {
+        on (evt, msg) {
+
+        }
+      }
     },
     $route: {
       meta: {
         mdPath: 'http://localhost:3000',
         mdSavePath: 'http://localhost:3000'
+      },
+      params: {
+        lang: pluginOptions.lang
       }
     },
     $set (obj, prop, val) {
@@ -53,7 +65,7 @@ test('Stories plugin', async (t) => {
     $watch (watcher) {
       watchers.push(watcher)
     },
-    saveMarkdown () {
+    async saveMarkdown () {
       markdownSaved = true
     },
     storiesData: {},
@@ -72,23 +84,12 @@ test('Stories plugin', async (t) => {
   }
   ctx.$store = ctx.store
   ctx.app = {
-    store: ctx.store,
-    router: {
-      options: {
-        routes: [{
-          name: '.stories',
-          path: '/.stories',
-          children: [{
-            name: 'child1',
-            path: '/.stories/child1'
-          }]
-        }]
-      }
-    }
+    store: ctx.store
   }
   Plugin(ctx, ctx.inject)
   t.truthy(ctx.$nuxtStories)
-  t.is(mutations[0], '$nuxtStories/SET_STORIES')
+  t.is(mutations[0], '$nuxtStories/SET_LANG')
+  t.is(mutations[1], '$nuxtStories/SET_STORIES_DIR')
   t.is(modulesRegistered[0], '$nuxtStories')
 
   ctx.$nuxtStories()
@@ -99,12 +100,17 @@ test('Stories plugin', async (t) => {
   t.is(nuxtSocketCfg.name, 'nuxtStories')
   t.is(nuxtSocketCfg.channel, '')
   t.true(nuxtSocketCfg.namespaceCfg.emitters.includes('saveMarkdown + storiesData'))
-  t.is(ctx.socket.status, 'created')
   t.truthy(ctx.updateStory)
   await delay(500)
-  t.true(ctx.storiesData.contents.length > 0)
+  t.is(ctx.storiesData.contents, 'ok')
   t.true(mutations.includes('$nuxtStories/SET_TOC'))
   t.true(markdownSaved)
+
+  ctx.$nuxtStories.mountedAnchor(ctx)
+  t.truthy(ctx.socket)
+
+  ctx.componentDestroy()
+  t.is(destroyed, 1)
 })
 
 test('Stories plugin (register components)', async (t) => {

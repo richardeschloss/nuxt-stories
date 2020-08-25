@@ -1,17 +1,16 @@
-import { readdirSync } from 'fs'
+import { readFileSync, readdirSync } from 'fs'
 import http from 'http'
-import { resolve as pResolve, parse as pParse } from 'path'
-import { promisify } from 'util'
-import Glob from 'glob'
+import { resolve as pResolve } from 'path'
 import test from 'ava'
-import { register } from '@/lib/module.register'
+import { register, storyPath } from '@/lib/module.register'
 
-const glob = promisify(Glob)
-
-async function getStoriesRoot (srcDir, storiesDir, lang = 'en') {
-  const files = await glob(`${srcDir}/${storiesDir}/${lang}/**/*.{vue,js}`)
-  return pParse(files[0]).base.replace('.vue', '')
-}
+test('Full Story path', (t) => {
+  const srcDir = '/some/dir'
+  const mdPath = 'myStory.md'
+  register.options({ srcDir })
+  const fullPath = storyPath(mdPath)
+  t.is(fullPath, `${srcDir}/${mdPath}`)
+})
 
 test('Register css', (t) => {
   const ctx = {
@@ -35,6 +34,13 @@ test('Register io', (t) => {
       server: serverOpts
     }
   }
+
+  register.io({ ctx: ctx1, server })
+  t.truthy(ctx1.options.io)
+  t.is(ctx1.options.io.sockets[0].name, 'nuxtStories')
+  t.is(ctx1.options.io.sockets[0].url, `${serverOpts.host}:${serverOpts.port + 1}`)
+  server.close()
+
   const ctx2 = {
     options: {
       io: {
@@ -45,19 +51,42 @@ test('Register io', (t) => {
       server: serverOpts
     }
   }
-  register.io(ctx1, server)
-  const { host: h1, port: p1 } = ctx1.options.server
-  t.truthy(ctx1.options.io)
-  t.is(ctx1.options.io.sockets[0].name, 'nuxtStories')
-  t.is(ctx1.options.io.sockets[0].url, `${serverOpts.host}:${serverOpts.port + 1}`)
-  server.close()
 
-  register.io(ctx2, server)
-  const { host: h2, port: p2 } = ctx2.options.server
+  register.io({ ctx: ctx2, server })
   t.truthy(ctx2.options.io)
   t.is(ctx2.options.io.sockets[1].name, 'nuxtStories')
   t.is(ctx2.options.io.sockets[1].url, `${serverOpts.host}:${serverOpts.port + 1}`)
   server.close()
+
+  const ioOpts = {
+    port: 3002
+  }
+  register.io({ ctx: ctx2, ioOpts, server })
+  t.truthy(ctx2.options.io)
+  t.is(ctx2.options.io.sockets[2].name, 'nuxtStories')
+  t.is(ctx2.options.io.sockets[2].url, `${serverOpts.host}:${ioOpts.port}`)
+  server.close()
+
+  const ctx3 = {
+    options: {}
+  }
+  const server3 = http.createServer()
+  const ioOpts3 = {
+    url: 'https://somehost'
+  }
+  register.io({ ctx: ctx3, ioOpts: ioOpts3, server: server3 })
+  t.false(server3.listening)
+  t.truthy(ctx3.options.io)
+  t.is(ctx3.options.io.sockets[0].url, ioOpts3.url)
+
+  const ctx4 = {
+    options: {}
+  }
+  const server4 = http.createServer()
+  const ioOpts4 = {}
+  register.io({ ctx: ctx4, ioOpts: ioOpts4, server: server4 })
+  t.false(server4.listening)
+  t.falsy(ctx4.options.io.sockets[0])
 })
 
 test('Register middlewares', (t) => {
@@ -73,11 +102,8 @@ test('Register middlewares', (t) => {
 })
 
 test('Register modules', (t) => {
-  const serverOpts = { host: 'localhost', port: 4000 }
-  const server = http.createServer()
   const ctx = {
     options: {
-      server: serverOpts,
       modules: []
     },
     addModule (mod) {
@@ -89,8 +115,7 @@ test('Register modules', (t) => {
 
   const expectedMods = ['bootstrap-vue/nuxt', 'nuxt-socket-io']
   for (let i = 0; i < 2; i++) {
-    register.modules(ctx, ['bootstrap-vue/nuxt', 'nuxt-socket-io'], server)
-    server.close()
+    register.modules(ctx, expectedMods)
     expectedMods.forEach((mod, idx) => {
       t.is(ctx.options.modules[idx], mod)
     })
@@ -140,69 +165,87 @@ test('Register templates', (t) => {
   })
 })
 
-test('Register routes', async (t) => {
+test('Register routes (dynamic)', async (t) => {
   const srcDir = pResolve('.')
   const storiesDir = 'stories'
   const lang = 'en'
   const storiesAnchor = storiesDir
-  const storiesRoot = await getStoriesRoot(srcDir, storiesDir)
-  const storyRoute = await register.routes({
-    srcDir,
+  register.options({ srcDir })
+  const { routes: storyRoute, stories } = await register.routes({
     lang,
     storiesDir,
     storiesAnchor
+  })
+
+  t.is(storyRoute.name, storiesDir)
+  t.is(storyRoute.path, `/${storiesDir}`)
+  t.is(
+    storyRoute.component,
+    pResolve(srcDir, `lib/components/StoriesRoot.vue`)
+  )
+  t.is(storyRoute.chunkName, `stories`)
+  t.true(storyRoute.children.length > 0)
+
+  const lastChild = storyRoute.children[storyRoute.children.length - 1]
+  t.is(lastChild.name, 'Markdown')
+  t.is(lastChild.path, ':lang?/:L0?/:L1?')
+  t.is(lastChild.chunkName, `${storiesDir}/lang/L0/L1`)
+  t.is(lastChild.component, pResolve(srcDir, 'lib/components/StoryMarkdown.vue'))
+
+  function testStory (s, idx) {
+    t.truthy(s.name)
+    t.truthy(s.path)
+    t.truthy(s.children)
+    t.true(Array.isArray(s.idxs))
+    t.truthy(s.frontMatter)
+    if (s.mdPath) {
+      t.is(typeof s.mdPath, 'string')
+      t.true(s.mdPath.endsWith('.md'))
+    }
+    s.children.forEach(testStory)
+  }
+
+  stories.forEach(testStory)
+})
+
+test('Register routes (static)', async (t) => {
+  const srcDir = pResolve('.')
+  const storiesDir = 'stories'
+  const lang = 'en'
+  const storiesAnchor = storiesDir
+  register.options({ srcDir })
+  const { routes: storyRoute, stories } = await register.routes({
+    lang,
+    storiesDir,
+    storiesAnchor,
+    staticHost: true
   })
   t.is(storyRoute.name, storiesDir)
   t.is(storyRoute.path, `/${storiesDir}`)
   t.is(
     storyRoute.component,
-    pResolve(srcDir, `${storiesDir}/${lang}/${storiesRoot}.vue`)
+    pResolve(srcDir, `lib/components/StoriesRoot.vue`)
   )
-  t.is(storyRoute.chunkName, `${storiesDir}/${lang}/${storiesRoot}`)
-  t.truthy(storyRoute.children)
+  t.is(storyRoute.chunkName, `stories`)
   t.true(storyRoute.children.length > 0)
 
-  function testChild (child) {
-    if (child.meta) {
-      // We only add meta on the Markdown routes
-      // And we re-use the same Markdown Vue component to load
-      // different markdown files
-      t.is(child.component, pResolve(srcDir, `lib/components/StoryMarkdown.vue`))
-      t.truthy(child.meta.mdPath)
-      t.truthy(child.meta.mdSavePath)
-      t.truthy(child.meta.frontMatter)
-      t.true(child.meta.idxs.length > 0)
-
-      if (child.children) {
-        child.children.forEach(testChild)
-      }
+  function testStory (s, idx) {
+    t.truthy(s.name)
+    t.truthy(s.path)
+    t.truthy(s.children)
+    t.true(Array.isArray(s.idxs))
+    t.truthy(s.frontMatter)
+    if (s.mdPath) {
+      t.is(typeof s.mdPath, 'string')
+      t.true(s.mdPath.endsWith('.md'))
     }
+    s.children.forEach(testStory)
   }
 
-  storyRoute.children.forEach(testChild)
+  stories.forEach(testStory)
 
-  const badDir = 'storiesNotExist'
-  await register.routes({
-    srcDir,
-    lang,
-    storiesDir: badDir,
-    storiesAnchor
-  }).catch((err) => {
-    t.is(err.message, `Error: Story routes not created. Does the stories directory "${badDir}" exist?`)
-  })
-})
+  const allStories = JSON.parse(readFileSync(pResolve(srcDir, storiesDir, 'stories.json')))
 
-test('Register routes (no vue-based stories)', async (t) => {
-  const srcDir = pResolve('.')
-  const storiesDir = 'stories'
-  const lang = 'es'
-  const storiesAnchor = storiesDir
-  const storiesRoot = await getStoriesRoot(srcDir, storiesDir)
-  const storyRoute = await register.routes({
-    srcDir,
-    lang,
-    storiesDir,
-    storiesAnchor
-  })
-  t.is(storyRoute.children.length, 0)
+  t.truthy(allStories.en)
+  t.truthy(allStories.es)
 })

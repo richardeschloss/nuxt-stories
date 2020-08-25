@@ -4,7 +4,7 @@
     <div v-markdown="compiled" style="display:none;">
       <slot />
     </div>
-    <div v-html="compiled" />
+    <div class="compiled" v-html="compiled" />
   </div>
 </template>
 
