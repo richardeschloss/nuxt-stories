@@ -108,6 +108,24 @@ test('Mutation: SET_VIEW_MODE', (t) => {
   t.is(state.viewMode, 'view')
 })
 
+test('Mutation: SET_ACTIVE_STORY', (t) => {
+  const state1 = {
+    stories: [{
+      name: 'story1',
+      path: '/stories/en/story1',
+      children: [{
+        name: 'child1',
+        path: '/stories/en/story1/child1'
+      }]
+    }]
+  }
+  const fnd = mutations.SET_ACTIVE_STORY(state1, '/stories/en/story1/child1')
+  t.is(fnd.path, '/stories/en/story1/child1')
+
+  const fnd2 = mutations.SET_ACTIVE_STORY(state1, '/stories/en/story1')
+  t.is(fnd2.path, '/stories/en/story1')
+})
+
 test('Mutation: SET_STORY_ORDER', (t) => {
   mutations.SET_STORIES(state, [])
   mutations.SET_STORY_ORDER(state, {
