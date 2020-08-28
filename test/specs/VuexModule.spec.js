@@ -124,6 +124,9 @@ test('Mutation: SET_ACTIVE_STORY', (t) => {
 
   const fnd2 = mutations.SET_ACTIVE_STORY(state1, '/stories/en/story1')
   t.is(fnd2.path, '/stories/en/story1')
+
+  const fnd3 = mutations.SET_ACTIVE_STORY(state1, '/stories/en/story1/nonExist/child1')
+  t.falsy(fnd3)
 })
 
 test('Mutation: SET_STORY_ORDER', (t) => {

@@ -152,6 +152,13 @@ test('Register: Stories Anchor', (t) => {
 })
 
 test('Register: storiesIO', async (t) => {
+  global.window = {
+    $nuxt: {
+      $route: {
+        path: '/some/path'
+      }
+    }
+  }
   register.options({
     lang: 'en',
     storiesDir: 'stories',
