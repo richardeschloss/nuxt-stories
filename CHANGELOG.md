@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.8] - 2020-08-28
+### Fixed
+- Ordering issue of stories
+
 ## [2.0.7] - 2020-08-24
 ### Added
 - CRUD operations for stories (add, rename, remove)
