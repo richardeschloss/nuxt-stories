@@ -276,12 +276,19 @@ test('Register: watchers', (t) => {
     '$route.path',
     'storiesData.frontMatter.order'
   ]
-  let _info
+  const committed = []
   const ctx = {
     $store: {
+      state: {
+        $nuxtStories: {
+          activeStory: {
+            name: 'something',
+            idxs: [0, 1]
+          }
+        }
+      },
       commit (label, info) {
-        t.is(label, '$nuxtStories/SET_STORY_ORDER')
-        _info = info
+        committed.push({ label, info })
       }
     },
     $watch (label, cb) {
@@ -296,21 +303,17 @@ test('Register: watchers', (t) => {
     t.truthy(watchers[w])
   })
   watchers['$route.path']()
+  t.is(committed[0].label, '$nuxtStories/SET_ACTIVE_STORY')
   t.true(called.updateStory)
 
   watchers['storiesData.frontMatter.order'](false)
-  t.falsy(_info)
-
-  ctx.$route = {
-    meta: {
-      idxs: [2]
-    }
-  }
+  t.falsy(committed[1])
 
   watchers['storiesData.frontMatter.order'](33)
-  t.truthy(_info)
-  t.is(_info.idxs[0], 2)
-  t.is(_info.order, 33)
+  t.truthy(committed[1])
+  t.is(committed[1].info.idxs[0], 0)
+  t.is(committed[1].info.idxs[1], 1)
+  t.is(committed[1].info.order, 33)
 })
 
 test('Methods: $destroy', (t) => {
