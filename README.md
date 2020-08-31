@@ -23,10 +23,32 @@
 * ✅ Emoji support! Don't believe it? Just look at this bulleted list!
 * ✅ The perfect development tool for rapidly jotting down notes, gameplans, or even writing official documentation! Documentation that is also *functional*. 
 
-(Demonstration video placeholder)
+## Demos
+The full documentation is here: [DOCS](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab). While there you can try out some of the live-editing)
 
-## Demo
-See it in ACTION: [DEMO](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
+### Intro
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/1%20-%20intro.gif)
+
+### Basic Usage
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20basicUsage.gif)
+
+### Table of Contents Generation
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20toc.gif)
+
+### Data Input
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20dataInput.gif)
+
+### Story Ordering
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20storyOrdering.gif)
+
+### Auto Importing of Components
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20autoImport.gif)
+
+### Quick Calculations (as you type)
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20quickCalc.gif)
+
+### Videos (right-this-instant)
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20viedoExamples.gif)
 
 ## Setup
 
