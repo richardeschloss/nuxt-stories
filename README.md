@@ -33,22 +33,19 @@ The full documentation is here: [DOCS](https://nuxt-stories.netlify.com) (Ctrl+C
 ![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20basicUsage.gif)
 
 ### Table of Contents Generation
-![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20toc.gif)
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/3%20-%20toc.gif)
 
 ### Data Input
-![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20dataInput.gif)
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/4%20-%20dataInput.gif)
 
 ### Story Ordering
-![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20storyOrdering.gif)
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/5%20-%20storyOrdering.gif)
 
 ### Auto Importing of Components
-![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20autoImport.gif)
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/6%20-%20autoImport.gif)
 
 ### Quick Calculations (as you type)
-![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20quickCalc.gif)
-
-### Videos (right-this-instant)
-![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20viedoExamples.gif)
+![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/7%20-%20quickCalc.gif)
 
 ## Setup
 
