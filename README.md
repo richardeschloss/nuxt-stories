@@ -32,20 +32,8 @@ The full documentation is here: [DOCS](https://nuxt-stories.netlify.com) (Ctrl+C
 ### Basic Usage
 ![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/2%20-%20basicUsage.gif)
 
-### Table of Contents Generation
-![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/3%20-%20toc.gif)
-
-### Data Input
-![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/4%20-%20dataInput.gif)
-
-### Story Ordering
-![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/5%20-%20storyOrdering.gif)
-
-### Auto Importing of Components
-![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/6%20-%20autoImport.gif)
-
-### Quick Calculations (as you type)
-![](https://raw.githubusercontent.com/richardeschloss/nuxt-stories/demos/static/7%20-%20quickCalc.gif)
+### More Demos
+View the rest of the demos in the [demos branch](https://github.com/richardeschloss/nuxt-stories/tree/demos/static)
 
 ## Setup
 
