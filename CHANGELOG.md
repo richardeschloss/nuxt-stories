@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.9] - 2020-09-18
+### Fixed
+- Fixed postinstall copying of sample stories
+
 ## [2.0.8] - 2020-08-28
 ### Fixed
 - Ordering issue of stories
