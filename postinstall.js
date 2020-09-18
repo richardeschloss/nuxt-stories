@@ -8,7 +8,7 @@ const resolvedStoriesDir = pResolve(destDir, 'stories')
 
 if (!existsSync(resolvedStoriesDir)) {
   mkdirSync(resolvedStoriesDir)
-  gentlyCopy(storiesDir, resolvedStoriesDir, { overwrite: false })
+  gentlyCopy(`${storiesDir}/*`, resolvedStoriesDir, { overwrite: false })
 }
 
 const otherDirs = [

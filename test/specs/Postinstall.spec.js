@@ -31,5 +31,6 @@ test('Files are copied over ok', async (t) => {
   t.true(existsSync(pResolve(process.env.INIT_CWD, 'components')))
   t.true(existsSync(pResolve(process.env.INIT_CWD, 'layouts/stories.vue')))
   t.true(existsSync(pResolve(process.env.INIT_CWD, 'store/index.js')))
+  t.true(existsSync(pResolve(process.env.INIT_CWD, 'stories/en')))
   exec(`rm -rf ./tmp`)
 })
