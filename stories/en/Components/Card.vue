@@ -1,5 +1,7 @@
 <template>
   <div class="card-container">
+    This is Oxygen component <oxygen />
+
     These are example cards! Taken from bootstrap-vue docs. You may want to
     stash this code in your custom components (@/components directory) When you
     edit those components, hot module reloading should let you see the stories

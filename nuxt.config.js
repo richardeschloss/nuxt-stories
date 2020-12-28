@@ -11,7 +11,9 @@ async function staticRoutes () {
   return routes
 }
 
-module.exports = {
+export default {
+  components: true, // RES: this works for "Vue-first" stories
+  telemetry: false,
   target: process.env.NODE_ENV === 'production'
     ? 'static'
     : 'server',
