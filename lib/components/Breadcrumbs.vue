@@ -22,7 +22,7 @@ export default {
         items[1].to = crumbPath
       }
 
-      const crumbs = this.$route.path.split('/').slice(2)
+      const crumbs = decodeURIComponent(this.$route.path).split('/').slice(2)
 
       crumbs.forEach((crumb, idx) => {
         crumbPath += `/${crumb}`
