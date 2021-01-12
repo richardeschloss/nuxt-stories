@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.10] - 2021-01-12
+### Fixed
+- Path resolution of routes and stories on Windows
+
 ## [2.0.9] - 2020-09-18
 ### Fixed
 - Fixed postinstall copying of sample stories
