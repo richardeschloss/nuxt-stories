@@ -249,3 +249,9 @@ test('Register routes (static)', async (t) => {
   t.truthy(allStories.en)
   t.truthy(allStories.es)
 })
+
+test('Replace backslashes (for windows)', (t) => {
+  const srcDir = 'C:\\some\\win\\path'
+  const srcDirOut = srcDir.replace(/\\/g, '/')
+  t.is(srcDirOut, 'C:/some/win/path')
+})
