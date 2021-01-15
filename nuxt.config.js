@@ -12,6 +12,7 @@ async function staticRoutes () {
 }
 
 module.exports = {
+  telemetry: false,
   target: process.env.NODE_ENV === 'production'
     ? 'static'
     : 'server',
