@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.11] - 2021-01-15
+### Fixed
+- b-link behavior with the newest bootstrap-vue
+
 ## [2.0.10] - 2021-01-12
 ### Fixed
 - Path resolution of routes and stories on Windows
