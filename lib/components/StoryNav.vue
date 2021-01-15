@@ -10,6 +10,7 @@
         v-for="group in sorted(stories)"
         :key="group.name"
         :to="group.to"
+        :disabled="group.disabled"
         router-tag="div"
         class="bd-toc-item"
         active-class="active"
@@ -17,6 +18,7 @@
         <b-link
           v-story-hover="group"
           :to="group.to"
+          :disabled="group.disabled"
           class="bd-toc-link l0-link"
           active-class=""
           no-prefetch
@@ -28,6 +30,7 @@
             v-for="child in sorted(group.children || [])"
             :key="child.name"
             :to="child.to"
+            :disabled="child.disabled"
             router-tag="li"
             class="nav-item"
             active-class="active bd-sidenav-active"
