@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.12] - 2021-01-15
+### Fixed
+- Fixed the children paths when parents get renamed
+
 ## [2.0.11] - 2021-01-15
 ### Fixed
 - b-link behavior with the newest bootstrap-vue
