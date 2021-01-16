@@ -195,6 +195,25 @@ test('Mutation: SET_STORY_DATA', (t) => {
 })
 
 test('Mutation: RENAME_STORY', (t) => {
+  const stories = [{
+    name: 'story1',
+    path: 'stories/en/story1'
+  }, {
+    name: 'story2',
+    children: [{
+      name: 'child1'
+    }, {
+      name: 'child2',
+      frontMatter: {
+        order: 33
+      }
+    }, {
+      name: 'child3',
+      frontMatter: {
+        order: 37
+      }
+    }]
+  }]
   mutations.SET_STORIES(state, stories)
   const name = 'newName'
   const path = '/stories/en/newName'
@@ -324,7 +343,7 @@ test('Action: RENAME', (t) => {
         idxs: [0],
         children: [{
           name: 'Some child',
-          path: '/stories/en/somechild1',
+          path: '/stories/en/ExistingStory/somechild1',
           mdPath: 'stories/en/ExistingStory/somechild1.md',
           idxs: [0, 0]
         }]
@@ -361,17 +380,17 @@ test('Action: RENAME', (t) => {
   t.is(channel, '')
   t.is(emitted.renameStory[0].oldPath, 'stories/en/ExistingStory.md')
   t.is(emitted.renameStory[0].newPath, 'stories/en/NewName.md')
-  t.is(emitted.renameStory[1].oldPath, 'stories/en/ExistingStory/somechild1.md')
-  t.is(emitted.renameStory[1].newPath, 'stories/en/ExistingStory/NewName.md')
+  t.is(emitted.renameStory[1].oldPath, 'stories/en/NewName/somechild1.md')
+  t.is(emitted.renameStory[1].newPath, 'stories/en/NewName/NewName.md')
   t.is(store.state.stories[0].path, '/stories/en/NewName')
   t.is(store.state.stories[0].mdPath, 'stories/en/NewName.md')
-  t.is(store.state.stories[0].children[0].path, '/stories/en/ExistingStory/NewName')
-  t.is(store.state.stories[0].children[0].mdPath, 'stories/en/ExistingStory/NewName.md')
+  t.is(store.state.stories[0].children[0].path, '/stories/en/NewName/NewName')
+  t.is(store.state.stories[0].children[0].mdPath, 'stories/en/NewName/NewName.md')
 
   t.false(store.state.stories[0].rename)
   t.false(store.state.stories[0].children[0].rename)
   t.is(_routes[0], '/stories/en/NewName')
-  t.is(_routes[1], '/stories/en/ExistingStory/NewName')
+  t.is(_routes[1], '/stories/en/NewName/NewName')
 })
 
 test('Action: REMOVE', (t) => {
