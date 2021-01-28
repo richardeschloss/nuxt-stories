@@ -233,6 +233,42 @@ test('Mutation: RENAME_STORY', (t) => {
   t.falsy(state.stories[55])
 })
 
+test('Mutation: SET_FETCHED', (t) => {
+  const state = {
+    fetched: {},
+    activeStory: {}
+  }
+  mutations.SET_FETCHED(state, {
+    path: 'stories/en/Fetch',
+    key: 'someJson',
+    resp: { msg: 'some data' }
+  })
+  mutations.SET_FETCHED(state, {
+    path: 'stories/en/Fetch2',
+    resp: { msg: 'some more data' }
+  })
+  t.is(state.fetched['stories/en/Fetch'].someJson.msg, 'some data')
+  t.is(state.fetched['stories/en/Fetch2'].msg, 'some more data')
+
+  const frontMatter = { fetch: { abc: '/somePath' } }
+  mutations.UPDATE_FRONTMATTER(state, frontMatter)
+  mutations.SET_FETCHED(state, {
+    path: 'stories/en/Fetch',
+    key: 'abc',
+    resp: { msg: 'some more data' }
+  })
+  t.is(state.fetched['stories/en/Fetch'].abc.msg, 'some more data')
+  t.falsy(state.fetched['stories/en/Fetch'].someJson)
+
+  mutations.UPDATE_FRONTMATTER(state, {})
+  mutations.SET_FETCHED(state, {
+    path: 'stories/en/Fetch',
+    key: 'abc',
+    resp: { msg: 'some more data' }
+  })
+  t.is(Object.keys(state.fetched['stories/en/Fetch']).length, 0)
+})
+
 test('Mutation: SET_LANG', (t) => {
   const newLang = 'es'
   mutations.SET_LANG(state, newLang)
@@ -449,4 +485,76 @@ test('Action: REMOVE', (t) => {
 
   t.is(_routes[0], '/stories/en/ExistingStory')
   t.is(_routes[1], '/stories')
+})
+
+test('Action: FETCH', async (t) => {
+  const _listeners = { fmFetched: [] }
+  const emitted = {
+    'fmFetch': []
+  }
+  const store = {
+    state: {
+      activeStory: {},
+      fetched: {}
+    },
+    commit (label, data) {
+      mutations[label](store.state, data)
+    }
+  }
+  const _path = 'stories/en/Fetch'
+  global.window = {
+    localStorage: {
+      setItem (item) {
+        t.is(item, 'fetched')
+      }
+    },
+    $nuxt: {
+      $nuxtSocket (cfg) {
+        return {
+          listeners (evt) {
+            t.is(evt, 'fmFetched')
+            return {
+              length: _listeners[evt].length
+            }
+          },
+          on (evt, cb) {
+            t.is(evt, 'fmFetched')
+            _listeners[evt].push(cb)
+          },
+          emit (evt, msg, cb) {
+            emitted[evt].push(msg)
+            cb()
+          }
+        }
+      }
+    }
+  }
+
+  await actions.FETCH(store, {
+    fetchInfo: {
+      someCsv: '/someFile.csv'
+    },
+    path: _path
+  })
+  _listeners.fmFetched[0]({
+    path: _path,
+    key: 'someCsv',
+    resp: 'results,here,1'
+  })
+  await actions.FETCH(store, {
+    fetchInfo: {
+      someCsv2: '/someFile2.csv'
+    },
+    path: _path
+  })
+  _listeners.fmFetched[0]({
+    path: _path,
+    key: 'someCsv2',
+    resp: 'results,here,2',
+    dest: 'localStorage'
+  })
+  t.is(_listeners.fmFetched.length, 1)
+  t.is(emitted.fmFetch.length, 2)
+  t.is(store.state.fetched[_path].someCsv, 'results,here,1')
+  t.is(store.state.fetched[_path].someCsv2, 'results,here,2')
 })

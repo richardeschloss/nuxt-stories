@@ -1,6 +1,6 @@
 ---
 title: Deploying
-order: 4
+order: 5
 ---
 
 # Deploying stories to a static site:

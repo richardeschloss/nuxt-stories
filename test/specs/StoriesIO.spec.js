@@ -13,7 +13,7 @@ const lang = 'en'
 
 before(() => {
   register.options({ srcDir, storiesDir, lang })
-}) 
+})
 
 test('Add story (L0)', (t) => {
   const name = 'NewStory'
@@ -93,7 +93,7 @@ test('Rename Story', (t) => {
   const newFullPath2 = storyPath(newPath2)
   const { name: newDirName, dir: newDir } = pParse(newFullPath2)
   const newFullDir = pResolve(newDir, newDirName)
-  
+
   storiesIO.renameStory({ oldPath: newPath, newPath: newPath2 })
   t.false(existsSync(newFullPath))
   t.true(existsSync(newFullPath2))
@@ -130,4 +130,25 @@ test('Save Markdown', (t) => {
   const readContents = readFileSync(fullPath, { encoding: 'utf-8' })
   t.is(contents, readContents)
   unlinkSync(fullPath)
+})
+
+test('Front matter fetch', async (t) => {
+  /*
+  * Here, trigger an error on purpose, but break the rules with
+  * proper error handling because I think we still want to send
+  * the same "fmFetched" event so the user sees the error in the compiled
+  * screen right away.
+  */
+  const socket = {
+    emit (evt, { key, resp }) {
+      t.is(evt, 'fmFetched')
+      t.is(key, 'someCsv')
+      t.is(resp, 'Only absolute URLs are supported')
+    }
+  }
+  await StoriesIO(socket).fmFetch({
+    fetchInfo: {
+      someCsv: '/someFile.csv'
+    }
+  })
 })

@@ -1,6 +1,7 @@
 /* eslint-disable require-await */
 import { serial as test } from 'ava'
 import { delay } from 'nuxt-test-utils'
+import Vue from 'vue'
 import { register, methods, directives } from '@/lib/plugin.register'
 require('jsdom-global')()
 
@@ -514,4 +515,15 @@ test('Methods: Update Story (static host)', async (t) => {
 
 test('Directives', (t) => {
   t.truthy(directives.markdown)
+})
+
+test('Error Handler', (t) => {
+  const msg = 'trying to compile circular JSON $route'
+  Vue.config.errorHandler(new Error('non-render error'))
+  t.pass()
+  try {
+    Vue.config.errorHandler(new Error(msg), null, 'render')
+  } catch (err) {
+    t.is(err.message, 'Error: ' + msg)
+  }
 })
