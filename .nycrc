@@ -9,8 +9,11 @@
     "lib/stories.io.js",
     "lib/stories.module.js",
     "lib/stories.plugin.compiled.js",
+    "lib/utils/fetch.js",
     "lib/utils/markdown.server.js",
     "lib/utils/markdown.client.js",
+    "lib/utils/storage.js",
+    "lib/utils/storyFactory.js",
     "lib/store/nuxtStories.js",
     "postinstall.js"
   ],
