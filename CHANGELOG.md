@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.13] - 2021-01-27
+### Added
+- Fetch feature. (fetch and nodeFetch in frontMatter)
+- Improved error handling for on-the-fly compilation errors.
+
 ## [2.0.12] - 2021-01-15
 ### Fixed
 - Fixed the children paths when parents get renamed

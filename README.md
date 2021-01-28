@@ -22,6 +22,7 @@
 * ✅ Vue in Markdown or Markdown in Vue! You're in complete control! (I prefer Vue-in-Markdown ;))
 * ✅ Emoji support! Don't believe it? Just look at this bulleted list!
 * ✅ The perfect development tool for rapidly jotting down notes, gameplans, or even writing official documentation! Documentation that is also *functional*. 
+* ✅ Built-in fetch fetch. Quickly fetch on the client or server side, right in your story! (v2.0.13+)
 
 (Demonstration video placeholder)
 
