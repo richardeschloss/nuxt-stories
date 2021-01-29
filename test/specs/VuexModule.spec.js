@@ -1,5 +1,6 @@
 import { serial as test } from 'ava'
 import { state as nuxtStories, mutations, actions } from '@/lib/store/nuxtStories'
+import Vue from 'vue'
 
 const state = nuxtStories()
 const stories = [{
@@ -557,4 +558,233 @@ test('Action: FETCH', async (t) => {
   t.is(emitted.fmFetch.length, 2)
   t.is(store.state.fetched[_path].someCsv, 'results,here,1')
   t.is(store.state.fetched[_path].someCsv2, 'results,here,2')
+})
+
+test('Action: FETCH_ESMS (and ESMS_FETCHED)', async (t) => {
+  const dom = {}; const callCnt = { createElement: 0 }
+  const mods1 = {
+    named1: 111,
+    n2: 333,
+    Example3: 444
+  }
+  const mods2 = {
+    named1: 111,
+    n3: 'abc123',
+    Example3: {
+      render (h) {
+        return h('div')
+      }
+    }
+  }
+  global.document = {
+    createElement (tagName) {
+      callCnt.createElement++
+      t.is(tagName, 'script')
+      return {
+        replaceWith (newMod) {
+          dom[newMod.id] = newMod
+          newMod.modsImported(mods2)
+        }
+      }
+    },
+    getElementById (id) {
+      return dom[id]
+    },
+    head: {
+      appendChild (module) {
+        dom[module.id] = module
+        module.modsImported(mods1)
+      }
+    }
+  }
+  const store = {
+    state: {
+      esmsFetched: {}
+    },
+    commit (label, data) {
+      mutations[label](store.state, data)
+    }
+  }
+  const items = [
+    { 'named1, named2 as n2': '/Example2.mjs' },
+    '/Example3.mjs'
+  ]
+  const modId = `nuxt-stories-esm`
+
+  await actions.FETCH_ESMS(store, { items })
+  t.is(callCnt.createElement, 1)
+  t.is(dom[modId].id, modId)
+  t.is(dom[modId].type, 'module')
+  t.is(
+    dom[modId].text,
+    'import { named1, named2 as n2 } from "/Example2.mjs"\n' +
+    'import * as Example3 from "/Example3.mjs"\n' +
+    "window.$nuxt.$store.commit('$nuxtStories/ESMS_FETCHED', { mods: { named1, n2, Example3 }})\n" +
+    `const elm = document.getElementById('${modId}')\n` +
+    `elm.modsImported({named1, n2, Example3})\n`
+  )
+
+  mutations.ESMS_FETCHED(store.state, { mods: mods1 })
+  Object.entries(mods1).forEach(([alias, val]) => {
+    t.true(store.state.esmsFetched[alias])
+    t.is(Vue.prototype[alias], val)
+  })
+
+  await actions.FETCH_ESMS(store, { items })
+  t.is(callCnt.createElement, 1)
+
+  items[0] = { 'named1, named2 as n3': '/Example2.mjs' }
+  await actions.FETCH_ESMS(store, { items })
+  t.is(dom[modId].id, modId)
+  t.is(dom[modId].type, 'module')
+  t.is(
+    dom[modId].text,
+    'import { named1, named2 as n3 } from "/Example2.mjs"\n' +
+    'import * as Example3 from "/Example3.mjs"\n' +
+    "window.$nuxt.$store.commit('$nuxtStories/ESMS_FETCHED', { mods: { named1, n3, Example3 }})\n" +
+    `const elm = document.getElementById('${modId}')\n` +
+    `elm.modsImported({named1, n3, Example3})\n`
+  )
+
+  mutations.ESMS_FETCHED(store.state, { mods: mods2 })
+  Object.entries(mods2).forEach(([alias, val]) => {
+    t.true(store.state.esmsFetched[alias])
+    t.is(Vue.prototype[alias], val)
+  })
+})
+
+test('Action: FETCH_NPMS', async (t) => {
+  const jsons = {
+    'https://data.jsdelivr.com/v1/package/npm/lodash-es': {
+      'tags': {
+        'latest': '4.17.20'
+      }
+    },
+    'https://data.jsdelivr.com/v1/package/npm/lodash-es@4.17.20': {
+      default: '/index.min.js'
+    },
+    'https://data.jsdelivr.com/v1/package/npm/lodash-es@4.17.13': {
+      default: '/index.min.js'
+    }
+  }
+
+  global.fetch = function (path) {
+    return Promise.resolve({
+      json () {
+        return jsons[path]
+      }
+    })
+  }
+  const path = '/some/path'
+  const items = [
+    'lodash-es',
+    { 'filter': 'lodash-es@4.17.13' }
+  ]
+
+  const esms = await actions.FETCH_NPMS(null, { items, path })
+  t.is(esms[0], 'https://cdn.jsdelivr.net/npm/lodash-es@4.17.20/index.min.js')
+  t.is(esms[1].filter, 'https://cdn.jsdelivr.net/npm/lodash-es@4.17.13/index.min.js')
+})
+
+test('Action: FETCH_SCRIPTS', async (t) => {
+  const callCnt = { createElement: 0, appendChild: 0 }
+  const aliases = [
+    { alias: 'script1', url: '/url/to/script1.js' },
+    { alias: 'someAlias', url: '/url/to/script2.js' }
+  ]
+  global.window = {}
+  global.document = {
+    createElement (tagName) {
+      t.is(tagName, 'script')
+      callCnt.createElement++
+      return {}
+    },
+    head: {
+      appendChild (script) {
+        const idx = callCnt.appendChild
+        const { alias, url } = aliases[idx]
+        t.is(script.id, `nuxt-stories-script-${alias}`)
+        t.is(script.src, url)
+        window[alias] = {}
+        script.onload()
+        callCnt.appendChild++
+      }
+    }
+  }
+
+  const items = [
+    '/url/to/script1.js',
+    { someAlias: '/url/to/script2.js' }
+  ]
+
+  await actions.FETCH_SCRIPTS(null, { items })
+  t.is(callCnt.createElement, items.length)
+  t.is(callCnt.appendChild, items.length)
+  aliases.forEach(({ alias }) => {
+    t.truthy(Vue.prototype[alias])
+  })
+
+  await actions.FETCH_SCRIPTS(null, { items })
+  t.is(callCnt.appendChild, items.length)
+})
+
+test('Action: FETCH_COMPONENTS', async (t) => {
+  const items = [
+    '/Example33.vue',
+    { E: '/Example4.js' },
+    '/JustJS.js'
+  ]
+  const origin = 'https://localhost:3000'
+  global.window = {
+    $nuxt: {
+      $nuxtSocket (cfg) {
+        t.is(cfg.persist, 'storiesSocket')
+        t.is(cfg.channel, '')
+        return {
+          emit (evt, msg, cb) {
+            t.is(evt, 'fetchComponents')
+            t.is(msg.components[0][0], 'Example33')
+            t.is(msg.components[0][1], '/Example33.vue')
+            t.is(msg.components[1][0], 'E')
+            t.is(msg.components[1][1], '/Example4.js')
+            t.is(msg.origin, origin)
+            cb()
+          }
+        }
+      }
+    }
+  }
+
+  await actions.FETCH_COMPONENTS(null, {
+    items,
+    origin
+  })
+
+  t.falsy(Vue.component('Example33'))
+  t.falsy(Vue.component('E'))
+
+  Vue.component('Example33', {
+    render (h) {
+      return h('p', 'example33')
+    }
+  })
+
+  Vue.component('E', {
+    render (h) {
+      return h('p', 'example4 (E)')
+    }
+  })
+
+  Vue.component('JustJS', {
+    fn1 () {
+      return 'renderless'
+    }
+  })
+
+  const imported = await actions.FETCH_COMPONENTS(null, {
+    items,
+    origin
+  })
+  t.is(imported.Example33.name, 'Example33')
+  t.is(imported.E.name, 'E')
 })

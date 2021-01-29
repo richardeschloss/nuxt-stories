@@ -41,6 +41,13 @@ export default {
         : ''
     }
   },
+  watch: {
+    viewMode (_, o) {
+      if (o === 'edit') {
+        this.compileContents()
+      }
+    }
+  },
   mounted () {
     this.$nuxtStories()
   }

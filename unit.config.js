@@ -2,6 +2,7 @@ export default {
   require: ['esm', 'module-alias/register'],
   files: [
     'test/specs/Fetch.spec.js',
+    'test/specs/Import.spec.js',
     'test/specs/Markdown.spec.js',
     'test/specs/Module.spec.js',
     'test/specs/ModuleRegister.spec.js',
@@ -14,7 +15,7 @@ export default {
     'test/specs/StoryFactory.spec.js'
   ],
   serial: true,
-  ignoredByWatcher: ['lib/stories.plugin.compiled.js', 'tmp', 'stories'],
+  ignoredByWatcher: ['components/nuxtStories', 'lib/stories.plugin.compiled.js', 'tmp', 'stories'],
   tap: false,
   verbose: true
 }
