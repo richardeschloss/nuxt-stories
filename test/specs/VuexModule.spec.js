@@ -1,5 +1,6 @@
 import { serial as test } from 'ava'
 import { state as nuxtStories, mutations, actions } from '@/lib/store/nuxtStories'
+import Vue from 'vue'
 
 const state = nuxtStories()
 const stories = [{
@@ -557,4 +558,43 @@ test('Action: FETCH', async (t) => {
   t.is(emitted.fmFetch.length, 2)
   t.is(store.state.fetched[_path].someCsv, 'results,here,1')
   t.is(store.state.fetched[_path].someCsv2, 'results,here,2')
+})
+
+test.only('Action: FETCH_ESMS', async (t) => {
+  global.document = {
+    createElement() {
+
+    },
+    getElementsByTagName() {
+
+    }  
+  }
+  const store = {
+    state: {
+      esmsQueue: {}
+    },
+    commit (label, data) {
+      mutations[label](store.state, data)
+    }
+  }
+  const path = '/some/path'
+  const items = [
+    { 'named1, named2 as n2': '/Example2.mjs' },
+    '/Example3.mjs'
+  ]
+
+  /*
+  Exp:
+  import { named1, named2 as n2 } from '/Example2.mjs'
+  import * as Example3 from '/Example3.mjs'
+
+  window.cbName({ 
+    mods: { named1, n2, Example3 }
+  })
+  */
+  Vue.prototype['Example3'] = 111
+
+
+  await actions.FETCH_ESMS(store, { items, path }) 
+  t.pass()
 })
