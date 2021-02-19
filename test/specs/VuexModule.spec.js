@@ -561,12 +561,22 @@ test('Action: FETCH', async (t) => {
 })
 
 test.only('Action: FETCH_ESMS', async (t) => {
+  let dom = {}
   global.document = {
-    createElement() {
-
+    createElement(tagName) {
+      t.is(tagName, 'script')
+      return {} 
     },
-    getElementsByTagName() {
-
+    getElementById(id) {
+      return dom[id]
+    },
+    getElementsByTagName(tagName) {
+      t.is(tagName, 'head')
+      return [{
+        appendChild(module) {
+          dom[module.id] = module
+        }
+      }]
     }  
   }
   const store = {
@@ -591,10 +601,16 @@ test.only('Action: FETCH_ESMS', async (t) => {
   window.cbName({ 
     mods: { named1, n2, Example3 }
   })
+
+  ---
+  if (!cached['Example3']) {
+    // import Str...
+  }
   */
-  Vue.prototype['Example3'] = 111
+  // Vue.prototype['Example3'] = 111
+  await actions.FETCH_ESMS(store, { items, path }) 
 
-
+  items[0] = { 'named1, named2 as n3': '/Example2.mjs' }
   await actions.FETCH_ESMS(store, { items, path }) 
   t.pass()
 })
