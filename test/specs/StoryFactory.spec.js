@@ -96,8 +96,41 @@ test('Defaults (fetch enabled, frontMatter defined)', (t) => {
   vm.$route = currentRoute
   vm.$store = vuexStore
   vm.$fetch = compiled.fetch
-  vm.$mount()
   vm.$fetch()
   t.is(_dispatched[0].action, '$nuxtStories/FETCH')
   t.is(_dispatched[0].msg.fetchInfo.someJson2, frontMatter.nodeFetch.someJson2)
+})
+
+test('Fetch ESMS', (t) => {
+  const frontMatter = {
+    esm: [
+      '/Example2.mjs'
+    ]
+  }
+  const cfg = { fetch: true }
+  const compiled = StoryFactory({ cfg, frontMatter, ...res })
+  let vm = new VueDist(compiled)
+  vm.$route = currentRoute
+  vuexStore.state.$nuxtStories.esmsFetched = {}
+  vm.$store = vuexStore
+  vm.$fetch = compiled.fetch
+  vm.$fetch()
+  t.is(_dispatched[1].action, '$nuxtStories/FETCH_ESMS')
+  t.is(_dispatched[1].msg.items.length, frontMatter.esm.length)
+  t.false(vm.esmsFetched)
+
+  vm = new VueDist(compiled)
+  vm.$route = currentRoute
+  vuexStore.state.$nuxtStories.esmsFetched[currentRoute.path] = {
+    Example2: true
+  }
+  vm.$store = vuexStore
+  t.true(vm.esmsFetched)
+
+  vm = new VueDist(compiled)
+  vm.$route = {
+    path: '/other/path' 
+  }
+  vm.$store = vuexStore
+  t.false(vm.esmsFetched)
 })
