@@ -560,12 +560,17 @@ test('Action: FETCH', async (t) => {
   t.is(store.state.fetched[_path].someCsv2, 'results,here,2')
 })
 
-test.only('Action: FETCH_ESMS', async (t) => {
-  let dom = {}
+test('Action: FETCH_ESMS (and ESMS_FETCHED)', async (t) => {
+  let dom = {}, callCnt = { createElement: 0 }
   global.document = {
     createElement(tagName) {
+      callCnt.createElement++
       t.is(tagName, 'script')
-      return {} 
+      return {
+        replaceWith(newMod) {
+          dom[newMod.id] = newMod
+        }
+      } 
     },
     getElementById(id) {
       return dom[id]
@@ -581,7 +586,7 @@ test.only('Action: FETCH_ESMS', async (t) => {
   }
   const store = {
     state: {
-      esmsQueue: {}
+      esmsFetched: {}
     },
     commit (label, data) {
       mutations[label](store.state, data)
@@ -592,25 +597,53 @@ test.only('Action: FETCH_ESMS', async (t) => {
     { 'named1, named2 as n2': '/Example2.mjs' },
     '/Example3.mjs'
   ]
+  const modId = `nuxt-stories-esm-${path.replace(/\//g, '-')}` 
 
-  /*
-  Exp:
-  import { named1, named2 as n2 } from '/Example2.mjs'
-  import * as Example3 from '/Example3.mjs'
-
-  window.cbName({ 
-    mods: { named1, n2, Example3 }
-  })
-
-  ---
-  if (!cached['Example3']) {
-    // import Str...
+  await actions.FETCH_ESMS(store, { items, path })
+  t.is(callCnt.createElement, 1)
+  t.is(dom[modId].id, modId)
+  t.is(dom[modId].type, 'module')
+  t.is(
+    dom[modId].text,
+    'import { named1, named2 as n2 } from "/Example2.mjs"\n' +
+    'import * as Example3 from "/Example3.mjs"\n' +
+    "window.$nuxt.$store.commit('$nuxtStories/ESMS_FETCHED', { mods: { named1, n2, Example3 }, path: '/some/path' })\n"
+  )
+  const mods1 = {
+    named1: 111,
+    n2: 333,
+    Example3: 444
   }
-  */
-  // Vue.prototype['Example3'] = 111
+
+  mutations.ESMS_FETCHED(store.state, { mods: mods1, path })
+  Object.entries(mods1).forEach(([alias, val]) => {
+    t.true(store.state.esmsFetched[path][alias])
+    t.is(Vue.prototype[alias], val)
+  })
+  
   await actions.FETCH_ESMS(store, { items, path }) 
+  t.is(callCnt.createElement, 1)
 
   items[0] = { 'named1, named2 as n3': '/Example2.mjs' }
   await actions.FETCH_ESMS(store, { items, path }) 
-  t.pass()
+  t.is(dom[modId].id, modId)
+  t.is(dom[modId].type, 'module')
+  t.is(
+    dom[modId].text,
+    'import { named1, named2 as n3 } from "/Example2.mjs"\n' +
+    'import * as Example3 from "/Example3.mjs"\n' +
+    "window.$nuxt.$store.commit('$nuxtStories/ESMS_FETCHED', { mods: { named1, n3, Example3 }, path: '/some/path' })\n"
+  )
+
+  const mods2 = {
+    named1: 111,
+    n3: 'abc123',
+    Example3: 444
+  }
+
+  mutations.ESMS_FETCHED(store.state, { mods: mods2, path })
+  Object.entries(mods2).forEach(([alias, val]) => {
+    t.true(store.state.esmsFetched[path][alias])
+    t.is(Vue.prototype[alias], val)
+  })
 })
