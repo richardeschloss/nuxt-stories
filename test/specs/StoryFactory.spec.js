@@ -101,30 +101,52 @@ test('Defaults (fetch enabled, frontMatter defined)', (t) => {
   t.is(_dispatched[0].msg.fetchInfo.someJson2, frontMatter.nodeFetch.someJson2)
 })
 
-test('Fetch ESMS', (t) => {
+test('Fetch NPMS and ESMS', async (t) => {
+  const _dispatched2 = []
+  const vuexStore2 = {
+    state: {
+      $nuxtStories: {}
+    },
+    dispatch (action, msg) {
+      _dispatched2.push({ action, msg })
+      if (action === '$nuxtStories/FETCH_NPMS') {
+        return ['/urlPath/to/lodash-es']
+      }
+    }
+  }  
   const frontMatter = {
     esm: [
       '/Example2.mjs'
+    ],
+    npm: [
+      'lodash-es'
     ]
   }
   const cfg = { fetch: true }
   const compiled = StoryFactory({ cfg, frontMatter, ...res })
   let vm = new VueDist(compiled)
   vm.$route = currentRoute
-  vuexStore.state.$nuxtStories.esmsFetched = {}
-  vm.$store = vuexStore
+  vuexStore2.state.$nuxtStories.esmsFetched = {}
+  vm.$store = vuexStore2
   vm.$fetch = compiled.fetch
-  vm.$fetch()
-  t.is(_dispatched[1].action, '$nuxtStories/FETCH_ESMS')
-  t.is(_dispatched[1].msg.items.length, frontMatter.esm.length)
+  await vm.$fetch()
+  t.is(_dispatched2[0].action, '$nuxtStories/FETCH_NPMS')
+  t.is(_dispatched2[0].msg.items.length, frontMatter.npm.length)
+  t.is(_dispatched2[1].action, '$nuxtStories/FETCH_ESMS')
+  t.is(_dispatched2[1].msg.items.length, frontMatter.esm.length + frontMatter.npm.length)
   t.false(vm.esmsFetched)
+
+  vm.$fetch()
+  t.is(_dispatched2.length, 2)
+  t.is(_dispatched2[1].msg.items[0], '/Example2.mjs')
+  t.is(_dispatched2[1].msg.items[1], '/urlPath/to/lodash-es')
 
   vm = new VueDist(compiled)
   vm.$route = currentRoute
-  vuexStore.state.$nuxtStories.esmsFetched[currentRoute.path] = {
+  vuexStore2.state.$nuxtStories.esmsFetched[currentRoute.path] = {
     Example2: true
   }
-  vm.$store = vuexStore
+  vm.$store = vuexStore2
   t.true(vm.esmsFetched)
 
   vm = new VueDist(compiled)
