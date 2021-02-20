@@ -647,3 +647,36 @@ test('Action: FETCH_ESMS (and ESMS_FETCHED)', async (t) => {
     t.is(Vue.prototype[alias], val)
   })
 })
+
+test('Action: FETCH_NPMS', async (t) => {
+  const jsons = {
+    'https://data.jsdelivr.com/v1/package/npm/lodash-es': {
+      "tags": {
+        "latest": "4.17.20"
+      }  
+    },
+    'https://data.jsdelivr.com/v1/package/npm/lodash-es@4.17.20': {
+      default: '/index.min.js'
+    },
+    'https://data.jsdelivr.com/v1/package/npm/lodash-es@4.17.13': {
+      default: '/index.min.js'
+    }
+  }
+  
+  global.fetch = function (path) {
+    return Promise.resolve({
+      json () {
+        return jsons[path]
+      }
+    })
+  }
+  const path = '/some/path'
+  const items = [
+    'lodash-es',
+    { 'filter': 'lodash-es@4.17.13' }
+  ]
+  
+  const esms = await actions.FETCH_NPMS(null, { items, path })
+  t.is(esms[0], 'https://cdn.jsdelivr.net/npm/lodash-es@4.17.20/index.min.js')
+  t.is(esms[1].filter, 'https://cdn.jsdelivr.net/npm/lodash-es@4.17.13/index.min.js')
+})
