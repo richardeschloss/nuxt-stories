@@ -1,18 +1,25 @@
+import { days, today } from "https://cdn.jsdelivr.net/gh/richardeschloss/les-utils@latest/src/datetime.js"
+
+export function named1() {
+  return "I'm from Example4...."
+}
+
 export default {
-  render(createElement) {
+  render(h) { 
     const self = this
-    return createElement('div', {
+    return h('div', {
       style: {
         border: '1px solid',
         background: 'lightblue'
       }
     }, [
-      createElement('p','Some text here! Cnt=' + this.cnt),
-      createElement('button', {
+      h('p','Some text here! Cnt....=' + this.cnt),
+      h('button', {
         on: {
           click: this.inc
         }
-      }, 'Click Me')
+      }, 'Click Me'),
+      h('p', 'today is:' + today() + '3')
     ])
   },
   data() {
