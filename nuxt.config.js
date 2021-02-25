@@ -45,7 +45,7 @@ module.exports = {
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     // Doc: https://github.com/richardeschloss/nuxt-stories
     'lib/stories.module' // Ok
     // 'nuxt-stories/stories.module' // Ok too

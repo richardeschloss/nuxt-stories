@@ -368,6 +368,7 @@ test('Methods: Update Story (dynamic host)', async (t) => {
   const _fetched = []
   const ctx = {
     ...methods,
+    viewMode: 'edit',
     async fetchStory ({ mdPath }) {
       _fetched.push(mdPath)
     },
@@ -402,7 +403,10 @@ test('Methods: Update Story (dynamic host)', async (t) => {
 
   await ctx.updateStory()
   t.is(_fetched[1], 'stories/en/Examples.md')
-  t.truthy(ctx.storiesData.compiled)
+  t.falsy(ctx.storiesData.compiled)
+
+  ctx.viewMode = 'split'
+  await ctx.updateStory()
   t.truthy(ctx.storiesData.frontMatter)
   t.truthy(state['$nuxtStories/SET_TOC'])
   t.true(called.saveMarkdown)
@@ -526,4 +530,11 @@ test('Error Handler', (t) => {
   } catch (err) {
     t.is(err.message, 'Error: ' + msg)
   }
+})
+
+test('Warn Handler', (t) => {
+  // json pretty viewer warns when data prop contains functions.
+  Vue.config.warnHandler(null, {}, 'some warning')
+  Vue.config.warnHandler(null, {}, 'VueJsonPretty...')
+  t.pass()
 })

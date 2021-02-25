@@ -3,7 +3,7 @@ title: Dynamic Import
 components: 
   Example3: /Example3.vue
 vues:
-  - /Example4.js
+  - /Example4.js?vddf
 scripts: 
   - /Example1.js
   - https://unpkg.com/moment@2.29.1/moment.js
