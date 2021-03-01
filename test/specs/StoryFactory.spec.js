@@ -70,14 +70,24 @@ test('Defaults (stores defined)', (t) => {
   t.is(_dispatched.length, 0)
 })
 
-test('Defaults (fetch enabled, frontMatter undefined)', (t) => {
-  const cfg = { fetch: true }
+test('Defaults (fetch enabled, dynamicImport disabled, frontMatter undefined)', (t) => {
+  const cfg = { fetch: true, dynamicImport: false }
   const compiled = StoryFactory({ cfg, ...res })
   const vm = new VueDist(compiled)
   vm.$route = currentRoute
   vm.$store = vuexStore
   vm.$fetch = compiled.fetch
-  vm.$mount()
+  vm.$fetch()
+  t.is(_dispatched.length, 0)
+})
+
+test('Defaults (fetch enabled, dynamicImport enabled, frontMatter undefined)', (t) => {
+  const cfg = { fetch: true, dynamicImport: true }
+  const compiled = StoryFactory({ cfg, ...res })
+  const vm = new VueDist(compiled)
+  vm.$route = currentRoute
+  vm.$store = vuexStore
+  vm.$fetch = compiled.fetch
   vm.$fetch()
   t.is(_dispatched.length, 0)
 })
@@ -91,7 +101,7 @@ test('Defaults (fetch enabled, frontMatter defined)', async (t) => {
       someJson2: '/path/to/json2'
     }
   }
-  const cfg = { fetch: true }
+  const cfg = { fetch: true, dynamicImport: true }
   const compiled = StoryFactory({ cfg, frontMatter, ...res })
   const vm = new VueDist(compiled)
   vm.$route = currentRoute
@@ -123,7 +133,7 @@ test('Fetch NPMS and ESMS', async (t) => {
       'lodash-es'
     ]
   }
-  const cfg = { fetch: true }
+  const cfg = { fetch: true, dynamicImport: true }
   const compiled = StoryFactory({ cfg, frontMatter, ...res })
   let vm = new VueDist(compiled)
   vm.$route = currentRoute
@@ -157,7 +167,7 @@ test('Fetch Script', async (t) => {
       '/url/to/script.js'
     ]
   }
-  const cfg = { fetch: true }
+  const cfg = { fetch: true, dynamicImport: true }
   const compiled = StoryFactory({ cfg, frontMatter, ...res })
   let vm = new VueDist(compiled)
   vm.$route = currentRoute
@@ -187,7 +197,7 @@ test('Fetch Components', async (t) => {
       '/url/to/component.vue'
     ]
   }
-  const cfg = { fetch: true }
+  const cfg = { fetch: true, dynamicImport: true }
   const compiled = StoryFactory({ cfg, frontMatter, ...res })
   let vm = new VueDist(compiled)
   vm.$route = currentRoute
