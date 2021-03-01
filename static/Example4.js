@@ -1,4 +1,4 @@
-//import { days, today } from "https://cdn.jsdelivr.net/gh/richardeschloss/les-utils@latest/src/datetime.js"
+import { days, today } from "https://cdn.jsdelivr.net/gh/richardeschloss/les-utils@latest/src/datetime.js"
 
 export function named1() {
   return "I'm from Example4...."
@@ -19,7 +19,8 @@ export default {
           click: this.inc
         }
       }, 'Click Me'),
-      // h('p', 'today is:' + today() + '3')
+      h('p', 'today is:' + today() + '3'),
+      h('p', '3 days from now is: ' + days(3))
     ])
   },
   data() {

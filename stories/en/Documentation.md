@@ -26,6 +26,8 @@ order: 1
 * ✅ Auto importing of components. Just place components in your components directory and just use them!
 * ✅ Vue in Markdown or Markdown in Vue! You're in complete control! (I prefer Vue-in-Markdown ;))
 * ✅ Emoji support! Don't believe it? Just look at this bulleted list!
+* ✅ Built-in json viewer. Just type `<json :data="[your data]"/>` to see the tree.
+* ✅ Dynamic import feature for rapidly importing components (v2.0.14+)
 * ✅ The perfect development tool for rapidly jotting down notes, gameplans, or even writing official documentation! Documentation that is also *functional*. 
 
 (Demonstration video placeholder)
