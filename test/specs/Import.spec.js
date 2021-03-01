@@ -1,5 +1,5 @@
 import { serial as test, before, after } from 'ava'
-import { existsSync, unlinkSync } from 'fs'
+import { existsSync, unlinkSync, rmdirSync } from 'fs'
 import { resolve as pResolve } from 'path'
 import express from 'express'
 import { fetchComponents } from '@/lib/utils/autoImport.server'
@@ -51,4 +51,12 @@ test('Import server-side', async (t) => {
     components,
     origin: 'http://localhost:3002'  
   })
+
+  components.forEach((c) => {
+    const ext = c[1].split('.')[1]
+    const f = pResolve(`./components/nuxtStories/${c[0]}.${ext}`)
+    unlinkSync(f)
+  })
+
+  rmdirSync(pResolve(`./components/nuxtStories`))
 })
