@@ -94,4 +94,4 @@ First, the frontMatter is inspected for changes to either frontMatter.esm or fro
 
 1. Construct an importer script by parsing the entries. Append to that script a callback when imports are ready. The callbacks will be a Vuex mutation (to "$nuxtStories/ESMS_FETCHED") and a "modsImported" method attached to the DOM element containing the importer script. The callbacks consume the imports.
 2. Find the DOM element with id "nuxt-stories-esm". If it does not exist, create it with its contents set to the importer script. If it does exist, simply replace the element with the updated importer. 
-3. Append this importer element to document.head. 
+3. Append this importer element to `document.head`. 

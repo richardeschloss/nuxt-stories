@@ -125,31 +125,58 @@ test('Fetch NPMS and ESMS', async (t) => {
       }
     }
   }  
+  const cfg = { fetch: true, dynamicImport: true }
   const frontMatter = {
-    esm: [
-      '/Example2.mjs'
-    ],
     npm: [
       'lodash-es'
     ]
   }
-  const cfg = { fetch: true, dynamicImport: true }
-  const compiled = StoryFactory({ cfg, frontMatter, ...res })
+
+  let compiled = StoryFactory({ cfg, frontMatter, ...res })
   let vm = new VueDist(compiled)
   vm.$route = currentRoute
-  vuexStore2.state.$nuxtStories.esmsFetched = {}
-  vm.$store = vuexStore2
+  vm.$store = {
+    state: {
+      $nuxtStories: {}
+    },
+    dispatch (action, msg) {
+      _dispatched.push({ action, msg })
+      if (action === '$nuxtStories/FETCH_NPMS') {
+        return ['/urlPath/to/lodash-es']
+      }
+    }
+  }  
   vm.$fetch = compiled.fetch
   await vm.$fetch()
   t.is(_dispatched[0].action, '$nuxtStories/FETCH_NPMS')
   t.is(_dispatched[0].msg.items.length, frontMatter.npm.length)
   t.is(_dispatched[1].action, '$nuxtStories/FETCH_ESMS')
-  t.is(_dispatched[1].msg.items.length, frontMatter.esm.length + frontMatter.npm.length)
+  t.is(_dispatched[1].msg.items.length, frontMatter.npm.length)
 
-  vm.$fetch()
-  t.is(_dispatched.length, 2)
-  t.is(_dispatched[1].msg.items[0], '/Example2.mjs')
-  t.is(_dispatched[1].msg.items[1], '/urlPath/to/lodash-es')
+  frontMatter.esm = ['/Example2.mjs']
+  compiled = StoryFactory({ cfg, frontMatter, ...res })
+  vm = new VueDist(compiled)
+  vm.$route = currentRoute
+  vm.$store = {
+    state: {
+      $nuxtStories: {}
+    },
+    dispatch (action, msg) {
+      _dispatched.push({ action, msg })
+      if (action === '$nuxtStories/FETCH_NPMS') {
+        return ['/urlPath/to/lodash-es']
+      }
+    }
+  }  
+  vm.$fetch = compiled.fetch
+  await vm.$fetch()
+  t.is(_dispatched[2].action, '$nuxtStories/FETCH_ESMS')
+  t.is(_dispatched[2].msg.items.length, frontMatter.esm.length + frontMatter.npm.length)
+
+  await vm.$fetch()
+  t.is(_dispatched.length, 3)
+  t.is(_dispatched[2].msg.items[0], '/Example2.mjs')
+  t.is(_dispatched[2].msg.items[1], '/urlPath/to/lodash-es')
 })
 
 test('Fetch Script', async (t) => {
