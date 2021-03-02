@@ -1,5 +1,5 @@
 window.Example1 = Object.freeze({
-  hello(msg) {
+  hello (msg) {
     return msg + 'world'
   }
 })

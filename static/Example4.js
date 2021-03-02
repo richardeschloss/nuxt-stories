@@ -1,19 +1,18 @@
-import { days, today } from "https://cdn.jsdelivr.net/gh/richardeschloss/les-utils@latest/src/datetime.js"
+import { days, today } from 'https://cdn.jsdelivr.net/gh/richardeschloss/les-utils@latest/src/datetime.js'
 
-export function named1() {
+export function named1 () {
   return "I'm from Example4...."
 }
 
 export default {
-  render(h) { 
-    const self = this
+  render (h) {
     return h('div', {
       style: {
         border: '1px solid',
         background: 'lightblue'
       }
     }, [
-      h('p','Some text here! Cnt....=' + this.cnt),
+      h('p', 'Some text here! Cnt....=' + this.cnt),
       h('button', {
         on: {
           click: this.inc
@@ -23,13 +22,13 @@ export default {
       h('p', '3 days from now is: ' + days(3))
     ])
   },
-  data() {
+  data () {
     return {
       cnt: 0
     }
   },
   methods: {
-    inc() {
+    inc () {
       this.cnt++
     }
   }

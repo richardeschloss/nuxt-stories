@@ -1,6 +1,6 @@
-import { serial as test, before, after } from 'ava'
 import { existsSync, unlinkSync, rmdirSync } from 'fs'
 import { resolve as pResolve } from 'path'
+import { serial as test, before, after } from 'ava'
 import express from 'express'
 import { fetchComponents } from '@/lib/utils/autoImport.server'
 
@@ -34,12 +34,12 @@ test('Import server-side', async (t) => {
 
   await fetchComponents({
     components,
-    origin: 'https://localhost:3003'  
+    origin: 'https://localhost:3003'
   }).catch(() => {})
-  
+
   await fetchComponents({
     components,
-    origin: 'http://localhost:3002'  
+    origin: 'http://localhost:3002'
   })
   components.forEach((c) => {
     const ext = c[1].split('.')[1]
@@ -49,7 +49,7 @@ test('Import server-side', async (t) => {
 
   await fetchComponents({
     components,
-    origin: 'http://localhost:3002'  
+    origin: 'http://localhost:3002'
   })
 
   components.forEach((c) => {

@@ -1,17 +1,19 @@
 <template>
   <div id="example3-root">
-  Hi this is example 3. I am just a simple counter:
-  <button @click="cnt++">Click Me: {{ cnt }}</button>
+    Hi this is example 3. I am just a simple counter:
+    <button @click="cnt++">
+      Click Me: {{ cnt }}
+    </button>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       cnt: 0
     }
-  }  
+  }
 }
 </script>
 

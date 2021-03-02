@@ -114,17 +114,6 @@ test('Defaults (fetch enabled, frontMatter defined)', async (t) => {
 
 test('Fetch NPMS and ESMS', async (t) => {
   const _dispatched = []
-  const vuexStore2 = {
-    state: {
-      $nuxtStories: {}
-    },
-    dispatch (action, msg) {
-      _dispatched.push({ action, msg })
-      if (action === '$nuxtStories/FETCH_NPMS') {
-        return ['/urlPath/to/lodash-es']
-      }
-    }
-  }  
   const cfg = { fetch: true, dynamicImport: true }
   const frontMatter = {
     npm: [
@@ -145,7 +134,7 @@ test('Fetch NPMS and ESMS', async (t) => {
         return ['/urlPath/to/lodash-es']
       }
     }
-  }  
+  }
   vm.$fetch = compiled.fetch
   await vm.$fetch()
   t.is(_dispatched[0].action, '$nuxtStories/FETCH_NPMS')
@@ -167,7 +156,7 @@ test('Fetch NPMS and ESMS', async (t) => {
         return ['/urlPath/to/lodash-es']
       }
     }
-  }  
+  }
   vm.$fetch = compiled.fetch
   await vm.$fetch()
   t.is(_dispatched[2].action, '$nuxtStories/FETCH_ESMS')
@@ -188,7 +177,7 @@ test('Fetch Script', async (t) => {
     dispatch (action, msg) {
       _dispatched.push({ action, msg })
     }
-  }  
+  }
   const frontMatter = {
     script: [
       '/url/to/script.js'
@@ -196,7 +185,7 @@ test('Fetch Script', async (t) => {
   }
   const cfg = { fetch: true, dynamicImport: true }
   const compiled = StoryFactory({ cfg, frontMatter, ...res })
-  let vm = new VueDist(compiled)
+  const vm = new VueDist(compiled)
   vm.$route = currentRoute
   vuexStore2.state.$nuxtStories.esmsFetched = {}
   vm.$store = vuexStore2
@@ -204,7 +193,7 @@ test('Fetch Script', async (t) => {
   await vm.$fetch()
   t.is(_dispatched[0].action, '$nuxtStories/FETCH_SCRIPTS')
   t.is(_dispatched[0].msg.items.length, frontMatter.script.length)
-  
+
   vm.$fetch()
   t.is(_dispatched.length, 1)
 })
@@ -218,7 +207,7 @@ test('Fetch Components', async (t) => {
     dispatch (action, msg) {
       _dispatched.push({ action, msg })
     }
-  }  
+  }
   const frontMatter = {
     components: [
       '/url/to/component.vue'
@@ -226,7 +215,7 @@ test('Fetch Components', async (t) => {
   }
   const cfg = { fetch: true, dynamicImport: true }
   const compiled = StoryFactory({ cfg, frontMatter, ...res })
-  let vm = new VueDist(compiled)
+  const vm = new VueDist(compiled)
   vm.$route = currentRoute
   vuexStore2.state.$nuxtStories.esmsFetched = {}
   vm.$store = vuexStore2

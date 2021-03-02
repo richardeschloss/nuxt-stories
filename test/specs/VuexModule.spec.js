@@ -561,7 +561,7 @@ test('Action: FETCH', async (t) => {
 })
 
 test('Action: FETCH_ESMS (and ESMS_FETCHED)', async (t) => {
-  let dom = {}, callCnt = { createElement: 0 }
+  const dom = {}; const callCnt = { createElement: 0 }
   const mods1 = {
     named1: 111,
     n2: 333,
@@ -571,31 +571,31 @@ test('Action: FETCH_ESMS (and ESMS_FETCHED)', async (t) => {
     named1: 111,
     n3: 'abc123',
     Example3: {
-      render(h) {
+      render (h) {
         return h('div')
       }
     }
   }
   global.document = {
-    createElement(tagName) {
+    createElement (tagName) {
       callCnt.createElement++
       t.is(tagName, 'script')
       return {
-        replaceWith(newMod) {
+        replaceWith (newMod) {
           dom[newMod.id] = newMod
           newMod.modsImported(mods2)
         }
-      } 
+      }
     },
-    getElementById(id) {
+    getElementById (id) {
       return dom[id]
     },
     head: {
-      appendChild(module) {
+      appendChild (module) {
         dom[module.id] = module
         module.modsImported(mods1)
       }
-    }  
+    }
   }
   const store = {
     state: {
@@ -609,8 +609,8 @@ test('Action: FETCH_ESMS (and ESMS_FETCHED)', async (t) => {
     { 'named1, named2 as n2': '/Example2.mjs' },
     '/Example3.mjs'
   ]
-  const modId = `nuxt-stories-esm` 
-  
+  const modId = `nuxt-stories-esm`
+
   await actions.FETCH_ESMS(store, { items })
   t.is(callCnt.createElement, 1)
   t.is(dom[modId].id, modId)
@@ -619,32 +619,31 @@ test('Action: FETCH_ESMS (and ESMS_FETCHED)', async (t) => {
     dom[modId].text,
     'import { named1, named2 as n2 } from "/Example2.mjs"\n' +
     'import * as Example3 from "/Example3.mjs"\n' +
-    "window.$nuxt.$store.commit('$nuxtStories/ESMS_FETCHED', { mods: { named1, n2, Example3 }})\n"
-    + `const elm = document.getElementById('${modId}')\n`
-    + `elm.modsImported({named1, n2, Example3})\n`
+    "window.$nuxt.$store.commit('$nuxtStories/ESMS_FETCHED', { mods: { named1, n2, Example3 }})\n" +
+    `const elm = document.getElementById('${modId}')\n` +
+    `elm.modsImported({named1, n2, Example3})\n`
   )
-  
 
   mutations.ESMS_FETCHED(store.state, { mods: mods1 })
   Object.entries(mods1).forEach(([alias, val]) => {
     t.true(store.state.esmsFetched[alias])
     t.is(Vue.prototype[alias], val)
   })
-  
-  await actions.FETCH_ESMS(store, { items }) 
+
+  await actions.FETCH_ESMS(store, { items })
   t.is(callCnt.createElement, 1)
 
   items[0] = { 'named1, named2 as n3': '/Example2.mjs' }
-  await actions.FETCH_ESMS(store, { items }) 
+  await actions.FETCH_ESMS(store, { items })
   t.is(dom[modId].id, modId)
   t.is(dom[modId].type, 'module')
   t.is(
     dom[modId].text,
     'import { named1, named2 as n3 } from "/Example2.mjs"\n' +
     'import * as Example3 from "/Example3.mjs"\n' +
-    "window.$nuxt.$store.commit('$nuxtStories/ESMS_FETCHED', { mods: { named1, n3, Example3 }})\n"
-    + `const elm = document.getElementById('${modId}')\n`
-    + `elm.modsImported({named1, n3, Example3})\n`
+    "window.$nuxt.$store.commit('$nuxtStories/ESMS_FETCHED', { mods: { named1, n3, Example3 }})\n" +
+    `const elm = document.getElementById('${modId}')\n` +
+    `elm.modsImported({named1, n3, Example3})\n`
   )
 
   mutations.ESMS_FETCHED(store.state, { mods: mods2 })
@@ -657,9 +656,9 @@ test('Action: FETCH_ESMS (and ESMS_FETCHED)', async (t) => {
 test('Action: FETCH_NPMS', async (t) => {
   const jsons = {
     'https://data.jsdelivr.com/v1/package/npm/lodash-es': {
-      "tags": {
-        "latest": "4.17.20"
-      }  
+      'tags': {
+        'latest': '4.17.20'
+      }
     },
     'https://data.jsdelivr.com/v1/package/npm/lodash-es@4.17.20': {
       default: '/index.min.js'
@@ -668,7 +667,7 @@ test('Action: FETCH_NPMS', async (t) => {
       default: '/index.min.js'
     }
   }
-  
+
   global.fetch = function (path) {
     return Promise.resolve({
       json () {
@@ -681,7 +680,7 @@ test('Action: FETCH_NPMS', async (t) => {
     'lodash-es',
     { 'filter': 'lodash-es@4.17.13' }
   ]
-  
+
   const esms = await actions.FETCH_NPMS(null, { items, path })
   t.is(esms[0], 'https://cdn.jsdelivr.net/npm/lodash-es@4.17.20/index.min.js')
   t.is(esms[1].filter, 'https://cdn.jsdelivr.net/npm/lodash-es@4.17.13/index.min.js')
@@ -695,13 +694,13 @@ test('Action: FETCH_SCRIPTS', async (t) => {
   ]
   global.window = {}
   global.document = {
-    createElement(tagName) {
+    createElement (tagName) {
       t.is(tagName, 'script')
       callCnt.createElement++
       return {}
     },
     head: {
-      appendChild(script) {
+      appendChild (script) {
         const idx = callCnt.appendChild
         const { alias, url } = aliases[idx]
         t.is(script.id, `nuxt-stories-script-${alias}`)
@@ -712,19 +711,19 @@ test('Action: FETCH_SCRIPTS', async (t) => {
       }
     }
   }
-  
+
   const items = [
     '/url/to/script1.js',
-    { someAlias: '/url/to/script2.js' } 
+    { someAlias: '/url/to/script2.js' }
   ]
 
   await actions.FETCH_SCRIPTS(null, { items })
   t.is(callCnt.createElement, items.length)
   t.is(callCnt.appendChild, items.length)
-  aliases.forEach(({alias}) => {
+  aliases.forEach(({ alias }) => {
     t.truthy(Vue.prototype[alias])
   })
-  
+
   await actions.FETCH_SCRIPTS(null, { items })
   t.is(callCnt.appendChild, items.length)
 })
@@ -738,11 +737,11 @@ test('Action: FETCH_COMPONENTS', async (t) => {
   const origin = 'https://localhost:3000'
   global.window = {
     $nuxt: {
-      $nuxtSocket(cfg) {
+      $nuxtSocket (cfg) {
         t.is(cfg.persist, 'storiesSocket')
         t.is(cfg.channel, '')
         return {
-          emit(evt, msg, cb) {
+          emit (evt, msg, cb) {
             t.is(evt, 'fetchComponents')
             t.is(msg.components[0][0], 'Example33')
             t.is(msg.components[0][1], '/Example33.vue')
@@ -755,7 +754,7 @@ test('Action: FETCH_COMPONENTS', async (t) => {
       }
     }
   }
-  
+
   await actions.FETCH_COMPONENTS(null, {
     items,
     origin
@@ -765,13 +764,13 @@ test('Action: FETCH_COMPONENTS', async (t) => {
   t.falsy(Vue.component('E'))
 
   Vue.component('Example33', {
-    render(h) {
+    render (h) {
       return h('p', 'example33')
     }
   })
 
   Vue.component('E', {
-    render(h) {
+    render (h) {
       return h('p', 'example4 (E)')
     }
   })
@@ -786,6 +785,6 @@ test('Action: FETCH_COMPONENTS', async (t) => {
     items,
     origin
   })
-  t.is(imported['Example33'].name, 'Example33')
-  t.is(imported['E'].name, 'E')
+  t.is(imported.Example33.name, 'Example33')
+  t.is(imported.E.name, 'E')
 })
