@@ -23,7 +23,9 @@ However, it is important to understand that with benefits, there are also caveat
 
 Please be advised that any time you import anything into your application, especially on-the-fly, there is a risk associated with that: you have to trust the source and the script your are importing. Please take care in balancing the level of speed and risk you wish to take on. 
 
-Read the sub-menu items in to learn more.
+Important note: this feature adds a DOM element to the application's head in order to work. Again, make sure you trust the script and source before importing. 
+
+Read the sub-menu items in to learn more about how things work and potential risks.
 
 ## Suggested Reading
 
