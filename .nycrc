@@ -9,6 +9,7 @@
     "lib/stories.io.js",
     "lib/stories.module.js",
     "lib/stories.plugin.compiled.js",
+    "lib/utils/autoImport.server.js",
     "lib/utils/fetch.js",
     "lib/utils/markdown.server.js",
     "lib/utils/markdown.client.js",

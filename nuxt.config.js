@@ -51,6 +51,7 @@ module.exports = {
     // 'nuxt-stories/stories.module' // Ok too
   ],
   stories: {
+    dynamicImport: true,
     forceBuild: true,
     staticHost: process.env.NODE_ENV === 'production'
   },

@@ -1,6 +1,6 @@
 {
   "name": "nuxt-stories",
-  "version": "2.0.13",
+  "version": "2.0.14",
   "description": "Nuxt stories module -- Painless storybooking for Nuxt",
   "author": "Richard Schloss",
   "main": "lib/stories.module.js",
@@ -55,6 +55,7 @@
     "node-sass": "^4.14.1",
     "nuxt-socket-io": "^1.1.8",
     "sass-loader": "^8.0.2",
+    "vue-json-pretty": "^1.7.1",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
