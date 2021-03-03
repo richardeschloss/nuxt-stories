@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.14] - 2021-03-02
+### Added
+- Dynamic import feature. (specify imports in frontMatter)
+- Pretty json viewer
+
 ## [2.0.13] - 2021-01-27
 ### Added
 - Fetch feature. (fetch and nodeFetch in frontMatter)

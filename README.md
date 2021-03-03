@@ -21,8 +21,10 @@
 * ✅ Auto importing of components. Just place components in your components directory and just use them!
 * ✅ Vue in Markdown or Markdown in Vue! You're in complete control! (I prefer Vue-in-Markdown ;))
 * ✅ Emoji support! Don't believe it? Just look at this bulleted list!
+* ✅ Built-in json viewer. Just type `<json :data="[your data]"/>` to see the tree.
+* ✅ Dynamic import feature for rapidly importing components (v2.0.14+)
 * ✅ The perfect development tool for rapidly jotting down notes, gameplans, or even writing official documentation! Documentation that is also *functional*. 
-* ✅ Built-in fetch fetch. Quickly fetch on the client or server side, right in your story! (v2.0.13+)
+* ✅ Built-in fetch. Quickly fetch on the client or server side, right in your story! (v2.0.13+)
 
 (Demonstration video placeholder)
 
