@@ -133,6 +133,7 @@ And here is a the nuxt-stories logo:
 
 ### Important notes
 
+1. At any time you wish to pause the instant compilation, simply switch to "edit mode" by clicking the pencil icon in the top togglebar. Clicking back to either "split" or "view" mode will re-enable the instant compilation.
 1. Since the UI is allowing you to do live editing and real-time compiling, there is technically a lot of rule-breaking going on, but it's ok, because this is simply a *dev tool* primarily used *locally*. Expect to see console log statements going haywire. As you type, naturally, compilation will fail as the component name is incomplete. My best recommendation is to temporarily mute console errors, or disable the "error" log level in dev tools.
 1. The table-of-contents on the right only gets updated for "Markdown first" stories. 
 1. The table-of-contents "scrollspy" feature that highlights the actively viewed story works primarily in "view" mode. 
