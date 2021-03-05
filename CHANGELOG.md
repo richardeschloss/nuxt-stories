@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.15] - 2021-03-04
+### Fixed
+- Stories with spaces (stripped HTML entities in paths).
+
 ## [2.0.14] - 2021-03-02
 ### Added
 - Dynamic import feature. (specify imports in frontMatter)
