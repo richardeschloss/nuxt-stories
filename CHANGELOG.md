@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.16] - 2021-05-17
+### Added
+- Cors options wired to socket.io reg.
+
 ## [2.0.15] - 2021-03-04
 ### Fixed
 - Stories with spaces (stripped HTML entities in paths).
