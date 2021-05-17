@@ -1,8 +1,11 @@
 import { readFileSync, readdirSync } from 'fs'
 import http from 'http'
+import https from 'https'
 import { resolve as pResolve } from 'path'
-import test from 'ava'
+import ava from 'ava'
 import { register, storyPath } from '@/lib/module.register'
+
+const { serial: test } = ava
 
 test('Full Story path', (t) => {
   const srcDir = '/some/dir'
@@ -78,6 +81,7 @@ test('Register io', (t) => {
   t.false(server3.listening)
   t.truthy(ctx3.options.io)
   t.is(ctx3.options.io.sockets[0].url, ioOpts3.url)
+  server3.close()
 
   const ctx4 = {
     options: {}
@@ -87,6 +91,20 @@ test('Register io', (t) => {
   register.io({ ctx: ctx4, ioOpts: ioOpts4, server: server4 })
   t.false(server4.listening)
   t.falsy(ctx4.options.io.sockets[0])
+  server4.close()
+
+  const ctx5 = {
+    options: {
+      server: {
+        host: 'localhost',
+        port: 8000,
+        https: true
+      }
+    }
+  }
+  const server5 = https.createServer()
+  register.io({ ctx: ctx5, server: server5 })
+  server5.close()
 })
 
 test('Register middlewares', (t) => {
