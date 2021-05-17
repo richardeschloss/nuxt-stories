@@ -53,7 +53,7 @@
     "marked": "0.8.0",
     "mkdirp": "latest",
     "node-sass": "^4.14.1",
-    "nuxt-socket-io": "^1.1.8",
+    "nuxt-socket-io": "^1.1.18",
     "sass-loader": "^8.0.2",
     "vue-json-pretty": "^1.7.1",
     "xml2js": "^0.4.23"
@@ -83,7 +83,7 @@
     "jsdom-global": "^3.0.2",
     "module-alias": "^2.2.2",
     "nodemon": "^2.0.4",
-    "nuxt": "^2.14.12",
+    "nuxt": "^2.15.6",
     "nuxt-test-utils": "0.0.1",
     "nyc": "^14.1.1",
     "prettier": "^1.16.4",
