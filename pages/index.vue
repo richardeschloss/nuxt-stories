@@ -8,6 +8,10 @@
       <h2 class="subtitle">
         Painless (and now insanely fast) storybooking for Nuxt
       </h2>
+      <client-only>
+        <label><code>&lt;Hello/&gt;</code>: (visible in both the app and in stories)</label>
+        <Hello />
+      </client-only>
       <div class="links">
         <b-button
           class="button--grey"

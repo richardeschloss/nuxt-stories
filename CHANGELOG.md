@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.17] - 2021-06-16
+### Changed
+- Improved error handling for the autoImport feature.
+
 ## [2.0.16] - 2021-05-17
 ### Added
 - Cors options wired to socket.io reg.

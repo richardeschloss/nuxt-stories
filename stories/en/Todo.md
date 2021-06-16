@@ -13,3 +13,5 @@ order: 3
 1. Might be nice to have stories get auto-generated for components that currently exist in the components dir. (I think? Or would synching all that be a pain?)
 1. Update meta tags (and og:image) for this deployed app.
 1. As mentionned in github issues, these are the wishful things: observerablehq integration (?), h-wiki backend (?).
+1. bootstrap-vue has a patch for router-link deprecation warnings. That will be updated when it's released.
+1. bootstrap-vue source map 404 errors appear in devtools ([6944](https://github.com/nuxt/nuxt.js/issues/6944) seems to have some workarounds)

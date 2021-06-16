@@ -20,3 +20,7 @@ More stuff here!
 <li> Something </li>
 <li v-for="item in items">{{ item }} </li>
 </ul>
+
+## Hello component
+
+<Hello />

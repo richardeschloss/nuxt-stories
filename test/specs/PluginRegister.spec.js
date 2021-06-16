@@ -6,11 +6,8 @@ import { register, methods, directives } from '@/lib/plugin.register'
 require('jsdom-global')()
 
 test('Register: components', (t) => {
-  try {
-    register.components()
-  } catch (err) {
-    t.is(err.message, 'require.context is not a function')
-  }
+  register.components()
+  t.pass()
 })
 
 test('Register: icons', (t) => {
