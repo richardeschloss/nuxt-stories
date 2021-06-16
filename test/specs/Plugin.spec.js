@@ -112,14 +112,3 @@ test('Stories plugin', async (t) => {
   ctx.componentDestroy()
   t.is(destroyed, 1)
 })
-
-test('Stories plugin (register components)', async (t) => {
-  delete require.cache[tmpFile]
-  delete process.env.TEST
-  await import(tmpFile).catch((err) => {
-    // It's ok. Mocking require.context is a pain, but at
-    // least we know the plugin is trying to call it, and we know
-    // it works (because everyone uses require.context)
-    t.is(err.message, 'require.context is not a function')
-  })
-})

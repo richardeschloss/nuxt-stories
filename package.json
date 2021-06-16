@@ -71,6 +71,7 @@
     "browser-env": "^3.3.0",
     "consola": "^2.14.0",
     "cross-env": "^5.2.0",
+    "d3": "^7.0.0",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-ignore-erb-mogix": "^0.2.2",
