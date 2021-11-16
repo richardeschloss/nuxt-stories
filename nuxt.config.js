@@ -11,7 +11,8 @@ async function staticRoutes () {
   return routes
 }
 
-module.exports = {
+export default {
+  components: true,
   telemetry: false,
   target: process.env.NODE_ENV === 'production'
     ? 'static'
@@ -44,11 +45,9 @@ module.exports = {
    ** Nuxt.js dev-modules
    */
   buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
     // Doc: https://github.com/richardeschloss/nuxt-stories
-    'lib/stories.module' // Ok
-    // 'nuxt-stories/stories.module' // Ok too
+    'lib/module.js' // Ok
+    // 'nuxt-stories/module.js' // Ok too
   ],
   stories: {
     dynamicImport: true,
