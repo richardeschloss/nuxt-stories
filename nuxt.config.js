@@ -11,6 +11,13 @@ async function staticRoutes () {
   return routes
 }
 
+/** @type {import('./lib/types').moduleOptions} */
+const storiesOpts = {  
+  dynamicImport: true,
+  forceBuild: true,
+  staticHost: process.env.NODE_ENV === 'production'
+}
+
 export default {
   components: true,
   telemetry: false,
@@ -49,11 +56,7 @@ export default {
     'lib/module.js' // Ok
     // 'nuxt-stories/module.js' // Ok too
   ],
-  stories: {
-    dynamicImport: true,
-    forceBuild: true,
-    staticHost: process.env.NODE_ENV === 'production'
-  },
+  stories: storiesOpts,
   watch: ['~/lib/*.js'],
   /*
    ** Build configuration
