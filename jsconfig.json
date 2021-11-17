@@ -2,6 +2,7 @@
   "compilerOptions": {
     "checkJs": true,
     "baseUrl": ".",
+    "esModuleInterop": true,
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./*"],

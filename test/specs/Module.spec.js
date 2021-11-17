@@ -1,154 +1,57 @@
 /* eslint-disable no-console */
 import path from 'path'
-
 import test from 'ava'
-import config from '@/nuxt.config'
-import NuxtStoriesMod from '@/lib/stories.module'
+import config from '#root/nuxt.config.js'
+import Module from '#root/lib/module.js'
+import { wrapModule } from '../utils/module.js'
 
-import { delay, getModuleOptions } from 'nuxt-test-utils'
+global.__dirname = 'lib'
 
 const srcDir = path.resolve('.')
 
-function loadModule ({
-  modOptions,
-  modules = [],
-  io,
-  server = {
-    host: 'localhost',
-    port: 3000
-  },
-  expCnt = {}
-}) {
-  console.log('Testing with moduleOptions:', modOptions)
-  return new Promise((resolve, reject) => {
-    const timeout = 1500
-    const sampleRoutes = []
-    const out = {
-      pluginsAdded: [],
-      middleWaresAdded: [],
-      extendedRoutes: [],
-      modulesAdded: [],
-      templatesAdded: []
-    }
+/** @type {import('../../lib/types').moduleOptions} */
+const modOptions = {}
 
-    function handleDone () {
-      let allDone = true
-      Object.entries(out).some(([key, arr]) => {
-        if (arr.length < expCnt[key]) {
-          allDone = false
-          return true
-        }
-      })
-      if (allDone) {
-        out.cssAdded = simpleNuxt.options.css
-        resolve(out)
-      }
-    }
-
-    const modContainer = {
-      extendRoutes (fn) {
-        try {
-          fn(sampleRoutes, path.resolve)
-        } catch (err) {
-          reject(err)
-        }
-        out.extendedRoutes = sampleRoutes
-        handleDone()
-      }
-    }
-    const simpleNuxt = {
-      addModule (modName) {
-        out.modulesAdded.push(modName)
-        handleDone()
-      },
-      addPlugin (pluginOpts) {
-        out.pluginsAdded.push(pluginOpts)
-        handleDone()
-      },
-      addServerMiddleware (middleWareOpts) {
-        out.middleWaresAdded.push(middleWareOpts)
-        handleDone()
-      },
-      addTemplate (templateOpts) {
-        out.templatesAdded.push(templateOpts)
-      },
-      options: {
-        css: [],
-        srcDir,
-        modules,
-        io,
-        server
-      },
-      nuxt: {
-        hook (evt, fn) {
-          if (evt === 'modules:done') {
-            fn(modContainer).catch(reject)
-          }
-        }
-      },
-      NuxtStoriesMod
-    }
-
-    simpleNuxt.NuxtStoriesMod(modOptions)
-
-    delay(timeout).then(() => {
-      // eslint-disable-next-line prefer-promise-reject-errors
-      reject({
-        message: 'loadModule timeout',
-        pluginsAdded: out.pluginsAdded,
-        sampleRoutes
-      })
-    })
-  })
-}
-
-test('Stories Module (defaults)', async (t) => {
-  const modOptions = getModuleOptions(config, 'lib/stories.module')
-  modOptions.forceBuild = true
-  const expCnt = {
-    pluginsAdded: 1,
-    middleWaresAdded: 1,
-    extendedRoutes: 1,
-    modulesAdded: 2
-  }
-  const out = await loadModule({ modOptions, expCnt })
-  t.true(out.templatesAdded.length > 0)
+test('Module (defaults)', (t) => {
+  const ctx = wrapModule(Module)
+  ctx.Module({})
+  t.falsy(ctx.options.publicRuntimeConfig.nuxtStories)
 })
 
-test('Stories Module (staticHost)', async (t) => {
-  const modOptions = getModuleOptions(config, 'lib/stories.module')
-  modOptions.staticHost = true
-  modOptions.forceBuild = true
-  const expCnt = {
-    pluginsAdded: 1,
-    middleWaresAdded: 1,
-    extendedRoutes: 1,
-    modulesAdded: 1
-  }
-  const out = await loadModule({ modOptions, expCnt })
-  t.true(out.templatesAdded.length > 0)
-})
-
-test('Module bails if mode is not dev and forceBuild is false', async (t) => {
-  process.env.NODE_ENV = 'production'
-  const modOptions = {
-    forceBuild: false,
-    storiesDir: 'stories'
-  }
-  const expCnt = {
-    pluginsAdded: 1,
-    middleWaresAdded: 1,
-    extendedRoutes: 1,
-    modulesAdded: 2
-  }
-  const server = {
-    host: 'localhost',
-    port: 3003
-  }
-
-  await loadModule({ modOptions, expCnt, server }).catch((err) => {
-    t.is(err.message, 'loadModule timeout')
-    t.is(err.pluginsAdded.length, 0)
-    t.is(err.sampleRoutes.length, 0)
+test.only('Module (enabled, ssr mode)', async (t) => {
+  const ctx = wrapModule(Module)
+  ctx.Module({
+    forceBuild: true
   })
+  const expMods = ['nuxt-socket-io']
+  expMods.forEach((mod, idx) => {
+    t.is(ctx.options.modules[idx], mod)
+  })
+  const expHooks = ['component:dirs', 'modules:done']
+  expHooks.forEach((h) => {
+    t.truthy(ctx.nuxt.hooks[h])
+  })
+
+  t.is(ctx.options.middlewares[0].path, '/markdown')
+
+  const dirs = []
+  ctx.nuxt.hooks['component:dirs'](dirs)
+  t.is(dirs[0].path, path.resolve(__dirname, 'components'))
+  t.is(dirs[0].prefix, 'NuxtStories')
+  
+  const routes = []
+  Object.assign(ctx, {
+    extendRoutes(cb) {
+      cb(routes)  
+    }
+  })
+
+  await ctx.nuxt.hooks['modules:done'](ctx)
+  t.true(ctx.options.plugins[0].ssr)
+  t.is(ctx.options.plugins[0].src, path.resolve(__dirname, 'plugin.js'))
+  t.is(ctx.options.plugins[0].fileName, 'nuxt-stories/plugin.js')
+  t.is(routes[0].name, 'stories')
+  t.is(routes[0].path, '/stories')
+
+  t.truthy(ctx.options.publicRuntimeConfig.nuxtStories)
 })
