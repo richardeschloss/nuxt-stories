@@ -1,20 +1,8 @@
 <template>
-  <b-navbar
-    toggleable="lg"
-    tag="header"
-    type="dark"
-    variant="dark"
-    class="bd-navbar shadow"
-  >
-    <b-navbar-brand
-      id="brand-link"
-      :to="brandLink"
-      exact
-      active-class="active"
-      aria-label="BootstrapVue"
-    >
-      <stories-logo /> Nuxt Stories
-    </b-navbar-brand>
+  <header class="navbar bd-navbar shadow navbar-dark bg-dark navbar-expand-lg">
+    <a id="brand-link" class="navbar-brand" :href="brandLink">
+      <NuxtStoriesLogo /> Nuxt Stories
+    </a>
 
     <b-navbar-nav class="ml-auto mr-2">
       <b-button-group>
@@ -87,7 +75,7 @@
         </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
-  </b-navbar>
+  </header>
 </template>
 
 <script>
