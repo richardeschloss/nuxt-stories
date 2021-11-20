@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <stories-logo width="400" />
+      <NuxtStoriesLogo width="400" />
       <h1 class="title">
         nuxt-stories
       </h1>
@@ -13,13 +13,12 @@
         <Hello />
       </client-only>
       <div class="links">
-        <b-button
+        <button
           class="button--grey"
-          style="color:lightyellow;"
           @click="toStories()"
         >
           Nuxt Stories: See it in action!
-        </b-button>
+        </button>
         <a
           href="https://github.com/richardeschloss/nuxt-stories"
           target="_blank"
