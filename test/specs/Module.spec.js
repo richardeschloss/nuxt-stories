@@ -1,19 +1,11 @@
-/* eslint-disable no-console */
 import path from 'path'
+import { existsSync, unlinkSync } from 'fs'
 import test from 'ava'
-import config from '#root/nuxt.config.js'
+// @ts-ignore
 import Module from '#root/lib/module.js'
 import { wrapModule } from '../utils/module.js'
-import { wrapPlugin } from '../utils/plugin.js'
-import io from 'socket.io-client'
-import Plugin from 'nuxt-socket-io/lib/plugin.js'
 
 global.__dirname = 'lib'
-
-const srcDir = path.resolve('.')
-
-/** @type {import('../../lib/types').moduleOptions} */
-const modOptions = {}
 
 test('Module (defaults)', (t) => {
   const ctx = wrapModule(Module)
@@ -21,7 +13,7 @@ test('Module (defaults)', (t) => {
   t.falsy(ctx.options.publicRuntimeConfig.nuxtStories)
 })
 
-test.only('Module (enabled, ssr mode)', async (t) => {
+test('Module (enabled, ssr mode)', async (t) => {
   t.timeout(5000)
   const ctx = wrapModule(Module)
   Object.assign(ctx.options, {
@@ -69,23 +61,62 @@ test.only('Module (enabled, ssr mode)', async (t) => {
   t.is(url, 'http://localhost:3001')  
 })
 
+test('Module (enabled, various ioOpts)', async (t) => {
+  const ctx = wrapModule(Module)
+  await ctx.Module({
+    forceBuild: true,
+    ioOpts: {
+      host: 'localhost',
+      port: 3001
+    }
+  })
+  const [{ name, url }] = ctx.options.io.sockets
+  t.is(name, 'nuxtStories')
+  t.is(url, 'http://localhost:3001') 
 
-// TBD: save for io.js test
-  /* 
-  const client = wrapPlugin(Plugin)
-  client.$config = {
-    io: ctx.options.io,
-    nuxtSocketIO: {}
+  const ctx2 = wrapModule(Module)
+  await ctx2.Module({
+    forceBuild: true,
+    ioOpts: { url: 'https://localhost:3001' }
+  })
+  const [{ name: name2, url: url2 }] = ctx2.options.io.sockets
+  t.is(name2, 'nuxtStories')
+  t.is(url2, 'https://localhost:3001') 
+
+  const ctx3 = wrapModule(Module)
+  ctx3.options.server = {
+    https: true,
+    port: 3001,
+    host: 'localhost'
   }
-  client.Plugin(null, client.inject)
-  const s = client.$nuxtSocket({ 
-    channel: '/',
-    namespaceCfg: {
-      emitters: ['fetchStories']
-    } 
+
+  await ctx3.Module({
+    forceBuild: true,
+    // ioOpts: { host: 'https://localhost:3001' }
   })
-  const stories = await client.fetchStories({
-    srcDir
+  const [{ name: name3, url: url3 }] = ctx3.options.io.sockets
+  t.is(name3, 'nuxtStories')
+  t.is(url3, 'https://localhost:3002')
+
+})
+
+test('Module (enabled, static host)', async (t) => {
+  const storiesJson = path.resolve('./stories/stories.json')
+  if (existsSync(storiesJson)) {
+    unlinkSync(storiesJson)
+  }
+  const ctx = wrapModule(Module)
+  await ctx.Module({
+    forceBuild: true,
+    staticHost: 'http://localhost:3001'
   })
-  console.log('stories', stories)
-  */
+  const routes = []
+  Object.assign(ctx, {
+    extendRoutes(cb) {
+      cb(routes)  
+    }
+  })
+
+  await ctx.nuxt.hooks['modules:done'](ctx)
+  t.true(existsSync(storiesJson))
+})
