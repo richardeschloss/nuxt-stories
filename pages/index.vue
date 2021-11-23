@@ -1,31 +1,23 @@
 <template>
   <div class="container">
     <div>
-      <NuxtStoriesLogo width="400" />
-      <h1 class="title">
-        nuxt-stories
-      </h1>
-      <h2 class="subtitle">
-        Painless (and now insanely fast) storybooking for Nuxt
-      </h2>
-      <client-only>
-        <label><code>&lt;Hello/&gt;</code>: (visible in both the app and in stories)</label>
-        <Hello />
-      </client-only>
+      <img src="~/assets/svg/StoriesLogo.svg" width="400" />
+      <h1 class="title" v-text="'nuxt-stories'" />
+      <h2 class="subtitle" v-text="'Painless (and now insanely fast) storybooking for Nuxt'" />
+      <label><code>&lt;Hello/&gt;</code>: (visible in both the app and in stories)</label>
+      <Hello />
       <div class="links">
         <button
-          class="button--grey"
+          class="button--grey btn-secondary nuxt-stories text-lightyellow"
           @click="toStories()"
-        >
-          Nuxt Stories: See it in action!
-        </button>
+          v-text="'Nuxt Stories: See it in action!'"
+        />
         <a
           href="https://github.com/richardeschloss/nuxt-stories"
           target="_blank"
           class="button--grey"
-        >
-          GitHub
-        </a>
+          v-text="'GitHub'"
+        />
       </div>
     </div>
   </div>
