@@ -1,22 +1,25 @@
 <template>
   <div class="container">
     <div>
-      <img src="~/assets/svg/StoriesLogo.svg" width="400" />
+      <!-- Works -->
+      <!-- <NuxtStoriesLogo width="400" /> -->
+      
+      <!-- S/A previous line -->
+      <img src="_nuxt/lib/assets/svg/StoriesLogo.svg" width="400"/>
       <h1 class="title" v-text="'nuxt-stories'" />
       <h2 class="subtitle" v-text="'Painless (and now insanely fast) storybooking for Nuxt'" />
       <label><code>&lt;Hello/&gt;</code>: (visible in both the app and in stories)</label>
       <Hello />
       <div class="links">
         <button
-          class="button--grey btn-secondary nuxt-stories text-lightyellow"
-          @click="toStories()"
-          v-text="'Nuxt Stories: See it in action!'"
-        />
-        <a
-          href="https://github.com/richardeschloss/nuxt-stories"
-          target="_blank"
           class="button--grey"
-          v-text="'GitHub'"
+          @click="toStories()"
+          v-text="'Demo'"
+        />
+        <button
+          class="button--grey"
+          @click="toGithub()"
+          v-text="'Github'"
         />
       </div>
     </div>
@@ -26,6 +29,9 @@
 <script>
 export default {
   methods: {
+    toGithub() {
+      window.open('https://github.com/richardeschloss/nuxt-stories', '_blank')
+    },
     toStories () {
       const { options } = this.$nuxtStories
       const { storiesAnchor } = options
@@ -35,7 +41,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .container {
   margin: 0 auto;
   min-height: 100vh;
@@ -65,6 +71,7 @@ export default {
 
 .links {
   padding-top: 15px;
+  text-align: center;
 }
 
 .button--grey {
