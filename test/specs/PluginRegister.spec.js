@@ -518,20 +518,3 @@ test('Directives', (t) => {
   t.truthy(directives.markdown)
 })
 
-test('Error Handler', (t) => {
-  const msg = 'trying to compile circular JSON $route'
-  Vue.config.errorHandler(new Error('non-render error'))
-  t.pass()
-  try {
-    Vue.config.errorHandler(new Error(msg), null, 'render')
-  } catch (err) {
-    t.is(err.message, 'Error: ' + msg)
-  }
-})
-
-test('Warn Handler', (t) => {
-  // json pretty viewer warns when data prop contains functions.
-  Vue.config.warnHandler(null, {}, 'some warning')
-  Vue.config.warnHandler(null, {}, 'VueJsonPretty...')
-  t.pass()
-})
