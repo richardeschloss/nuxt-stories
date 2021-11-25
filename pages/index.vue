@@ -1,25 +1,23 @@
 <template>
   <div class="container">
     <div>
-      <!-- Works -->
-      <!-- <NuxtStoriesLogo width="400" /> -->
-      
-      <!-- S/A previous line -->
-      <img src="_nuxt/lib/assets/svg/StoriesLogo.svg" width="400"/>
+      <NuxtStoriesLogo width="400" />
       <h1 class="title" v-text="'nuxt-stories'" />
       <h2 class="subtitle" v-text="'Painless (and now insanely fast) storybooking for Nuxt'" />
-      <label><code>&lt;Hello/&gt;</code>: (visible in both the app and in stories)</label>
-      <Hello />
-      <div class="links">
-        <button
-          class="button--grey"
-          @click="toStories()"
-          v-text="'Demo'"
-        />
-        <button
-          class="button--grey"
-          @click="toGithub()"
-          v-text="'Github'"
+      <div class="border text-start">
+        <label class="fw-bold" v-text="'Example Input:'" />
+        <div><code v-text=" '<Hello />'"/></div>
+        <br />
+        <label class="fw-bold" v-text="'Example Output: (after closing the tag)'" />
+        <Hello />
+      </div>
+      <div class="pt-4">
+        <button 
+          class="link-btn" 
+          v-for="link in links" 
+          :key="link.href" 
+          v-text="link.text"
+          @click="followLink(link)" 
         />
       </div>
     </div>
@@ -28,13 +26,25 @@
 
 <script>
 export default {
+  data() {
+    return {
+      links: [{
+        text: 'Demo',
+        href: this.$config.nuxtStories.storiesAnchor
+      }, {
+        text: 'Github',
+        href: 'https://github.com/richardeschloss/nuxt-stories',
+        target: '_blank'
+      }]
+    }  
+  },
   methods: {
-    toGithub() {
-      window.open('https://github.com/richardeschloss/nuxt-stories', '_blank')
-    },
-    toStories () {
-      const { storiesAnchor } = this.$config.nuxtStories
-      this.$router.push(`${storiesAnchor}`)
+    followLink(link) {
+      if (link.target === '_blank') {
+        window.open(link.href, link.target)
+      } else {
+        this.$router.push(link.href)
+      }
     }
   }
 }
@@ -73,7 +83,7 @@ export default {
   text-align: center;
 }
 
-.button--grey {
+.link-btn {
   display: inline-block;
   border-radius: 4px;
   border: 1px solid #35495e;
@@ -83,7 +93,7 @@ export default {
   margin-left: 15px;
 }
 
-.button--grey:hover {
+.link-btn:hover {
   color: #fff;
   background-color: #35495e;
 }
