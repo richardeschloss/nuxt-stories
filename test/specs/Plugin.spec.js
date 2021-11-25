@@ -1,21 +1,67 @@
 /* eslint-disable require-await */
 /* eslint-disable no-console */
+// import 'jsdom-global/register.js'
+import Vue from 'vue/dist/vue.common.js'
 import { resolve as pResolve } from 'path'
-import { serial as test } from 'ava'
-import { compilePlugin, delay } from 'nuxt-test-utils'
-require('jsdom-global')()
+import ava from 'ava'
+import Plugin from '#root/lib/plugin.js'
+import { wrapPlugin } from '../utils/plugin.js'
+// import { compilePlugin, delay } from 'nuxt-test-utils'
 
-global.fetch = function (path) {
-  return Promise.resolve({
+const { serial: test } = ava
+
+// @ts-ignore
+global.fetch = async function (path) {
+  return {
     text () {
       return '# Example Markdown'
     }
-  })
+  }
 }
 
 const src = pResolve('./lib/stories.plugin.js')
 const tmpFile = pResolve('./lib/stories.plugin.compiled.js')
 
+test.only('Plugin (default)', (t) => {
+  const ctx = wrapPlugin(Plugin)
+  Object.assign(ctx, {
+    app: {
+      store: ctx.$store
+    },
+    $config: {
+      nuxtStories: {
+        storiesDir: 'stories',
+        lang: 'en'  
+      }
+    }
+  })
+  ctx.Plugin(ctx, ctx.inject)
+  const { $nuxtStories: state } = ctx.$store.state
+  t.is(state.lang, 'en')
+  t.is(state.storiesDir, 'stories')
+  t.truthy(ctx.$nuxtStories)
+})
+
+test.only('Error Handler', (t) => {
+  const msg = 'trying to compile circular JSON $route'
+  Vue.config.errorHandler(new Error('non-render error'))
+  t.pass()
+  try {
+    Vue.config.errorHandler(new Error(msg), null, 'render')
+  } catch (err) {
+    t.is(err.message, 'Error: ' + msg)
+  }
+})
+
+test.only('Warn Handler', (t) => {
+  // json pretty viewer warns when data prop contains functions.
+  Vue.config.warnHandler(null, {}, 'some warning')
+  Vue.config.warnHandler(null, {}, 'VueJsonPretty...')
+  t.pass()
+})
+
+
+/** Archive **/
 test('Stories plugin', async (t) => {
   const pluginOptions = {
     storiesDir: '.stories',

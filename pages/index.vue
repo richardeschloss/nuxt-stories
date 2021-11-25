@@ -33,8 +33,7 @@ export default {
       window.open('https://github.com/richardeschloss/nuxt-stories', '_blank')
     },
     toStories () {
-      const { options } = this.$nuxtStories
-      const { storiesAnchor } = options
+      const { storiesAnchor } = this.$config.nuxtStories
       this.$router.push(`${storiesAnchor}`)
     }
   }

@@ -46,6 +46,7 @@
     "gently-copy": "^3.2.0",
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.3.1",
+    "les-utils": "^2.0.4",
     "marked": "^4.0.3",
     "node-sass": "^6.0.1",
     "nuxt-socket-io": "^2.0.0",
