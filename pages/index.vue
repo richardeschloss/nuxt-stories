@@ -7,7 +7,6 @@
       <div class="border text-start">
         <label class="fw-bold" v-text="'Example Input:'" />
         <div><code v-text=" '<Hello />'"/></div>
-        <br />
         <label class="fw-bold" v-text="'Example Output: (after closing the tag)'" />
         <Hello />
       </div>

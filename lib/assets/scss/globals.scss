@@ -1,0 +1,24 @@
+@import "bootstrap/scss/bootstrap";
+
+.nuxt-stories {
+  @import "bootstrap-icons/font/bootstrap-icons.css";
+  /* Minimal setup */
+  @import "./variables";
+  @import "./navbar";
+
+  * { 
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  }
+  .page-enter-active,
+  .page-leave-active {
+    transition: opacity 0.5s;
+  }
+  .page-enter,
+  .page-leave-to {
+    opacity: 0;
+  }
+
+  .bg-dark {
+    background-color: #343a40!important;
+  }
+}
