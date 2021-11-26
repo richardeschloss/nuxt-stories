@@ -2,7 +2,7 @@ import path from 'path'
 import { existsSync, unlinkSync } from 'fs'
 import test from 'ava'
 // @ts-ignore
-import Module from '#root/lib/module.js'
+import Module, { register } from '#root/lib/module.js'
 import { wrapModule } from '../utils/module.js'
 
 global.__dirname = 'lib'
@@ -119,4 +119,18 @@ test('Module (enabled, static host)', async (t) => {
 
   await ctx.nuxt.hooks['modules:done'](ctx)
   t.true(existsSync(storiesJson))
+})
+
+test.only('Register.routes', async (t) => {
+  const srcDir = path.resolve('.')
+  const cfg = {
+    srcDir,
+    lang: 'en',
+    storiesDir: 'stories',
+    storiesAnchor: 'stories',
+    staticHost: false
+  }
+  const { routes } = await register.routes(cfg)
+  console.log(routes)
+  t.pass()
 })
