@@ -1,3 +1,3 @@
 <template>
-  <img src="../assets/svg/StoriesLogo.svg" />
+  <img src="/nuxtStories/svg/StoriesLogo.svg" />
 </template>

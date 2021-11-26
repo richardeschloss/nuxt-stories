@@ -18,7 +18,28 @@
     opacity: 0;
   }
 
+  .bd-navbar {
+    box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25), inset 0 -1px 5px rgba(0, 0, 0, 0.25);
+  }
+
   .bg-dark {
     background-color: #343a40!important;
+  }
+
+  .navbar {
+    padding: .5rem 1rem;
+  }
+  
+  .form-control-dark {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .1);
+  }
+  
+  .form-control-dark:focus {
+    color: #495057;
+    border-color: transparent;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
   }
 }
