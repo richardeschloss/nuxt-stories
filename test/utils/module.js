@@ -51,6 +51,7 @@ export function wrapModule (Module) {
       modules: [],
       middlewares: [],
       build: {
+        transpile: [],
         templates: []
       },
       publicRuntimeConfig: {}
