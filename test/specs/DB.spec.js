@@ -15,7 +15,7 @@ let db
 const { serial: test, before } = ava
 
 before(async () => {
-  db = await DB({})
+  db = await DB({ autosave: false })
 })
 
 test.only('Init from FS', async (t) => {
@@ -41,7 +41,11 @@ test('Search', async (t) => {
   })
 })
 
-test.only('Update One', async (t) => {
-  db.upsert()
+test('Update One', async (t) => {
+  // console.log(db.find())
+  await db.upsert()
+  const db2 = await DB({})
+  console.log(db2.findOne({ href: '/stories/en/Examples/Example2' }))
+  
   t.pass()
 })
