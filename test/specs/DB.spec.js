@@ -32,7 +32,7 @@ before(async () => {
   db = await DB({ srcDir, autosave: false })
 })
 
-test.only('Init from FS', async (t) => {
+test('Init from FS', async (t) => {
   await db.initFromFS(pResolve(srcDir, storiesDir, '**/*.md'))
   const items = db.find({})
   const fnd = await db.search('HOLA?', 'es')
@@ -104,9 +104,10 @@ test('Add Story', async (t) => {
   execSync('rm -rf ./stories/en/NewStory0 ./stories/en/NewStory0.md')
 })
 
-test.only('Rename Story', async (t) => {
+test('Rename Story', async (t) => {
   await db.addStory('/stories/en') // --> NewStory0.md
   await db.addStory('/stories/en/NewStory0') // --> NewStory0/NewStory0.md
+  let oldCnt = db.cnt()
   await db.renameStory({
     oldHref: '/stories/en/NewStory0',
     newHref: '/stories/en/MyStory'
@@ -119,21 +120,28 @@ test.only('Rename Story', async (t) => {
     oldHref: '/stories/en/MyStory/NewStory0',
     newHref: '/stories/en/MyStory/MyName'
   })
+  t.is(oldCnt, db.cnt())
   t.true(existsSync(pResolve('./stories/en/MyStory/MyName.md')))
   t.truthy(db.findOne({ href: '/stories/en/MyStory/MyName' }))
   execSync('rm -rf ./stories/en/MyStory ./stories/en/MyStory.md')
 })
 
 test('Remove Story', async (t) => {
-  await db.removeStory({ href: '/stories/en/Changed'})
-  const fnd = await db.findOne({ href: '/stories/en/Changed' })
-  t.is(fnd, null)
-  const oldCnt = db.cnt()
-  await db.removeStory({ href: '/stories/en/NotExist'})
-  t.is(oldCnt, db.cnt())
+  await db.addStory('/stories/en') // --> NewStory0.md
+  await db.addStory('/stories/en/NewStory0') // --> NewStory0/NewStory0.md
+  await db.addStory('/stories/en/NewStory0') // --> NewStory0/NewStory1.md
+  await db.removeStory('/stories/en/NewStory0/NewStory1')
+  
+  t.falsy(db.findOne({ href: '/stories/en/NewStory0/NewStory1' }))
+  t.false(existsSync(pResolve('./stories/en/NewStory0/NewStory1.md')))
+
+  await db.removeStory('/stories/en/NewStory0')
+  t.falsy(db.findOne({ href: '/stories/en/NewStory0' }))
+  t.falsy(db.findOne({ href: '/stories/en/NewStory0/NewStory0' }))
+  t.false(existsSync(pResolve('./stories/en/NewStory0')))
 })
 
-test('Build Tree', async (t) => {
+test('Build Tree', async (t) => { // Fix...
   const sets = [
     db.buildTree(),
     dbClient.buildTree()
