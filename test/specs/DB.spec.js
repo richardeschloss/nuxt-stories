@@ -1,7 +1,8 @@
 import { existsSync, readFileSync, unlinkSync } from 'fs'
 import { resolve as pResolve } from 'path'
+import { execSync } from 'child_process'
 import ava from 'ava'
-import DB from '#root/lib/db.js'
+import DB from '#root/lib/db.server.js'
 import DBClient from '#root/lib/db.client.js'
 
 const srcDir = pResolve('.')
@@ -31,7 +32,7 @@ before(async () => {
   db = await DB({ srcDir, autosave: false })
 })
 
-test('Init from FS', async (t) => {
+test.only('Init from FS', async (t) => {
   await db.initFromFS(pResolve(srcDir, storiesDir, '**/*.md'))
   const items = db.find({})
   const fnd = await db.search('HOLA?', 'es')
@@ -88,36 +89,39 @@ test('Update One', async (t) => {
 })
 
 test('Add Story', async (t) => {
-  const oldCnt = db.cnt()
-  await db.addStory({
-    href: '/stories/en/Something/New',
-    content: 'A new story',
-    storiesDir: 'stories', 
-    lang: 'en'
-  })
-  t.is(oldCnt + 1, db.cnt())
-  const fnd = db.findOne({ href: '/stories/en/Something/New' })
-  t.is(fnd.href, '/stories/en/Something/New')
+  let oldCnt = db.cnt()
+  await db.addStory('/stories/en')
+  oldCnt++
+  t.is(oldCnt, db.cnt())
+  t.true(existsSync(pResolve('./stories/en/NewStory0.md')))
+  t.truthy(db.findOne({ href: '/stories/en/NewStory0' }))
 
-  await db.addStory({
-    href: '/stories/en/Something/New',
-    content: 'A new story',
-    storiesDir: 'stories', 
-    lang: 'en'
-  })
-  t.is(oldCnt + 1, db.cnt())
-  t.true(existsSync(pResolve('./stories/en/Something/New.md')))
+  await db.addStory('/stories/en/NewStory0')
+  oldCnt++
+  t.is(oldCnt, db.cnt())
+  t.true(existsSync(pResolve('./stories/en/NewStory0/NewStory0.md')))
+  t.truthy(db.findOne({ href: '/stories/en/NewStory0/NewStory0' }))
+  execSync('rm -rf ./stories/en/NewStory0 ./stories/en/NewStory0.md')
 })
 
-test('Rename Story', async (t) => {
+test.only('Rename Story', async (t) => {
+  await db.addStory('/stories/en') // --> NewStory0.md
+  await db.addStory('/stories/en/NewStory0') // --> NewStory0/NewStory0.md
   await db.renameStory({
-    oldHref: '/stories/en/Something/New',
-    href: '/stories/en/Changed'
+    oldHref: '/stories/en/NewStory0',
+    newHref: '/stories/en/MyStory'
   })
-  const fnd = await db.findOne({ href: '/stories/en/Changed' })
-  const fnd2 = await db.findOne({ href: '/stories/en/Something/New' })
-  t.is(fnd.href, '/stories/en/Changed')
-  t.is(fnd2, null)
+  
+  t.true(existsSync(pResolve('./stories/en/MyStory/NewStory0.md')))
+  t.truthy(db.findOne({ href: '/stories/en/MyStory/NewStory0' }))
+
+  await db.renameStory({
+    oldHref: '/stories/en/MyStory/NewStory0',
+    newHref: '/stories/en/MyStory/MyName'
+  })
+  t.true(existsSync(pResolve('./stories/en/MyStory/MyName.md')))
+  t.truthy(db.findOne({ href: '/stories/en/MyStory/MyName' }))
+  execSync('rm -rf ./stories/en/MyStory ./stories/en/MyStory.md')
 })
 
 test('Remove Story', async (t) => {
