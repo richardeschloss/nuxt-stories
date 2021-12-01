@@ -127,3 +127,19 @@ test('Remove Story', async (t) => {
   await db.removeStory({ href: '/stories/en/NotExist'})
   t.is(oldCnt, db.cnt())
 })
+
+test('Build Tree', async (t) => {
+  const sets = [
+    db.buildTree(),
+    dbClient.buildTree()
+  ]
+  sets.forEach((stories) => {
+    t.true(stories.length > 0)
+    t.truthy(stories[0].name)
+    t.truthy(stories[0].href)
+    t.truthy(stories[0].children)
+  })
+
+  const storiesEs = db.buildTree('es')
+  t.true(storiesEs[0].href.includes('/es/'))
+})

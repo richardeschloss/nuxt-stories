@@ -1,11 +1,11 @@
 import path from 'path'
-import { existsSync, unlinkSync } from 'fs'
 import test from 'ava'
 // @ts-ignore
-import Module, { register } from '#root/lib/module.js'
+import Module, { register, db } from '#root/lib/module.js'
 import { wrapModule } from '../utils/module.js'
 
 global.__dirname = 'lib'
+const srcDir = path.resolve('.')
 
 test('Module (defaults)', (t) => {
   const ctx = wrapModule(Module)
@@ -101,10 +101,6 @@ test('Module (enabled, various ioOpts)', async (t) => {
 })
 
 test('Module (enabled, static host)', async (t) => {
-  const storiesJson = path.resolve('./stories/stories.json')
-  if (existsSync(storiesJson)) {
-    unlinkSync(storiesJson)
-  }
   const ctx = wrapModule(Module)
   await ctx.Module({
     forceBuild: true,
@@ -118,19 +114,31 @@ test('Module (enabled, static host)', async (t) => {
   })
 
   await ctx.nuxt.hooks['modules:done'](ctx)
-  t.true(existsSync(storiesJson))
+  t.is(ctx.options.modules.length, 0)
 })
 
-test.only('Register.routes', async (t) => {
-  const srcDir = path.resolve('.')
+test('Register.db', async (t) => {
+  const cfg = {
+    srcDir,
+    storiesDir: 'stories'
+  }
+  await register.db(cfg)
+  t.true(db.cnt() > 0)
+})
+
+test('Register.routes', async (t) => {
   const cfg = {
     srcDir,
     lang: 'en',
     storiesDir: 'stories',
-    storiesAnchor: 'stories',
     staticHost: false
   }
-  const { routes } = await register.routes(cfg)
-  console.log(routes)
-  t.pass()
+  const routes = await register.routes(cfg)
+  t.is(routes.path, '/stories')
+  t.is(routes.children[0].path, ':lang?/:L0?/:L1?')
+})
+
+test('Register.stories (requires db)', async (t) => {
+  const stories = await register.stories('en')
+  t.true(stories.length > 0)
 })
