@@ -136,6 +136,7 @@ test('Build Tree', async (t) => {
   sets.forEach((stories) => {
     t.true(stories.length > 0)
     t.truthy(stories[0].name)
+    t.truthy(stories[0].order)
     t.truthy(stories[0].href)
     t.truthy(stories[0].children)
   })
