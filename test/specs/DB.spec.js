@@ -106,6 +106,7 @@ test('Add Story', async (t) => {
     lang: 'en'
   })
   t.is(oldCnt + 1, db.cnt())
+  t.true(existsSync(pResolve('./stories/en/Something/New.md')))
 })
 
 test('Rename Story', async (t) => {
