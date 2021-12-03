@@ -29,11 +29,12 @@ before(async () => {
   if (existsSync(dbFile)) {
     unlinkSync(dbFile)
   }
-  db = await DB({ srcDir, autosave: false })
+  db = DB({ srcDir })
   dbClient = DBClient()
+  await db.load()
 })
 
-test('Init from FS', async (t) => {
+test.only('Init from FS', async (t) => {
   await db.initFromFS(pResolve(srcDir, storiesDir, '**/*.md'))
   const items = db.find({})
   const fnd = await db.search('HOLA?', 'es')
@@ -43,12 +44,13 @@ test('Init from FS', async (t) => {
   t.is(firstItem.href, items[0].href)
 
   // Test persistence
-  const db2 = await DB({})
+  const db2 = DB({})
+  await db2.load()
   const items2 = db2.find({})
   t.true(items2.length > 0)
 })
 
-test.only('Build Tree', async (t) => { 
+test('Build Tree', async (t) => { 
   const dir = pResolve('./stories/en/Some/Deep')
   mkdirSync(dir, { recursive: true })
   writeFileSync(pResolve(dir, 'VeryDeep.md'), 'Some content')
@@ -74,7 +76,7 @@ test.only('Build Tree', async (t) => {
 })
 
 
-test.only('Init (client-side)', async (t) => {
+test('Init (client-side)', async (t) => {
   const cnt = await dbClient.load()
   t.true(cnt > 0)
 })

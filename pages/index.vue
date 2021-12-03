@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div class="container w-50">
     <div>
-      <NuxtStoriesLogo width="400" />
+      <NuxtStoriesLogo width="200" />
       <h1 class="title" v-text="'nuxt-stories'" />
       <h2 class="subtitle" v-text="'Painless (and now insanely fast) storybooking for Nuxt'" />
       <div class="border text-start">
@@ -64,14 +64,14 @@ export default {
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
   font-weight: 300;
-  font-size: 100px;
+  font-size: 50px;
   color: #35495e;
   letter-spacing: 1px;
 }
 
 .subtitle {
   font-weight: 300;
-  font-size: 42px;
+  font-size: 30px;
   color: #526488;
   word-spacing: 5px;
   padding-bottom: 15px;
