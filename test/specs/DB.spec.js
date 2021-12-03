@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, unlinkSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'fs'
 import { resolve as pResolve } from 'path'
 import { execSync } from 'child_process'
 import ava from 'ava'
@@ -30,6 +30,7 @@ before(async () => {
     unlinkSync(dbFile)
   }
   db = await DB({ srcDir, autosave: false })
+  dbClient = DBClient()
 })
 
 test('Init from FS', async (t) => {
@@ -47,8 +48,33 @@ test('Init from FS', async (t) => {
   t.true(items2.length > 0)
 })
 
-test('Init (client-side)', async (t) => {
-  dbClient = DBClient()
+test.only('Build Tree', async (t) => { 
+  const dir = pResolve('./stories/en/Some/Deep')
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(pResolve(dir, 'VeryDeep.md'), 'Some content')
+  await db.initFromFS(pResolve(srcDir, storiesDir, '**/*.md'))
+  await dbClient.load()
+  const sets = await Promise.all([
+    db.buildTree(),
+    dbClient.buildTree()
+  ])
+  sets.forEach((stories) => {
+    t.true(stories.length > 0)
+    t.truthy(stories[0].name)
+    t.truthy(stories[0].order)
+    t.truthy(stories[0].href)
+    t.truthy(stories[0].children)
+    t.is(stories.depth, 3)
+  })
+
+  const storiesEs = await db.buildTree('es')
+  t.true(storiesEs[0].href.includes('/es/'))
+
+  execSync('rm -rf ./stories/en/Some')
+})
+
+
+test.only('Init (client-side)', async (t) => {
   const cnt = await dbClient.load()
   t.true(cnt > 0)
 })
@@ -79,13 +105,17 @@ test('Search (client-side)', async (t) => {
 })
 
 test('Update One', async (t) => {
+  await db.addStory('/stories/en')
   await db.updateContent({ 
-    href: '/stories/en/Examples/Example2' ,
+    href: '/stories/en/NewStory0' ,
     content: 'new content'
   })
   const db2 = await DB({})
-  const fnd = db2.findOne({ href: '/stories/en/Examples/Example2' })
+  const fnd = db2.findOne({ href: '/stories/en/NewStory0' })
   t.is(fnd.content, 'new content')
+  const fileContent = readFileSync(pResolve('./stories/en/NewStory0.md'), { encoding: 'utf-8' })
+  t.is(fileContent, 'new content')
+  execSync('rm ./stories/en/NewStory0.md')
 })
 
 test('Add Story', async (t) => {
@@ -141,19 +171,44 @@ test('Remove Story', async (t) => {
   t.false(existsSync(pResolve('./stories/en/NewStory0')))
 })
 
-test('Build Tree', async (t) => { // Fix...
-  const sets = [
-    db.buildTree(),
-    dbClient.buildTree()
-  ]
-  sets.forEach((stories) => {
-    t.true(stories.length > 0)
-    t.truthy(stories[0].name)
-    t.truthy(stories[0].order)
-    t.truthy(stories[0].href)
-    t.truthy(stories[0].children)
+// Clean up..
+test.skip('Watch file changes (user-triggered)', (t) => {
+  let cnt = 0
+  return new Promise(async (resolve) => {
+    function watchChg1(stories) {
+      console.log('info changed', ++cnt, stories)
+      t.true(stories.length > 0)
+      resolve()
+    }
+    // db.on('fileChanged', watchChg1)
+    await db.watchFS()
+    db.on('fileChanged', watchChg1)
+    // const newStory = await db.addStory('/stories/en')
+    // db.updateContent({
+    //   href: '/stories/en/NewStory0',
+    //   content: 'new content'
+    // })
+    const content = 'changed content xyz'
+    // console.log('update', newStory.file)
+    writeFileSync(pResolve('./stories/en/NewStory0.md'), content) 
+    
+  
+    // db.off('fileChanged', watchChg1)
+    // db.off('nonExist', () => {})
+    // t.pass()
   })
+})
 
-  const storiesEs = db.buildTree('es')
-  t.true(storiesEs[0].href.includes('/es/'))
+test('Load story', async (t) => {
+  const s1 = await db.load('/stories/en/Todo')
+  // console.log('s1', s1)
+  const s2 = await db.load('/stories/en/Lib')
+  // console.log('s2', s2)
+  const s3 = await db.load('/stories/en/Examples/Example333')
+
+  await db.load('/stories/en/Lib/Deep/Tree/Example')
+  const fnd = db.findOne({ href: '/stories/en/Lib' })
+  // console.log('fnd', fnd)
+  // const stories = await db.initFromFS()
+  t.pass()
 })
