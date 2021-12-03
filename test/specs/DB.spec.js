@@ -31,11 +31,11 @@ before(async () => {
   }
   db = DB({ srcDir })
   dbClient = DBClient()
-  await db.load()
+  
 })
 
-test.only('Init from FS', async (t) => {
-  await db.initFromFS(pResolve(srcDir, storiesDir, '**/*.md'))
+test.only('Init Items', async (t) => {
+  await db.load()
   const items = db.find({})
   const fnd = await db.search('HOLA?', 'es')
   t.true(items.length > 0)
@@ -48,6 +48,9 @@ test.only('Init from FS', async (t) => {
   await db2.load()
   const items2 = db2.find({})
   t.true(items2.length > 0)
+
+  const clientDocsCnt = await dbClient.load()
+  t.true(clientDocsCnt > 0)
 })
 
 test('Build Tree', async (t) => { 
@@ -73,12 +76,6 @@ test('Build Tree', async (t) => {
   t.true(storiesEs[0].href.includes('/es/'))
 
   execSync('rm -rf ./stories/en/Some')
-})
-
-
-test('Init (client-side)', async (t) => {
-  const cnt = await dbClient.load()
-  t.true(cnt > 0)
 })
 
 test('Search (server-side)', async (t) => {
