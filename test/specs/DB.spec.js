@@ -43,7 +43,7 @@ before(async () => {
   dbClient = DBClient()
 })
 
-test.only('Load DB (server and client)', async (t) => {
+test('Load DB (server and client)', async (t) => {
   await db.load()
   const items = db.find({})
   const fnd = await db.search('HOLA?', 'es')
@@ -60,9 +60,10 @@ test.only('Load DB (server and client)', async (t) => {
 
   const clientDocsCnt = await dbClient.load()
   t.true(clientDocsCnt > 0)
+  t.true(dbClient.cnt() > 0)
 })
 
-test.only('Build Tree', async (t) => { 
+test('Build Tree', async (t) => { 
   const dir = pResolve('./stories/en/Very/Deep')
   mkdirSync(dir, { recursive: true })
   writeFileSync(pResolve(dir, 'VeryDeep.md'), 'Some content')
@@ -83,14 +84,11 @@ test.only('Build Tree', async (t) => {
 
   const storiesEs = await db.buildTree('es')
   t.true(storiesEs[0].href.includes('/es/'))
-
-  await db.removeStory('/stories/en/Very')
   execSync('rm -rf ./stories/en/Very')
-  const stories = db.buildTree()
-  t.is(stories.depth, 2)
 })
 
-test.only('Search (server-side)', async (t) => {
+test('Search (server-side)', async (t) => {
+  await db.load()
   const hits = await db.search('Nice')
   t.true(hits.length > 0)
   hits.forEach((hit) => { 
@@ -137,7 +135,7 @@ test('Update One', async (t) => {
     href: '/stories/en/NewStory0' ,
     content: 'new content'
   })
-  const db2 = DB({})
+  const db2 = DB({ srcDir })
   await db2.load()
   const fnd = db2.findOne({ href: '/stories/en/NewStory0' })
   t.is(fnd.content, 'new content')
@@ -184,17 +182,19 @@ test('Remove Story', async (t) => {
 })
 
 test('Load story', async (t) => {
-  const s1 = await db.load('/stories/en/Todo')
-  // console.log('s1', s1)
-  const s2 = await db.load('/stories/en/Lib')
-  // console.log('s2', s2)
-  const s3 = await db.load('/stories/en/Examples/Example333')
-
-  await db.load('/stories/en/Lib/Deep/Tree/Example')
-  const fnd = db.findOne({ href: '/stories/en/Lib' })
-  // console.log('fnd', fnd)
-  // const stories = await db.initFromFS()
-  t.pass()
+  await db.load()
+  const s1 = await db.loadStory('/stories/en/Todo')
+  const s2 = await db.loadStory('/stories/en/Something/Module')
+  const s3 = await db.loadStory('/stories/en/Something')
+  t.truthy(s1.content)
+  t.truthy(s2.content)
+  t.truthy(s3.content)
+  const s4 = await db.loadStory('/stories/en/Some/Deep/Tree/Example')
+  t.falsy(s4)
+  t.true(existsSync(pResolve('./stories/en/Something/Module.md')))
+  t.true(existsSync(pResolve('./stories/en/Something.md')))
+  t.false(existsSync(pResolve('./stories/en/Some/Deep/Tree/Example.md')))
+  execSync('rm -rf ./stories/en/Something ./stories/en/Something.md')
 })
 
 test('Watch file changes (user-triggered)', async (t) => {
@@ -210,7 +210,6 @@ test('Watch file changes (user-triggered)', async (t) => {
   let fnd = stories.find(({href}) => href === '/stories/en/NewStory0')
   t.truthy(fnd)
   t.is(fnd.name, 'NewStory0')
-  console.log('stories', stories)
   t.is(stories.depth, 2)
   p = waitForFileChanged()
   newStory.content = 'changed content here'
@@ -245,4 +244,25 @@ test('Watch file changes (user-triggered)', async (t) => {
   t.is(fnd.children[0].children[0].name, 'Child')
 
   execSync('rm -rf ./stories/en/Some')
+  db.off('notListening')
+
+  // Test CRUD changes made by UI
+  // (ensure watcher doesn't fire)
+  let callCnt = 0
+  db.on('fileChanged', () => callCnt++)
+  await db.addStory('/stories/en')
+  await db.updateContent({
+    href: '/stories/en/NewStory',
+    content: 'new content'
+  })
+  await db.renameStory({
+    oldHref: '/stories/en/NewStory',
+    newHref: '/stories/en/Renamed'
+  })
+  await db.removeStory('/stories/en/Renamed')
+
+
+  t.is(callCnt, 0)
+  
+  execSync('rm ./stories/en/NewStory0.md')
 })
