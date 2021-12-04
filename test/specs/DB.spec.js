@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, unlinkSync, rmdirSync, writeFileSync } from 'fs'
 import { resolve as pResolve } from 'path'
 import { execSync } from 'child_process'
 import ava from 'ava'
@@ -25,16 +25,25 @@ global.fetch = async function(url) {
   }
 }
 
+function waitForFileChanged() {
+  return new Promise((resolve) => {
+    function fileChanged(stories) {
+      db.off('fileChanged', fileChanged)
+      resolve(stories)
+    }
+    db.on('fileChanged', fileChanged)  
+  })
+}
+
 before(async () => {
   if (existsSync(dbFile)) {
     unlinkSync(dbFile)
   }
   db = DB({ srcDir })
   dbClient = DBClient()
-  
 })
 
-test.only('Init Items', async (t) => {
+test.only('Load DB (server and client)', async (t) => {
   await db.load()
   const items = db.find({})
   const fnd = await db.search('HOLA?', 'es')
@@ -44,7 +53,7 @@ test.only('Init Items', async (t) => {
   t.is(firstItem.href, items[0].href)
 
   // Test persistence
-  const db2 = DB({})
+  const db2 = DB({ srcDir })
   await db2.load()
   const items2 = db2.find({})
   t.true(items2.length > 0)
@@ -53,11 +62,11 @@ test.only('Init Items', async (t) => {
   t.true(clientDocsCnt > 0)
 })
 
-test('Build Tree', async (t) => { 
-  const dir = pResolve('./stories/en/Some/Deep')
+test.only('Build Tree', async (t) => { 
+  const dir = pResolve('./stories/en/Very/Deep')
   mkdirSync(dir, { recursive: true })
   writeFileSync(pResolve(dir, 'VeryDeep.md'), 'Some content')
-  await db.initFromFS(pResolve(srcDir, storiesDir, '**/*.md'))
+  await db.load()
   await dbClient.load()
   const sets = await Promise.all([
     db.buildTree(),
@@ -75,10 +84,13 @@ test('Build Tree', async (t) => {
   const storiesEs = await db.buildTree('es')
   t.true(storiesEs[0].href.includes('/es/'))
 
-  execSync('rm -rf ./stories/en/Some')
+  await db.removeStory('/stories/en/Very')
+  execSync('rm -rf ./stories/en/Very')
+  const stories = db.buildTree()
+  t.is(stories.depth, 2)
 })
 
-test('Search (server-side)', async (t) => {
+test.only('Search (server-side)', async (t) => {
   const hits = await db.search('Nice')
   t.true(hits.length > 0)
   hits.forEach((hit) => { 
@@ -103,20 +115,6 @@ test('Search (client-side)', async (t) => {
   })
 })
 
-test('Update One', async (t) => {
-  await db.addStory('/stories/en')
-  await db.updateContent({ 
-    href: '/stories/en/NewStory0' ,
-    content: 'new content'
-  })
-  const db2 = await DB({})
-  const fnd = db2.findOne({ href: '/stories/en/NewStory0' })
-  t.is(fnd.content, 'new content')
-  const fileContent = readFileSync(pResolve('./stories/en/NewStory0.md'), { encoding: 'utf-8' })
-  t.is(fileContent, 'new content')
-  execSync('rm ./stories/en/NewStory0.md')
-})
-
 test('Add Story', async (t) => {
   let oldCnt = db.cnt()
   await db.addStory('/stories/en')
@@ -131,6 +129,21 @@ test('Add Story', async (t) => {
   t.true(existsSync(pResolve('./stories/en/NewStory0/NewStory0.md')))
   t.truthy(db.findOne({ href: '/stories/en/NewStory0/NewStory0' }))
   execSync('rm -rf ./stories/en/NewStory0 ./stories/en/NewStory0.md')
+})
+
+test('Update One', async (t) => {
+  await db.addStory('/stories/en')
+  await db.updateContent({ 
+    href: '/stories/en/NewStory0' ,
+    content: 'new content'
+  })
+  const db2 = DB({})
+  await db2.load()
+  const fnd = db2.findOne({ href: '/stories/en/NewStory0' })
+  t.is(fnd.content, 'new content')
+  const fileContent = readFileSync(pResolve('./stories/en/NewStory0.md'), { encoding: 'utf-8' })
+  t.is(fileContent, 'new content')
+  execSync('rm ./stories/en/NewStory0.md')
 })
 
 test('Rename Story', async (t) => {
@@ -170,34 +183,6 @@ test('Remove Story', async (t) => {
   t.false(existsSync(pResolve('./stories/en/NewStory0')))
 })
 
-// Clean up..
-test.skip('Watch file changes (user-triggered)', (t) => {
-  let cnt = 0
-  return new Promise(async (resolve) => {
-    function watchChg1(stories) {
-      console.log('info changed', ++cnt, stories)
-      t.true(stories.length > 0)
-      resolve()
-    }
-    // db.on('fileChanged', watchChg1)
-    await db.watchFS()
-    db.on('fileChanged', watchChg1)
-    // const newStory = await db.addStory('/stories/en')
-    // db.updateContent({
-    //   href: '/stories/en/NewStory0',
-    //   content: 'new content'
-    // })
-    const content = 'changed content xyz'
-    // console.log('update', newStory.file)
-    writeFileSync(pResolve('./stories/en/NewStory0.md'), content) 
-    
-  
-    // db.off('fileChanged', watchChg1)
-    // db.off('nonExist', () => {})
-    // t.pass()
-  })
-})
-
 test('Load story', async (t) => {
   const s1 = await db.load('/stories/en/Todo')
   // console.log('s1', s1)
@@ -210,4 +195,54 @@ test('Load story', async (t) => {
   // console.log('fnd', fnd)
   // const stories = await db.initFromFS()
   t.pass()
+})
+
+test('Watch file changes (user-triggered)', async (t) => {
+  let cnt = 0
+  await db.watchFS()
+  let p = waitForFileChanged()
+  const newStory = {
+    file: pResolve('./stories/en/NewStory0.md'),
+    content: 'some content here'
+  }
+  writeFileSync(newStory.file, newStory.content)
+  let stories = await p
+  let fnd = stories.find(({href}) => href === '/stories/en/NewStory0')
+  t.truthy(fnd)
+  t.is(fnd.name, 'NewStory0')
+  console.log('stories', stories)
+  t.is(stories.depth, 2)
+  p = waitForFileChanged()
+  newStory.content = 'changed content here'
+  writeFileSync(newStory.file, newStory.content)
+  stories = await p
+
+  const fndDoc = db.findOne({href: '/stories/en/NewStory0' })
+  t.is(fndDoc.content, newStory.content)
+
+  p = waitForFileChanged()
+  unlinkSync(newStory.file)
+  stories = await p
+  fnd = stories.find(({href}) => href === '/stories/en/NewStory0')
+  t.falsy(fnd)
+
+  let oldCnt = db.cnt()
+  const DeepDir = pResolve('./stories/en/Some/Deep')
+  mkdirSync(DeepDir, { recursive: true })
+  t.is(oldCnt, db.cnt())
+
+  const deepStory = {
+    file: pResolve('./stories/en/Some/Deep/Child.md'),
+    content: 'I am deep'
+  }
+  p = waitForFileChanged()
+  writeFileSync(deepStory.file, deepStory.content)
+  stories = await p
+  fnd = stories.find(({href}) => href === '/stories/en/Some')
+  t.is(stories.depth, 3)
+  t.truthy(fnd)
+  t.is(fnd.children[0].name, 'Deep')
+  t.is(fnd.children[0].children[0].name, 'Child')
+
+  execSync('rm -rf ./stories/en/Some')
 })
