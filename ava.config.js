@@ -1,8 +1,7 @@
 export default {
   serial: true,
   files: [
-    // 'test/e2e/Hello.js'
-    'test/specs/DB.spec.js',
+    // 'test/specs/DB.spec.js',
     // 'test/specs/Fetch.spec.js',
     // 'test/specs/Import.spec.js',
     // 'test/specs/IO.spec.js',
@@ -14,7 +13,10 @@ export default {
     // 'test/specs/Postinstall.spec.js',
     // 'test/specs/Storage.spec.js',
     // 'test/specs/VuexModule.spec.js',
-    // 'test/specs/StoryFactory.spec.js'
+    // 'test/specs/StoryFactory.spec.js',
+
+    // 'test/e2e/Hello.js'
+    'test/e2e/Root.js' // Runs after DB.spec which initializes db
   ],
   ignoredByWatcher: ['stories'],
   nodeArguments: [

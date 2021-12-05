@@ -65,7 +65,7 @@ export async function load (url, context, defaultLoad) {
       format: 'module',
       source: source.toString()
     }
-  } else if (url.endsWith('.css')) {
+  } else if (url.match(/\.s*css$/)) {
     return {
       format: 'module',
       source: 'export default {}'
