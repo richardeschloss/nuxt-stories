@@ -1,3 +1,4 @@
+import { unlinkSync, writeFileSync } from 'fs'
 import path from 'path'
 import test from 'ava'
 // @ts-ignore
@@ -34,7 +35,7 @@ test('Module (enabled, ssr mode)', async (t) => {
     t.truthy(ctx.nuxt.hooks[h])
   })
 
-  t.is(ctx.options.middlewares[0].path, '/markdown')
+  t.is(ctx.options.middlewares[0].path, '/nuxtStories')
 
   const dirs = []
   ctx.nuxt.hooks['components:dirs'](dirs)
@@ -98,6 +99,10 @@ test('Module (enabled, various ioOpts)', async (t) => {
   t.is(name3, 'nuxtStories')
   t.is(url3, 'https://localhost:3002')
 
+  // Attempt to register io again...
+  // It should catch error
+  register.io(ctx3)
+  t.pass()
 })
 
 test('Module (enabled, static host)', async (t) => {
@@ -141,4 +146,36 @@ test('Register.routes', async (t) => {
 test('Register.stories (requires db)', async (t) => {
   const stories = await register.stories('en')
   t.true(stories.length > 0)
+})
+
+test('Watch Stories', async (t) => {
+  const ctx = wrapModule(Module)  
+  function waitForFileChanged(db) {
+    return new Promise((resolve) => {
+      function fileChanged(stories) {
+        db.off('fileChanged', fileChanged)
+        resolve(stories)
+      }
+      db.on('fileChanged', fileChanged)  
+    })
+  }
+  await ctx.Module({
+    forceBuild: true,
+    watchStories: true
+  })
+  const routes = []
+  Object.assign(ctx, {
+    extendRoutes(cb) {
+      cb(routes)  
+    }
+  })
+
+  await ctx.nuxt.hooks['modules:done'](ctx)
+  const p = waitForFileChanged(db)
+  const tmpStory = path.resolve('./stories/en/Tmp.md') 
+  writeFileSync(tmpStory, 'Some content')
+  const stories = await p
+  const fnd = stories.find(({ name }) => name === 'Tmp')
+  t.truthy(fnd)
+  unlinkSync(tmpStory)
 })
