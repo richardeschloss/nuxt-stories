@@ -9,4 +9,5 @@ export type moduleOptions = {
   staticHost?: Boolean;
   fetch?: Boolean;
   dynamicImport?: Boolean;
+  watchStories?: Boolean;
 }

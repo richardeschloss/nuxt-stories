@@ -15,7 +15,8 @@ async function staticRoutes () {
 const storiesOpts = {  
   dynamicImport: true,
   forceBuild: true,
-  staticHost: process.env.NODE_ENV === 'production'
+  staticHost: process.env.NODE_ENV === 'production',
+  watchStories: true
 }
 
 export default {
