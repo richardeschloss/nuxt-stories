@@ -16,7 +16,8 @@ export default {
     // 'test/specs/StoryFactory.spec.js',
 
     // 'test/e2e/Hello.js'
-    'test/e2e/Root.js' // Runs after DB.spec which initializes db
+    // 'test/e2e/Root.js', // Runs after DB.spec which initializes db
+    'test/e2e/Search.js'
   ],
   ignoredByWatcher: ['stories'],
   nodeArguments: [
