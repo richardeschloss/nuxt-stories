@@ -17,7 +17,8 @@ export default {
 
     // 'test/e2e/Hello.js'
     // 'test/e2e/Root.js', // Runs after DB.spec which initializes db
-    'test/e2e/Search.js'
+    // 'test/e2e/Search.js'
+    'test/e2e/ModeSelect.js'
   ],
   ignoredByWatcher: ['stories'],
   nodeArguments: [

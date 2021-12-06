@@ -6,6 +6,7 @@
     "components",
     "lib/components/Root.js",
     "lib/components/Search.js",
+    "lib/components/ModeSelect.js",
     "lib/db.server.js",
     "lib/db.client.js",
     "lib/module.js",
