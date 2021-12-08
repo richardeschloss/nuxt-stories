@@ -25,7 +25,7 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate:local": "nuxt generate",
+    "generate": "nuxt generate",
     "generate:gh-pages": "cross-env nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "test": "ava --colors --watch --timeout=10m",
