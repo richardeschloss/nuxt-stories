@@ -20,7 +20,7 @@
 
   @include media-breakpoint-up(md) {
     display: grid;
-    gap: inherit;
+    // gap: inherit;
     grid-template-areas:
       "intro"
       "toc"
@@ -30,11 +30,15 @@
 
   @include media-breakpoint-up(lg) {
     grid-template-areas:
-      "intro   toc"
+      "breadcrumbs   toc"
       "content toc";
     grid-template-columns: 4fr 1fr;
     grid-template-rows: auto 1fr;
   }
+}
+
+.bd-breadcrumbs {
+  grid-area: breadcrumbs;
 }
 
 .bd-intro {

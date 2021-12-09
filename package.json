@@ -25,8 +25,9 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate",
-    "generate:gh-pages": "cross-env nuxt generate",
+    "generate": "nuxt generate && npm run mkDirs && npm run cpFiles",
+    "mkDirs": "mkdir -p dist/nuxtStories dist/nuxtStories/svg",
+    "cpFiles": "cp -rf stories/* dist/nuxtStories && cp -rf lib/assets/svg/* dist/nuxtStories/svg ",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "test": "ava --colors --watch --timeout=10m",
     "test:cov": "c8 ava --timeout=10m"
