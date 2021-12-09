@@ -1,22 +1,8 @@
-async function staticRoutes () {
-  const { promisify } = require('util')
-  const Glob = require('glob')
-  const glob = promisify(Glob)
-  const files = await glob('./stories/**/*.{vue,js,md}')
-  const routes = files
-    .map(f => f
-      .replace('./', '/')
-      .replace(/(.js|.vue|.md)/, ''))
-
-  return routes
-}
-
 /** @type {import('./lib/types').moduleOptions} */
 const storiesOpts = {  
   dynamicImport: true,
   forceBuild: true,
   staticHost: process.env.NODE_ENV === 'production',
-  watchStories: true
 }
 
 export default {
@@ -67,14 +53,8 @@ export default {
      ** You can extend webpack config here
      */
     extend (config, ctx) {},
-    parallel: true,
-    cache: true,
-    hardSource: true
-  },
-  generate: {
-    dir: 'public',
-    routes () {
-      return staticRoutes()
-    }
+    // parallel: true,
+    // cache: true,
+    // hardSource: true
   }
 }

@@ -26,10 +26,11 @@
 <script>
 export default {
   data() {
+    const { storiesAnchor, lang } = this.$config.nuxtStories
     return {
       links: [{
         text: 'Demo',
-        href: this.$config.nuxtStories.storiesAnchor
+        href: `/${storiesAnchor}/${lang}/`
       }, {
         text: 'Github',
         href: 'https://github.com/richardeschloss/nuxt-stories',
