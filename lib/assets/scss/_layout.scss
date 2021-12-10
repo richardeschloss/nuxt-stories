@@ -22,15 +22,14 @@
     display: grid;
     // gap: inherit;
     grid-template-areas:
-      "intro"
-      "toc"
-      "content";
+      "breadcrumbs toc"
+      "content toc";
     grid-template-rows: auto auto 1fr;
   }
 
   @include media-breakpoint-up(lg) {
     grid-template-areas:
-      "breadcrumbs   toc"
+      "breadcrumbs toc"
       "content toc";
     grid-template-columns: 4fr 1fr;
     grid-template-rows: auto 1fr;
