@@ -1,5 +1,5 @@
 <template>
-  <div class="container w-50">
+  <div class="container w-50 nuxt-stories">
     <div>
       <NuxtStoriesLogo width="200" />
       <h1 class="title" v-text="'nuxt-stories'" />
