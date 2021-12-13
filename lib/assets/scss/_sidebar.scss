@@ -13,7 +13,7 @@
   font-weight: 600;
 
   @include media-breakpoint-up(md) {
-    position: sticky;
+    // position: sticky;
     top: 5rem;
     // Override collapse behaviors
     // stylelint-disable-next-line declaration-no-important

@@ -2,7 +2,7 @@
 
 .bd-toc {
   @include media-breakpoint-up(lg) {
-    position: sticky;
+    // position: sticky;
     top: 5rem;
     right: 0;
     z-index: 2;
