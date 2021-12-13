@@ -26,9 +26,12 @@
     li {
       margin-bottom: .25rem;
     }
+
+    li.active {
+      font-weight: bold;
+    }
     
     li.toc-h1 {
-      font-weight: bold;
       margin-bottom: 0.5rem !important;
     }
     li.toc-h2 {
