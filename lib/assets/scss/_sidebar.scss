@@ -1,7 +1,3 @@
-.my-css-yellow {
-  background-color: red;
-}
-
 .bd-sidebar {
   @include media-breakpoint-down(md) {
     margin: 0 -.75rem 1rem;

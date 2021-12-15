@@ -94,7 +94,7 @@ lib/stories.plugin.compiled.js
 public
 pages/storiesx
 stories/stories.json
-stories/stories.db
 components/nuxtStories
 lib/archive
 lib/templates
+stories/stories.db

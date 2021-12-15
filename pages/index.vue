@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import 'bootstrap/dist/css/bootstrap.min.css'
 export default {
   data() {
     const { storiesAnchor, lang } = this.$config.nuxtStories
@@ -52,6 +51,7 @@ export default {
 </script>
 
 <style scoped>
+@import "bootstrap/dist/css/bootstrap.min.css";
 .container {
   margin: 0 auto;
   min-height: 100vh;
