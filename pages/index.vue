@@ -1,6 +1,6 @@
 <template>
-  <div class="container w-50 nuxt-stories">
-    <div>
+  <div class="container">
+    <div class="w-50">
       <NuxtStoriesLogo width="200" />
       <h1 class="title" v-text="'nuxt-stories'" />
       <h2 class="subtitle" v-text="'Painless (and now insanely fast) storybooking for Nuxt'" />
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import 'bootstrap/dist/css/bootstrap.min.css'
 export default {
   data() {
     const { storiesAnchor, lang } = this.$config.nuxtStories

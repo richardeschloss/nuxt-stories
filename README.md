@@ -8,7 +8,11 @@
 
 # nuxt-stories
 
+![Logo here]([host]/nuxtStories/svg/StoriesLogo.svg)
+
 > Nuxt stories module -- Painless (and now insanely fast) storybooking for Nuxt
+
+[Animated GIF demo here...]
 
 ## Features
 * ✅ Insanely fast configuration and usage (one install, one line in config, and you're good to go!)

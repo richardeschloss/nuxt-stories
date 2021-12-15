@@ -1,7 +1,7 @@
 export default {
   serial: true,
   files: [
-    // 'test/specs/DB.spec.js',
+    'test/specs/DB.spec.js',
     // 'test/specs/Fetch.spec.js',
     // 'test/specs/Import.spec.js',
     // 'test/specs/IO.spec.js',
@@ -18,7 +18,7 @@ export default {
     // 'test/e2e/Hello.js'
     // 'test/e2e/Root.js', // Runs after DB.spec which initializes db
     // 'test/e2e/Search.js'
-    'test/e2e/ModeSelect.js'
+    // 'test/e2e/ModeSelect.js'
   ],
   ignoredByWatcher: ['stories'],
   nodeArguments: [

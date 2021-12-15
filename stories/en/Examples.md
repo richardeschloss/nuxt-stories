@@ -24,3 +24,5 @@ More stuff here!
 ## Hello component
 
 <Hello />
+
+!HOLA! from english examples
