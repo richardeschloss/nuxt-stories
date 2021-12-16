@@ -1,5 +1,5 @@
 ---
-title: Developer Docs
+title: Developers
 order: 4
 ---
 
