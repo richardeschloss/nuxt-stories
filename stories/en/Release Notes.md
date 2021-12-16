@@ -7,7 +7,16 @@ order: Infinity
 All notable changes to this project will be documented in this file.
 
 ## v2.5.0 - TBD
-
+* Major change to ESM from commonjs.
+* Major UI design changes to scope styles to nuxt-stories and carry in some styles I liked from bootstrap-docs. Cleaned up the UI and how the SCSS files are organized. It's much cleaner now. The module no longer adds the styles globally, but rather *only* the Nuxt-stories root component imports the styles it needs.
+* Cleaned up the sidebar. Now it does a better job of matching the stories directory tree. It used to be limited to a depth of 2, but now there is no limit. Also, the adding, renaming and deleting of stories is easier. Even changing the title in the frontMatter will rename the story. Can be a timesaver.
+* Deprecated the "Vue-first" stories. Only stories written in Markdown will be supported. It's the better way to go! Easier to maintain the code and easier to maintain the stories!
+* Added LokiDB to help with caching of stories and indexing for the full text search feature
+* Added chokidar to watch for changes made to  stories on the filesystem. This way changes on either the UI or the filesystem appear on the UI instantly. 
+* Added automated scrolling to sections for both the viewer and editor. The scrolling works whenever the current route's hash changes (and that hash is valid).
+* Made the Language dropdown functional
+* Improved code organization across the board. Many more components were created and code was moved to where it better fit.
+* Removed the stories layout. No longer needed.
 
 ## v2.0.17 - 2021-06-16
 ### Changed
