@@ -1,16 +1,9 @@
 <template>
-  <div class="container">
-    <div class="w-50">
-      <NuxtStoriesLogo width="200" />
-      <h1 class="title" v-text="'nuxt-stories'" />
-      <h2 class="subtitle" v-text="'Painless (and now insanely fast) storybooking for Nuxt'" />
-      <div class="border text-start">
-        <label class="fw-bold" v-text="'Example Input:'" />
-        <div><code v-text=" '<Hello />'"/></div>
-        <label class="fw-bold" v-text="'Example Output: (after closing the tag)'" />
-        <Hello />
-      </div>
-      <div class="pt-4">
+  <div class="app-container w-50">
+    <div>
+      <NuxtStoriesLogo width="100" class="py-2" />
+      <NuxtStoriesReadme /> 
+      <div class="pt-4 links">
         <button 
           class="link-btn" 
           v-for="link in links" 
@@ -50,18 +43,17 @@ export default {
 }
 </script>
 
-<style scoped>
-@import "bootstrap/dist/css/bootstrap.min.css";
-.container {
+<style>
+.app-container {
   margin: 0 auto;
   min-height: 100vh;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
-  text-align: center;
+  /* text-align: center; */
 }
 
-.title {
+#nuxt-stories {
   font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
@@ -71,7 +63,7 @@ export default {
   letter-spacing: 1px;
 }
 
-.subtitle {
+#nuxt-stories + blockquote {
   font-weight: 300;
   font-size: 30px;
   color: #526488;
@@ -79,9 +71,26 @@ export default {
   padding-bottom: 15px;
 }
 
+#video-overview + iframe {
+  width: 100%;
+}
+
+#features + ul {
+  text-align: left;
+  list-style: none;
+}
+</style>
+
+<style scoped>
+@import "bootstrap/dist/css/bootstrap.min.css";
+
 .links {
-  padding-top: 15px;
-  text-align: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding-right: 15px;
+  /* padding-top: 15px;
+  text-align: center; */
 }
 
 .link-btn {

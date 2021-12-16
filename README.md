@@ -8,11 +8,11 @@
 
 # nuxt-stories
 
-![Logo here]([host]/nuxtStories/svg/StoriesLogo.svg)
+> Painless (and now insanely fast) storybooking for Nuxt
 
-> Nuxt stories module -- Painless (and now insanely fast) storybooking for Nuxt
+## Video overview
 
-[Animated GIF demo here...]
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8ScF0__i4tI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Features
 * ✅ Insanely fast configuration and usage (one install, one line in config, and you're good to go!)
@@ -30,10 +30,8 @@
 * ✅ The perfect development tool for rapidly jotting down notes, gameplans, or even writing official documentation! Documentation that is also *functional*. 
 * ✅ Built-in fetch. Quickly fetch on the client or server side, right in your story! (v2.0.13+)
 
-(Demonstration video placeholder)
-
 ## Demo
-See it in ACTION: [DEMO](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
+See it in ACTION: [DEMO @ Netlify](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
 
 ## Setup
 
@@ -45,13 +43,9 @@ yarn add --dev nuxt-stories # or npm i -D nuxt-stories
 
 You may also need to install the following deps if they didn't get installed when you first created your nuxt app:
 
-```bash
-npm i -D glob pify @nuxt/utils bootstrap bootstrap-vue dompurify gently-copy gray-matter highlight.js marked nuxt-socket-io node-sass sass-loader
-```
-
 After installing, a postinstall script will run to "gently copy" sample stories, assets, and layout(s) to your workspace to get you setup asap.  It will also create a "components" directory if it doesn't already exist.
 
-2. Add `nuxt-stories` to the `buildModules` section of `nuxt.config.js`
+1. Add `nuxt-stories` to the `buildModules` section of `nuxt.config.js`
 
 ```js
 {
