@@ -44,7 +44,7 @@ export default {
     // 'nuxt-stories/module.js' // Ok too
   ],
   stories: storiesOpts,
-  watch: ['~/lib/*.js'],
+  watch: ['~/lib/*.js', '~/README.md'],
   /*
    ** Build configuration
    */

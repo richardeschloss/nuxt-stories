@@ -10,10 +10,12 @@ order: 5
   - [ ] Node-fetch
   - [ ] Dynamic import
 * [ ] Update tests (and perhaps use this time to tinker with test-scaffolding)
+* [ ] Update README.md and docs. 
+  * [ ] Scrub out deprecated info
+  * [ ] Perhaps remove duplicated stories; for example. README.md and Documentation are pretty much identical. 
 
 ## Quirks
 * [x] [Fixed] The editor uses a trick to get quick scrolling to headers to work: when the mouse is not on the editor, it transforms from a `<textarea />` to a `<div />` so that a dummy cursor can move to the matched header (and give us its y-position). But when the item turns into a div, the scroll bar goes back to the top. It's position should probably be preserved...(otherwise it can be kind of annoying writing long stories)
-
 
 # Nice to have 
 
@@ -22,15 +24,8 @@ order: 5
 * Perhaps a "design mode" that lets each HTML tag in the viewer get styled and then have those styles back-saved. I know chrome dev tools lets the FS be loaded, but it's still in the drawer or to the side. I think I'd go faster if the styling tool were on the UI. 
 * Language translation for the stories. So that way the language dropdown doesn't just switch stories, but it translates existing ones to a desired language.
 
----
-
 # Old Items
 
-1. All tracked issues are in [github](https://github.com/richardeschloss/nuxt-stories/issues)
-2. Would be nice to make the placeholder items functional
-  - [x] Search box
-  - [x] Lang 
-  - [ ] ~~User~~
 3. Would be nice to have a "knobs" / "actions" feature 
 4. Footer for navigating prev / next stories.
 5. Would be nice to have tests get auto-scaffolded based on the stories. Perhaps selecting "jest" or "ava" would rapidly scaffold the tests.

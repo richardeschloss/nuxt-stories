@@ -23,7 +23,7 @@ stories: { /* stories options here */ }
 ...
 ```
 
-## Options
+## Module Options
 
 | option | description | default |
 |---|---|---|
@@ -31,13 +31,18 @@ stories: { /* stories options here */ }
 | `lang` | stories language | 'en' |
 | `storiesDir` | Stories Directory | 'stories' |
 | `storiesAnchor` | Stories Route Root | `storiesDir` value |
-| `codeStyle` | [Code style](https://highlightjs.org/static/demo/) to be used by highlight.js in markdown | 'darcula'
-| ioOpts | socket.io options | See below |
-| staticHost | static host options | See below |
+| `ioOpts` | socket.io server options | See below |
+| `staticHost` | static host options | See below |
+| `fetch` | fetch feature enable, see [Fetching Data](/stories/en/Documentation/Fetching%20Data) | true |
+| `dynamicImport` | dynamic import feature, see [Dynamic Import](/stories/en/Dynamic%20Import) | null |
+| `watchStories` | enables filesystem watching of stories | `!staticHost` |
+| `inputDebounceMs` | Debounce time for the text input to the editor | 350 ms |
+| `titleDebounceMs` | Debounce time for renaming the story when the frontmatter title is changed | 700 ms |  
+
 
 ### IO Options
 
-By default, if a static host is not specified, the nuxt-stories module will start a socket.io server and will add special "nuxtStories" socket.io client when your app starts up. The IO server is used to respond requests from the client to perform the following actions:
+By default, if a static host is not specified, the nuxt-stories module will start a socket.io server and will add a special "nuxtStories" socket.io client when your app starts up. The IO server is used to respond requests from the client to perform the following actions:
 
 - Add story
 - Rename story
