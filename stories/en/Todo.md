@@ -13,11 +13,16 @@ order: 5
 * [ ] Update README.md and docs. 
   * [ ] Scrub out deprecated info
   * [ ] Perhaps remove duplicated stories; for example. README.md and Documentation are pretty much identical. 
+* [ ] Scrub out nuxtStories store... some dead stuff in there.
 
 ## Quirks
+* [ ] Some weird error occurs sometimes when horizontally scrolling the viewer. WTF is going on.. the intersection observer code?
 * [x] [Fixed] The editor uses a trick to get quick scrolling to headers to work: when the mouse is not on the editor, it transforms from a `<textarea />` to a `<div />` so that a dummy cursor can move to the matched header (and give us its y-position). But when the item turns into a div, the scroll bar goes back to the top. It's position should probably be preserved...(otherwise it can be kind of annoying writing long stories)
 
 # Nice to have 
+
+* Might be useful to have *named cells* that can be referenced across multiple stories. I'm thinking a simple syntax could be used to define a cell, and then save that data in Vuex (or some global state, client db?). This way, as we type our stories we can keep providing sets of data in context without having to scroll up to the frontMatter
+  - On this note, all stories (including their frontMatter) is stored globally already. 
 
 * Quick components for common embeds:
   - Youtube. I.e., `<youtube video=[id] />` instead of the lengthy Iframe codes.

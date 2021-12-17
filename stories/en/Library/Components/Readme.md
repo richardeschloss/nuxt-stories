@@ -3,8 +3,6 @@ title: Readme
 order: Infinity
 ---
 
-<json :data="conditions" />
-
 # Description 
 The `<NuxtStoriesReadme />` component is a wrapper around the `<NuxtStoriesMarkdown />` component to compile your project's README file into beautiful HTML markup. It works by mapping requests for "/nuxtStories/README.md" to "[yourApp]/README.md" so as to not conflict with any requests to "/README.md" that may be different. 
 
@@ -24,9 +22,6 @@ This makes it super easy to place the docs right on your landing page if you wan
 
 <NuxtStoriesReadme />
 
-# Test Design
+# Tests
 
-| Requirement | Result |
-| --- | --- |
-| It shall have an id === 'readme' | [TBD: Automated test] |
-| It shall have src === '/nuxtStories/README.md' | [TBD: Automated test] |
+<NuxtStoriesTests testFile="/e2e/Readme.js" componentName="NuxtStoriesReadme" />
