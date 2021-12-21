@@ -1,3 +1,5 @@
+import { defineNuxtConfig } from '@nuxt/bridge'
+
 /** @type {import('./lib/types').moduleOptions} */
 const storiesOpts = {  
   dynamicImport: true,
@@ -5,8 +7,11 @@ const storiesOpts = {
   staticHost: process.env.NODE_ENV === 'production',
 }
 
-export default {
-  components: true,
+export default defineNuxtConfig({
+  bridge: {
+    vite: true
+  },
+  components: false,
   telemetry: false,
   target: process.env.NODE_ENV === 'production'
     ? 'static'
@@ -40,21 +45,9 @@ export default {
    */
   buildModules: [
     // Doc: https://github.com/richardeschloss/nuxt-stories
-    '~/lib/module.js' // Ok
+    // '~/lib/module.js' // Ok
     // 'nuxt-stories/module.js' // Ok too
   ],
   stories: storiesOpts,
-  watch: ['~/lib/*.js', '~/README.md'],
-  /*
-   ** Build configuration
-   */
-  build: {
-    /*
-     ** You can extend webpack config here
-     */
-    extend (config, ctx) {},
-    // parallel: true,
-    // cache: true,
-    // hardSource: true
-  }
-}
+  // watch: ['~/lib/*.js', '~/README.md'],
+})
