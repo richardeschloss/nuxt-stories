@@ -21,7 +21,3 @@ This makes it super easy to place the docs right on your landing page if you wan
 ## Expected result
 
 <NuxtStoriesReadme />
-
-# Tests
-
-<NuxtStoriesTests testFile="/e2e/Readme.js" componentName="NuxtStoriesReadme" />

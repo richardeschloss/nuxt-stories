@@ -1,17 +1,17 @@
 import { defineNuxtConfig } from '@nuxt/bridge'
 
 /** @type {import('./lib/types').moduleOptions} */
-const storiesOpts = {  
+const storiesOpts = {
   dynamicImport: true,
   forceBuild: true,
-  staticHost: process.env.NODE_ENV === 'production',
+  staticHost: process.env.NODE_ENV === 'production'
 }
 
 export default defineNuxtConfig({
   bridge: {
     vite: true
   },
-  components: false,
+  components: true,
   telemetry: false,
   target: process.env.NODE_ENV === 'production'
     ? 'static'
@@ -48,6 +48,6 @@ export default defineNuxtConfig({
     // '~/lib/module.js' // Ok
     // 'nuxt-stories/module.js' // Ok too
   ],
-  stories: storiesOpts,
+  stories: storiesOpts
   // watch: ['~/lib/*.js', '~/README.md'],
 })
