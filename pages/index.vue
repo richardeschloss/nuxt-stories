@@ -1,15 +1,15 @@
 <template>
-  <div class="app-container w-50">
+  <div class="app-container w-50 nuxt-stories-demo">
     <div>
       <NuxtStoriesLogo width="100" class="py-2" />
-      <NuxtStoriesReadme /> 
+      <NuxtStoriesReadme />
       <div class="pt-4 links">
-        <button 
-          class="link-btn" 
-          v-for="link in links" 
-          :key="link.href" 
+        <button
+          v-for="link in links"
+          :key="link.href"
+          class="link-btn"
+          @click="followLink(link)"
           v-text="link.text"
-          @click="followLink(link)" 
         />
       </div>
     </div>
@@ -17,8 +17,9 @@
 </template>
 
 <script>
+import '~/assets/demo.scss'
 export default {
-  data() {
+  data () {
     const { storiesAnchor, lang } = this.$config.nuxtStories
     return {
       links: [{
@@ -29,10 +30,10 @@ export default {
         href: 'https://github.com/richardeschloss/nuxt-stories',
         target: '_blank'
       }]
-    }  
+    }
   },
   methods: {
-    followLink(link) {
+    followLink (link) {
       if (link.target === '_blank') {
         window.open(link.href, link.target)
       } else {
