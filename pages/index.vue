@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import '~/assets/demo.scss'
 export default {
   data () {
     const { storiesAnchor, lang } = this.$config.nuxtStories

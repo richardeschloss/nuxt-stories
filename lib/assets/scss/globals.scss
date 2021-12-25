@@ -1,8 +1,3 @@
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/root";
-
 body {
   font-family: "Helvetica Neue", Arial, sans-serif;
   font-size: 1rem;
@@ -10,12 +5,15 @@ body {
   line-height: 1.5;
   margin: 0;
 }
-@import "bootstrap-icons/font/bootstrap-icons"; /* TBD: Just import the icons you use */
+@import "bootstrap-icons/font/bootstrap-icons";
 
 .nuxt-stories {
-  @import "bootstrap/scss/bootstrap";
-  // @import "bootstrap-icons/font/bootstrap-icons"; /* TBD: Just import the icons you use */
-  
+  @import "bootstrap/scss/functions";
+  @import "bootstrap/scss/variables";
+  @import "bootstrap/scss/mixins";
+  @import "bootstrap/scss/root";
+  @import "bootstrap/dist/css/bootstrap.min";
+
   /* Minimal setup (carried over from bootstrap-docs (I like their style) */
   @import "./variables";
   @import "./navbar";
@@ -28,7 +26,6 @@ body {
   
   .hljs {
     font-family: Consolas, Monaco, monospace !important;
-    color: #d0d0d0;
   }
 
   .page-enter-active,

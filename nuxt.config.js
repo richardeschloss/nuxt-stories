@@ -17,6 +17,10 @@ export default defineNuxtConfig({
         'backo2', 'debug', 'tiny-emitter/instance.js']
     }
   },
+  css: [
+    // 'bootstrap/dist/css/bootstrap-reboot.min.css',
+    // 'highlight.js/styles/base16/darcula.css'
+  ],
   components: true,
   telemetry: false,
   target: process.env.NODE_ENV === 'production'
