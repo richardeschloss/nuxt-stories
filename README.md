@@ -12,7 +12,7 @@
 
 ## Video overview
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/8ScF0__i4tI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[TBD]
 
 ## Features
 * ✅ Insanely fast configuration and usage (one install, one line in config, and you're good to go!)

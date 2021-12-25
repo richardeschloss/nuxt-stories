@@ -11,6 +11,12 @@ export default defineNuxtConfig({
   bridge: {
     vite: true
   },
+  vite: {
+    optimizeDeps: {
+      include: ['deepmerge', 'parseuri', '@socket.io/component-emitter', 'parseqs', 'yeast', 'engine.io-client',
+        'backo2', 'debug', 'tiny-emitter/instance.js']
+    }
+  },
   components: true,
   telemetry: false,
   target: process.env.NODE_ENV === 'production'
@@ -45,7 +51,7 @@ export default defineNuxtConfig({
    */
   buildModules: [
     // Doc: https://github.com/richardeschloss/nuxt-stories
-    // '~/lib/module.js' // Ok
+    '~/lib/module.js' // Ok
     // 'nuxt-stories/module.js' // Ok too
   ],
   stories: storiesOpts

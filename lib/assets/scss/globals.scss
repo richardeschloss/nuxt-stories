@@ -13,7 +13,7 @@ body {
 
 .nuxt-stories {
   @import "bootstrap/scss/bootstrap";
-  @import "bootstrap-icons/font/bootstrap-icons.css";
+  @import "bootstrap-icons/font/bootstrap-icons"; /* TBD: Just import the icons you use */
   
   /* Minimal setup (carried over from bootstrap-docs (I like their style) */
   @import "./variables";
