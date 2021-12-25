@@ -46,6 +46,7 @@
     "@lokidb/loki": "^2.1.0",
     "bootstrap": "^5.1.3",
     "bootstrap-icons": "^1.7.1",
+    "buffer": "^6.0.3",
     "dompurify": "^2.3.3",
     "gently-copy": "^3.2.0",
     "glob": "^7.2.0",

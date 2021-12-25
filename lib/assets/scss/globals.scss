@@ -23,8 +23,8 @@ body {
   @import "./sidebar";
   @import "./layout";
 
-  @import "highlight.js/styles/base16/classic-dark.css";
-  @import "vue-json-pretty/lib/styles.css";
+  @import "highlight.js/styles/base16/classic-dark";
+  @import "vue-json-pretty/lib/styles";
   
   .hljs {
     font-family: Consolas, Monaco, monospace !important;
