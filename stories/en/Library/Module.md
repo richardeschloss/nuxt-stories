@@ -29,4 +29,8 @@ Module shall do nothing if not in development mode AND `forceBuild` is not set.
 
 <NuxtStoriesTestRunner testFile="test/specs/Module.spec.js" />
 
-Note: Here, when running tests for *module*, Nuxt is also running right now. So, because of how the test mocking now works (with `useNuxt` for Nuxt modules) some tests will show as failing, but we know from the table in the "Normal-mode" section (and that that we can see this page) the module is working.
+Note: Here, when running tests for *module*, Nuxt is also running right now. So, we need to remember that the NODE_ENV may be set to 'development' and not 'testing'. We need the testRunner to set the NODE_ENV to 'testing' in the spawned child_process for the tests to run correctly.
+
+# Coverage
+
+<NuxtStoriesTestCoverage file="module.js" />
