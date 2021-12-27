@@ -1,7 +1,9 @@
 import path from 'path'
-import { nuxtCtx } from '@nuxt/kit'
+import { nuxtCtx, useNuxt } from '@nuxt/kit'
 
 const srcDir = path.resolve('.')
+
+export { useNuxt }
 
 export function initNuxt () {
   nuxtCtx.unset()
@@ -9,7 +11,9 @@ export function initNuxt () {
     __nuxt2_shims_key__: true,
     version: '2.x',
     hooks: {
-      addHooks: () => {}
+      addHooks: (hooks) => {
+        Object.assign(useNuxt(), hooks)
+      }
     },
     hook (evt, cb) {
       nuxtCtx.use().hooks[evt] = cb

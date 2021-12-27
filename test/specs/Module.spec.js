@@ -1,125 +1,122 @@
 import { unlinkSync, writeFileSync } from 'fs'
 import path from 'path'
-import test from 'ava'
+import ava from 'ava'
 // @ts-ignore
+import { initNuxt, useNuxt } from '../utils/module.js'
 import Module, { register, db } from '#root/lib/module.js'
-import { wrapModule } from '../utils/module.js'
 
 global.__dirname = 'lib'
 const srcDir = path.resolve('.')
 
-test('Module (defaults)', (t) => {
-  const ctx = wrapModule(Module)
-  ctx.Module({})
-  t.falsy(ctx.options.publicRuntimeConfig.nuxtStories)
+const { beforeEach } = ava
+const test = ava
+
+beforeEach('Init Nuxt', () => {
+  initNuxt()
+})
+
+test('Module (defaults)', async (t) => {
+  await Module({}, useNuxt())
+  t.falsy(useNuxt().options.publicRuntimeConfig.nuxtStories)
 })
 
 test('Module (enabled, ssr mode)', async (t) => {
-  t.timeout(5000)
-  const ctx = wrapModule(Module)
-  Object.assign(ctx.options, {
-    server: {
-      host: 'localhost',
-      port: 3000  
-    }
-  })
-  await ctx.Module({
+  // t.timeout(5000)
+  const nuxt = useNuxt()
+  // @ts-ignore
+  nuxt.options.server = {
+    host: 'localhost',
+    port: 3000
+  }
+  await Module({
     forceBuild: true
   })
   const expMods = ['nuxt-socket-io']
   expMods.forEach((mod, idx) => {
-    t.is(ctx.options.modules[idx], mod)
+    t.is(nuxt.options.modules[idx], mod)
   })
   const expHooks = ['components:dirs', 'modules:done']
   expHooks.forEach((h) => {
-    t.truthy(ctx.nuxt.hooks[h])
+    t.truthy(nuxt[h])
   })
 
-  t.is(ctx.options.middlewares[0].path, '/nuxtStories')
+  t.is(nuxt.options.serverMiddleware[0].path, '/nuxtStories')
 
   const dirs = []
-  ctx.nuxt.hooks['components:dirs'](dirs)
+  nuxt['components:dirs'](dirs)
   t.is(dirs[0].path, path.resolve(__dirname, 'components'))
   t.is(dirs[0].prefix, 'NuxtStories')
-  
-  const routes = []
-  Object.assign(ctx, {
-    extendRoutes(cb) {
-      cb(routes)  
-    }
-  })
 
-  await ctx.nuxt.hooks['modules:done'](ctx)
-  t.true(ctx.options.plugins[0].ssr)
-  t.is(ctx.options.plugins[0].src, path.resolve(__dirname, 'plugin.js'))
-  t.is(ctx.options.plugins[0].fileName, 'nuxt-stories/plugin.js')
+  const routes = []
+  const moduleContainer = {
+    nuxt,
+    extendRoutes (cb) {
+      cb(routes)
+    }
+  }
+
+  await nuxt['modules:done'](moduleContainer)
+  t.is(nuxt.options.plugins[0].src, path.resolve(__dirname, 'plugin.js'))
   t.is(routes[0].name, 'stories')
   t.is(routes[0].path, '/stories')
 
-  t.truthy(ctx.options.publicRuntimeConfig.nuxtStories)
-  const [{ name, url }] = ctx.options.io.sockets
+  t.truthy(nuxt.options.publicRuntimeConfig.nuxtStories)
+  const [{ name, url }] = nuxt.options.io.sockets
   t.is(name, 'nuxtStories')
-  t.is(url, 'http://localhost:3001')  
+  t.is(url, 'http://localhost:3100')
 })
 
 test('Module (enabled, various ioOpts)', async (t) => {
-  const ctx = wrapModule(Module)
-  await ctx.Module({
+  await Module({
     forceBuild: true,
     ioOpts: {
       host: 'localhost',
       port: 3001
     }
-  })
-  const [{ name, url }] = ctx.options.io.sockets
+  }, useNuxt())
+  const [{ name, url }] = useNuxt().options.io.sockets
   t.is(name, 'nuxtStories')
-  t.is(url, 'http://localhost:3001') 
+  t.is(url, 'http://localhost:3001')
 
-  const ctx2 = wrapModule(Module)
-  await ctx2.Module({
+  initNuxt()
+  await Module({
     forceBuild: true,
     ioOpts: { url: 'https://localhost:3001' }
-  })
-  const [{ name: name2, url: url2 }] = ctx2.options.io.sockets
+  }, useNuxt())
+  const [{ name: name2, url: url2 }] = useNuxt().options.io.sockets
   t.is(name2, 'nuxtStories')
-  t.is(url2, 'https://localhost:3001') 
+  t.is(url2, 'https://localhost:3001')
 
-  const ctx3 = wrapModule(Module)
-  ctx3.options.server = {
-    https: true,
-    port: 3001,
-    host: 'localhost'
-  }
+  initNuxt()
+  // @ts-ignore
+  useNuxt()
+    .options.server = {
+      https: true,
+      port: 3001,
+      host: 'localhost'
+    }
 
-  await ctx3.Module({
-    forceBuild: true,
+  await Module({
+    forceBuild: true
     // ioOpts: { host: 'https://localhost:3001' }
-  })
-  const [{ name: name3, url: url3 }] = ctx3.options.io.sockets
+  }, useNuxt())
+  const [{ name: name3, url: url3 }] = useNuxt().options.io.sockets
   t.is(name3, 'nuxtStories')
-  t.is(url3, 'https://localhost:3002')
+  t.is(url3, 'https://localhost:3101')
 
   // Attempt to register io again...
   // It should catch error
-  register.io(ctx3)
+  register.io(useNuxt())
   t.pass()
 })
 
 test('Module (enabled, static host)', async (t) => {
-  const ctx = wrapModule(Module)
-  await ctx.Module({
+  await Module({
     forceBuild: true,
     staticHost: 'http://localhost:3001'
-  })
-  const routes = []
-  Object.assign(ctx, {
-    extendRoutes(cb) {
-      cb(routes)  
-    }
-  })
-
-  await ctx.nuxt.hooks['modules:done'](ctx)
-  t.is(ctx.options.modules.length, 0)
+  }, useNuxt())
+  const nuxt = useNuxt()
+  t.is(nuxt.options.modules.length, 0)
 })
 
 test('Register.db', async (t) => {
@@ -140,7 +137,7 @@ test('Register.routes', async (t) => {
   }
   const routes = await register.routes(cfg)
   t.is(routes.path, '/stories')
-  t.is(routes.children[0].path, ':lang?/:L0?/:L1?')
+  t.is(routes.children[0].path, ':lang?/*')
 })
 
 test('Register.stories (requires db)', async (t) => {
@@ -149,30 +146,21 @@ test('Register.stories (requires db)', async (t) => {
 })
 
 test('Watch Stories', async (t) => {
-  const ctx = wrapModule(Module)  
-  function waitForFileChanged(db) {
+  function waitForFileChanged (db) {
     return new Promise((resolve) => {
-      function fileChanged(stories) {
+      function fileChanged (stories) {
         db.off('fileChanged', fileChanged)
         resolve(stories)
       }
-      db.on('fileChanged', fileChanged)  
+      db.on('fileChanged', fileChanged)
     })
   }
-  await ctx.Module({
+  await Module({
     forceBuild: true,
     watchStories: true
-  })
-  const routes = []
-  Object.assign(ctx, {
-    extendRoutes(cb) {
-      cb(routes)  
-    }
-  })
-
-  await ctx.nuxt.hooks['modules:done'](ctx)
+  }, useNuxt())
   const p = waitForFileChanged(db)
-  const tmpStory = path.resolve('./stories/en/Tmp.md') 
+  const tmpStory = path.resolve('./stories/en/Tmp.md')
   writeFileSync(tmpStory, 'Some content')
   const stories = await p
   const fnd = stories.find(({ name }) => name === 'Tmp')
