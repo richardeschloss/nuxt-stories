@@ -15,8 +15,8 @@ beforeEach('Init Nuxt', () => {
   initNuxt()
 })
 
-test('Module (defaults)', async (t) => {
-  await Module({}, useNuxt())
+test('Module (disabled mode)', async (t) => {
+  await Module({ forceBuild: false }, useNuxt())
   t.falsy(useNuxt().options.publicRuntimeConfig.nuxtStories)
 })
 

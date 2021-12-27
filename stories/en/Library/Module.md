@@ -25,4 +25,8 @@ See [ModuleOptions](/stories/en/Documentation/Configuration#module-options)
 
 Module shall do nothing if not in development mode AND `forceBuild` is not set.
 
- 
+ # Tests
+
+<NuxtStoriesTestRunner testFile="test/specs/Module.spec.js" />
+
+Note: Here, when running tests for *module*, Nuxt is also running right now. So, because of how the test mocking now works (with `useNuxt` for Nuxt modules) some tests will show as failing, but we know from the table in the "Normal-mode" section (and that that we can see this page) the module is working.
