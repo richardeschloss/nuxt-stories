@@ -24,7 +24,7 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "start": "nuxt start",
+    "start": "nuxi preview",
     "generate": "nuxt generate && npm run mkDirs && npm run cpFiles",
     "mkDirs": "mkdir -p dist/nuxtStories dist/nuxtStories/svg",
     "cpFiles": "cp -rf stories/* dist/nuxtStories && cp -rf lib/assets/svg/* dist/nuxtStories/svg ",
