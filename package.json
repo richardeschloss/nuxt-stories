@@ -38,7 +38,8 @@
     "stories"
   ],
   "imports": {
-    "#root/*": "./*"
+    "#root/*": "./*",
+    "#app": "./test/utils/plugin.js"
   },
   "dependencies": {
     "@lokidb/fs-storage": "^2.1.0",
