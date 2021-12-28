@@ -2,36 +2,34 @@ import { existsSync, mkdirSync, readFileSync, unlinkSync, rmdirSync, writeFileSy
 import { resolve as pResolve } from 'path'
 import { execSync } from 'child_process'
 import ava from 'ava'
-import DB from '#root/lib/db.server.js'
-import DBClient from '#root/lib/db.client.js'
+import DB from '#root/lib/store/db.server.js'
+import DBClient from '#root/lib/store/db.client.js'
 
 const srcDir = pResolve('.')
 const storiesDir = 'stories'
 const lang = 'en'
-const basePath = pResolve(srcDir, storiesDir, lang)
-const pattern = '**/*.md'
 let db, dbClient
 
 const { serial: test, before } = ava
 const dbFile = pResolve('./stories/stories.db')
 const fetched = []
 
-global.fetch = async function(url) {
+global.fetch = async function (url) {
   fetched.push(url)
   return {
-    json() {
+    json () {
       return JSON.parse(readFileSync(dbFile, { encoding: 'utf-8' }))
     }
   }
 }
 
-function waitForFileChanged() {
+function waitForFileChanged () {
   return new Promise((resolve) => {
-    function fileChanged(stories) {
+    function fileChanged (stories) {
       db.off('fileChanged', fileChanged)
       resolve(stories)
     }
-    db.on('fileChanged', fileChanged)  
+    db.on('fileChanged', fileChanged)
   })
 }
 
@@ -63,7 +61,7 @@ test('Load DB (server and client)', async (t) => {
   t.true(dbClient.cnt() > 0)
 })
 
-test('Build Tree', async (t) => { 
+test('Build Tree', async (t) => {
   const dir = pResolve('./stories/en/Very/Deep')
   mkdirSync(dir, { recursive: true })
   writeFileSync(pResolve(dir, 'VeryDeep.md'), 'Some content')
@@ -91,7 +89,7 @@ test('Search (server-side)', async (t) => {
   await db.load()
   const hits = await db.search('Nice')
   t.true(hits.length > 0)
-  hits.forEach((hit) => { 
+  hits.forEach((hit) => {
     t.truthy(hit.labels)
     t.truthy(hit.href)
     t.truthy(hit.content)
@@ -99,13 +97,13 @@ test('Search (server-side)', async (t) => {
   })
 
   const hits2 = await db.search('!HOLA', 'es')
-  t.is(hits2[0].content,  '# !HOLA! from Story1 in Spanish')
+  t.is(hits2[0].content, '# !HOLA! from Story1 in Spanish')
 })
 
 test('Search (client-side)', async (t) => {
   const hits = await dbClient.search('Nice')
   t.true(hits.length > 0)
-  hits.forEach((hit) => { 
+  hits.forEach((hit) => {
     t.truthy(hit.labels)
     t.truthy(hit.href)
     t.truthy(hit.content)
@@ -132,8 +130,8 @@ test.skip('Add Story', async (t) => {
 
 test('Update One', async (t) => {
   await db.addStory('/stories/en')
-  await db.updateContent({ 
-    href: '/stories/en/NewStory0' ,
+  await db.updateContent({
+    href: '/stories/en/NewStory0',
     content: 'new content'
   })
   const db2 = DB({ srcDir })
@@ -148,12 +146,12 @@ test('Update One', async (t) => {
 test.skip('Rename Story', async (t) => {
   await db.addStory('/stories/en') // --> NewStory0.md
   await db.addStory('/stories/en/NewStory0') // --> NewStory0/NewStory0.md
-  let oldCnt = db.cnt()
+  const oldCnt = db.cnt()
   await db.renameStory({
     oldHref: '/stories/en/NewStory0',
     newHref: '/stories/en/MyStory'
   })
-  
+
   t.true(existsSync(pResolve('./stories/en/MyStory/NewStory0.md')))
   t.truthy(db.findOne({ href: '/stories/en/MyStory/NewStory0' }))
 
@@ -172,7 +170,7 @@ test('Remove Story', async (t) => {
   await db.addStory('/stories/en/NewStory0') // --> NewStory0/NewStory0.md
   await db.addStory('/stories/en/NewStory0') // --> NewStory0/NewStory1.md
   await db.removeStory('/stories/en/NewStory0/NewStory1')
-  
+
   t.falsy(db.findOne({ href: '/stories/en/NewStory0/NewStory1' }))
   t.false(existsSync(pResolve('./stories/en/NewStory0/NewStory1.md')))
 
@@ -199,7 +197,7 @@ test('Load story', async (t) => {
 })
 
 test.skip('Watch file changes (user-triggered)', async (t) => {
-  let cnt = 0
+  const cnt = 0
   await db.watchFS()
   let p = waitForFileChanged()
   const newStory = {
@@ -208,7 +206,7 @@ test.skip('Watch file changes (user-triggered)', async (t) => {
   }
   writeFileSync(newStory.file, newStory.content)
   let stories = await p
-  let fnd = stories.find(({href}) => href === '/stories/en/NewStory0')
+  let fnd = stories.find(({ href }) => href === '/stories/en/NewStory0')
   t.truthy(fnd)
   t.is(fnd.name, 'NewStory0')
   t.is(stories.depth, 2)
@@ -217,16 +215,16 @@ test.skip('Watch file changes (user-triggered)', async (t) => {
   writeFileSync(newStory.file, newStory.content)
   stories = await p
 
-  const fndDoc = db.findOne({href: '/stories/en/NewStory0' })
+  const fndDoc = db.findOne({ href: '/stories/en/NewStory0' })
   t.is(fndDoc.content, newStory.content)
 
   p = waitForFileChanged()
   unlinkSync(newStory.file)
   stories = await p
-  fnd = stories.find(({href}) => href === '/stories/en/NewStory0')
+  fnd = stories.find(({ href }) => href === '/stories/en/NewStory0')
   t.falsy(fnd)
 
-  let oldCnt = db.cnt()
+  const oldCnt = db.cnt()
   const DeepDir = pResolve('./stories/en/Some/Deep')
   mkdirSync(DeepDir, { recursive: true })
   t.is(oldCnt, db.cnt())
@@ -238,7 +236,7 @@ test.skip('Watch file changes (user-triggered)', async (t) => {
   p = waitForFileChanged()
   writeFileSync(deepStory.file, deepStory.content)
   stories = await p
-  fnd = stories.find(({href}) => href === '/stories/en/Some')
+  fnd = stories.find(({ href }) => href === '/stories/en/Some')
   t.is(stories.depth, 3)
   t.truthy(fnd)
   t.is(fnd.children[0].name, 'Deep')
@@ -262,9 +260,8 @@ test.skip('Watch file changes (user-triggered)', async (t) => {
   })
   await db.removeStory('/stories/en/Renamed')
 
-
   t.is(callCnt, 0)
-  
+
   execSync('rm ./stories/en/NewStory0.md')
 })
 
