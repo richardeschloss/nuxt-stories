@@ -6,24 +6,9 @@ body {
   margin: 0;
 }
 
+@import "../css/vendor.min.css"; // Works (we'll lazyLoad globals.scss)
+
 .nuxt-stories {
-  // TBD: can probably optimize further
-  @import "bootstrap/scss/functions";
-  @import "bootstrap/scss/variables";
-  @import "bootstrap/scss/mixins";
-  @import "bootstrap/scss/root";
-  @import "bootstrap/dist/css/bootstrap.min";
-
-  /* Minimal setup (carried over from bootstrap-docs (I like their style) */
-  @import "./variables";
-  @import "./navbar";
-  @import "./toc";
-  @import "./sidebar";
-  @import "./layout";
-
-  @import "highlight.js/styles/base16/classic-dark";
-  @import "vue-json-pretty/lib/styles";
-  
   .hljs {
     font-family: Consolas, Monaco, monospace !important;
   }

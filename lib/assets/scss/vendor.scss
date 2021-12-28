@@ -1,0 +1,18 @@
+/* Compile with: 
+ npx sass lib/assets/scss/vendor.scss lib/assets/css/vendor.min.css --style compressed
+*/
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/mixins";
+@import "../../../node_modules/bootstrap/scss/root";
+@import "./bootstrap/bootstrap.min"; /* source map removed here */
+
+/* Minimal setup (carried over from bootstrap-docs (I like their style) */
+@import "./bdocs/variables";
+@import "./bdocs/navbar";
+@import "./bdocs/toc";
+@import "./bdocs/sidebar";
+@import "./bdocs/layout";
+
+@import "../../../node_modules/highlight.js/styles/base16/classic-dark";
+@import "../../../node_modules/vue-json-pretty/lib/styles";

@@ -4,9 +4,10 @@ export default {
     // 'test/specs/DB.spec.js',
     // 'test/specs/Module.spec.js',
     // 'test/specs/Plugin.spec.js'
+    // 'test/specs/IO.spec.js'
+
     // 'test/specs/Fetch.spec.js',
     // 'test/specs/Import.spec.js',
-    'test/specs/IO.spec.js'
     // 'test/specs/Markdown.spec.js',
     // 'test/specs/Storage.spec.js',
     // 'test/specs/VuexModule.spec.js',
