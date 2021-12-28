@@ -9,6 +9,7 @@
     "lib/components/ModeSelect.js",
     "lib/store/db.server.js",
     "lib/store/db.client.js",
+    "lib/io.js",
     "lib/module.js",
     "lib/plugin.js",
     "postinstall.js"

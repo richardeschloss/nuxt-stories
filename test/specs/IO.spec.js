@@ -1,6 +1,7 @@
 import { writeFileSync, unlinkSync } from 'fs'
 import { resolve } from 'path'
 import ava from 'ava'
+import { delay } from 'les-utils/utils/promise.js'
 import { register, db } from '#root/lib/module.js'
 import ioSvc from '#root/lib/io.js'
 
@@ -38,7 +39,7 @@ test('IO (fileChange gets emitted)', async (t) => {
       emitted[evt] = data
     }
   }
-  const svc = ioSvc(socket)
+  ioSvc(socket)
   await db.watchFS()
   const p = waitForFileChanged()
   const newStory = {
@@ -49,4 +50,26 @@ test('IO (fileChange gets emitted)', async (t) => {
   await p
   t.truthy(emitted.fileChanged)
   unlinkSync(newStory.file)
+})
+
+test('IO (frontMatter fetch)', async (t) => {
+  const emitted = {}
+  const socket = {
+    emit (evt, data) {
+      emitted[evt] = data
+    }
+  }
+  const svc = ioSvc(socket)
+  // eslint-disable-next-line require-await
+  global.fetch = async function (url) {
+    // eslint-disable-next-line no-throw-literal
+    throw 'Bogus url'
+  }
+  svc.fmFetch({
+    fetchInfo: {
+      item1: '/path/to/item'
+    }
+  })
+  await delay(200)
+  t.truthy(emitted.fmFetched)
 })
