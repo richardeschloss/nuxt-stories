@@ -5,11 +5,11 @@ import { resolve as pResolve } from 'path'
 import ava from 'ava'
 import Vue from 'vue/dist/vue.runtime.esm.js'
 import Vuex from 'vuex'
+import { delay } from 'les-utils/utils/promise.js'
 import Root from '#root/lib/components/Root.js'
 import { state, mutations } from '#root/lib/store/nuxtStories.js'
-import { delay } from 'les-utils/utils/promise.js'
 
-const { serial: test, beforeEach, after } = ava
+const { serial: test, beforeEach } = ava
 
 const shallowRender = {
   render (h) {
@@ -20,14 +20,15 @@ const shallowRender = {
 Vue.use(Vuex)
 let store
 const components = {
-  'NuxtStoriesHeader': shallowRender
+  LazyNuxtStoriesHeader: shallowRender,
+  LazyNuxtStoriesBody: shallowRender
 }
 
 const fetched = []
-global.fetch = async function(url) {
+global.fetch = async function (url) {
   fetched.push(url)
   return {
-    json() {
+    json () {
       return JSON.parse(readFileSync(pResolve('./stories/stories.db'), { encoding: 'utf-8' }))
     }
   }
@@ -54,30 +55,32 @@ test('Root (ssr enabled)', async (t) => {
     $store: store,
     $config: {
       nuxtStories: {
-        lang: 'en',
         staticHost: false
       }
     },
-    $nuxtSocket(opts) {
+    $nuxtSocket (opts) {
       t.is(opts.name, 'nuxtStories')
       t.is(opts.channel, '')
-      t.is(opts.namespaceCfg.emitters[0], 'fetchStories')
+      t.is(opts.namespaceCfg.emitters[0], 'fetchStories --> storiesInfo')
       return {
-        async onceP(evt) {
+        async onceP (evt) {
           t.is(evt, 'connect')
           p.push(Promise.resolve())
         }
       }
     },
-    async fetchStories(lang) {
+    async fetchStories (lang) {
       t.is(lang, 'en')
       return [{
         name: 'story1'
       }, {
         name: 'story2'
-      }]  
+      }]
     },
     $route: {
+      params: {
+        lang: 'en'
+      },
       path: '/stories/en/story1'
     }
   }
@@ -92,26 +95,43 @@ test('Root (ssr enabled)', async (t) => {
 })
 
 test('Root (static host)', async (t) => {
+  let buildTree
+  const state = {}
   const Comp = Vue.extend(Root)
   const comp = new Comp({ components })
   const mocks = {
-    $store: store,
+    $store: {
+      commit (label, data) {
+        state[label] = data
+      }
+    },
     $config: {
       nuxtStories: {
-        lang: 'en',
+        db: {
+          buildTree () {
+            buildTree = true
+            return [{
+              name: 'story1'
+            }]
+          }
+        },
         staticHost: true
       }
     },
     $route: {
+      params: {
+        lang: 'en'
+      },
       path: '/stories/en/story1'
     }
   }
   Object.assign(comp, mocks)
   await comp.$mount()
+  t.true(buildTree)
   await delay(100)
   t.truthy(comp.$el)
   t.falsy(comp.socket)
-  const { stories } = comp.$store.state.$nuxtStories
+
+  const stories = state['$nuxtStories/SET_STORIES']
   t.true(stories.length > 0)
 })
-
