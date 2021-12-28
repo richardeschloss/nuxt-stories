@@ -11,10 +11,6 @@ export default {
     // 'test/specs/Storage.spec.js',
     // 'test/specs/VuexModule.spec.js',
     // 'test/specs/StoryFactory.spec.js',
-
-    // 'test/e2e/Root.js'
-    // 'test/e2e/Search.js'
-    // 'test/e2e/ModeSelect.js'
   ],
   ignoredByWatcher: ['stories'],
   nodeArguments: [
