@@ -5,9 +5,9 @@ body {
   line-height: 1.5;
   margin: 0;
 }
-@import "bootstrap-icons/font/bootstrap-icons";
 
 .nuxt-stories {
+  // TBD: can probably optimize further
   @import "bootstrap/scss/functions";
   @import "bootstrap/scss/variables";
   @import "bootstrap/scss/mixins";
@@ -76,6 +76,8 @@ body {
     overflow: hidden;
     flex: 1 1 0%;
     list-style: none;
+    background: white;
+    width: 100%;
   }
 
   .search-result-link {
