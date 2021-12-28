@@ -25,8 +25,12 @@ The header consists of the following:
 - Lang select
 - Github Logo
 
+The header listens for the "resize" event and if the new width falls to 768 px or less, it will hide the overflow elements and show the overflow toggler.
+
 ## Body
 
 The body consists of the following:
 - the sideNav
 - the main area (which itself is a grid divided in to breadcrumbs, content and table of contents.
+
+The body implements `ResizeObserver` to see when the sidebar width has changed (the sidebar is resizeable horizontally). When the width is resized to less than its original width, the margin-left of the `<main />` element is changed by that difference. This creates a "glue effect" that makes it look like the main area is glued to the sidebar, and when it changes width, the main area width changes with it.
