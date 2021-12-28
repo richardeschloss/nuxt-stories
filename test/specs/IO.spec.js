@@ -1,8 +1,8 @@
+import { writeFileSync, unlinkSync } from 'fs'
 import { resolve } from 'path'
 import ava from 'ava'
-import { wrapPlugin } from '../utils/plugin.js'
-import Plugin from 'nuxt-socket-io/lib/plugin.js'
-import { register } from '#root/lib/module.js'
+import { register, db } from '#root/lib/module.js'
+import ioSvc from '#root/lib/io.js'
 
 global.__dirname = 'lib'
 
@@ -12,33 +12,41 @@ const ctx = {
   options: {
     server: {
       host: 'localhost',
-      port: 3000  
+      port: 3000
     }
   }
 }
 
+function waitForFileChanged () {
+  return new Promise((resolve) => {
+    function fileChanged (stories) {
+      db.off('fileChanged', fileChanged)
+      resolve(stories)
+    }
+    db.on('fileChanged', fileChanged)
+  })
+}
+
 before(async () => {
-  await register.io(ctx)
-  register.options({ srcDir })
+  await register.db({ srcDir })
 })
 
-
-test('Fetch Stories', async (t) => {
-  const client = wrapPlugin(Plugin)
-  client.$config = {
-    io: ctx.options.io,
-    nuxtSocketIO: {}
+test('IO (fileChange gets emitted)', async (t) => {
+  const emitted = {}
+  const socket = {
+    emit (evt, data) {
+      emitted[evt] = data
+    }
   }
-  client.Plugin(null, client.inject)
-  const s = client.$nuxtSocket({ 
-    channel: '/',
-    namespaceCfg: {
-      emitters: ['fetchStories']
-    } 
-  })
-  const { stories } = await client.fetchStories({
-    lang: 'en',
-    storiesDir: 'stories'
-  })
-  t.true(stories.length > 0)
- })
+  const svc = ioSvc(socket)
+  await db.watchFS()
+  const p = waitForFileChanged()
+  const newStory = {
+    file: resolve('./stories/en/NewStory0.md'),
+    content: 'some content here'
+  }
+  writeFileSync(newStory.file, newStory.content)
+  await p
+  t.truthy(emitted.fileChanged)
+  unlinkSync(newStory.file)
+})
