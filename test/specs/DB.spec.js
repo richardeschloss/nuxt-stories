@@ -112,7 +112,7 @@ test('Search (client-side)', async (t) => {
 })
 
 // TBD: things have changed. Revisit the CRUD
-test.skip('Add Story', async (t) => {
+test('Add Story', async (t) => {
   let oldCnt = db.cnt()
   await db.addStory('/stories/en')
   oldCnt++
@@ -143,7 +143,7 @@ test('Update One', async (t) => {
   execSync('rm ./stories/en/NewStory0.md')
 })
 
-test.skip('Rename Story', async (t) => {
+test('Rename Story', async (t) => {
   await db.addStory('/stories/en') // --> NewStory0.md
   await db.addStory('/stories/en/NewStory0') // --> NewStory0/NewStory0.md
   const oldCnt = db.cnt()
@@ -196,8 +196,17 @@ test('Load story', async (t) => {
   execSync('rm -rf ./stories/en/Something ./stories/en/Something.md')
 })
 
-test.skip('Watch file changes (user-triggered)', async (t) => {
-  const cnt = 0
+test('getLangs', async (t) => {
+  await db.load()
+  const langs = await db.getLangs()
+  const langsClient = await dbClient.getLangs()
+  t.is(langs[0], 'en')
+  t.is(langs[1], 'es')
+  t.is(langsClient[0], 'en')
+  t.is(langsClient[1], 'es')
+})
+
+test('Watch file changes (user-triggered)', async (t) => {
   await db.watchFS()
   let p = waitForFileChanged()
   const newStory = {
@@ -209,7 +218,7 @@ test.skip('Watch file changes (user-triggered)', async (t) => {
   let fnd = stories.find(({ href }) => href === '/stories/en/NewStory0')
   t.truthy(fnd)
   t.is(fnd.name, 'NewStory0')
-  t.is(stories.depth, 2)
+  t.is(stories.depth, 3)
   p = waitForFileChanged()
   newStory.content = 'changed content here'
   writeFileSync(newStory.file, newStory.content)
@@ -263,11 +272,4 @@ test.skip('Watch file changes (user-triggered)', async (t) => {
   t.is(callCnt, 0)
 
   execSync('rm ./stories/en/NewStory0.md')
-})
-
-test('getLangs', async (t) => {
-  await db.load()
-  const langs = await db.getLangs()
-  t.is(langs[0], 'en')
-  t.is(langs[1], 'es')
 })
