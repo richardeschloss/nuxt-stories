@@ -34,7 +34,6 @@
   },
   "files": [
     "lib",
-    "postinstall.js",
     "stories"
   ],
   "imports": {
