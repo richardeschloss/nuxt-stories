@@ -1,15 +1,28 @@
-import { serial as test, before, after } from 'ava'
-import express from 'express'
-import FetchSvc from '@/lib/utils/fetch'
+import http from 'http'
+import ava from 'ava'
+import Fetch from '#root/lib/utils/fetch.js'
+
+const { serial: test, before, after } = ava
 
 let _server
+let NodeFetch
 
 before(() => {
-  return new Promise((resolve) => {
-    const app = express()
-    app.get('/hi', (req, res) => res.json(req.query))
-    _server = app.listen(3002, 'localhost', resolve)
+  _server = http.createServer()
+  _server.on('request', (req, res) => {
+    if (req.url.endsWith('.xml')) {
+      res.end('<xml>Some XML here</xml>')
+      return
+    }
+    const { searchParams } = new URL(`http://localhost:3002${req.url}`)
+    const out = {}
+    for (const [key, val] of searchParams.entries()) {
+      out[key] = val
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify(out))
   })
+  _server.listen(3002)
 })
 
 after(() => _server.close())
@@ -17,8 +30,7 @@ after(() => _server.close())
 test('Fetch (client-side)', async (t) => {
   process.client = true
   const urlResp = {
-    '/someCsv': 'hdr1,hdr2\r\ndata1,data2',
-    '/someXML': '<xml>Some XML resp</xml>'
+    '/someCsv': 'hdr1,hdr2\r\ndata1,data2'
   }
   const _opts = []
   // eslint-disable-next-line require-await
@@ -86,14 +98,14 @@ test('Fetch (client-side)', async (t) => {
       wEnvVar: '/someApi/?key=$API_KEY',
       someJson: '/someJson | json',
       someCsv: '/someCsv| csv',
-      someXML: '/someXML | xml',
+      // someXML: '/someXML | xml',
       cacheLocal: '/someData | json > localStorage',
       cacheSession: '/someData | json > sessionStorage',
       nullEntry: null
     }
   }
 
-  await FetchSvc.fetch({
+  await Fetch({
     fetchInfo: frontMatter.fetch,
     fetchOpts: {
       myUrl: { headers: { accept: 'abc123' } },
@@ -114,13 +126,14 @@ test('Fetch (client-side)', async (t) => {
   t.is(ctx.fetched.someJson['/someJson'], 'some json resp')
   t.is(ctx.fetched.someCsv[0].hdr1, 'data1')
   t.is(ctx.fetched.someCsv[0].hdr2, 'data2')
-  t.is(ctx.fetched.someXML.xml, 'Some XML resp')
+  // t.is(ctx.fetched.someXML.xml, 'Some XML resp')
   const localFetched = JSON.stringify(ctx.fetched)
   const vuexFetched = JSON.stringify(ctx.$store.state.fetched[ctx.$route.path])
   t.is(localFetched, vuexFetched)
 })
 
 test('Fetch (server-side, origin undef)', async (t) => {
+  NodeFetch = (await import('#root/lib/utils/fetch.server.js')).default // redefines global.fetch
   process.client = false
   const ctx = {
     fetched: {}
@@ -130,10 +143,7 @@ test('Fetch (server-side, origin undef)', async (t) => {
       myUrl: '/someUrl'
     }
   }
-  const headers = {
-    accept: 'abc123'
-  }
-  await FetchSvc.fetch({
+  await NodeFetch({
     fetchInfo: frontMatter.fetch,
     ctx,
     notify ({ key, resp }) {
@@ -144,20 +154,23 @@ test('Fetch (server-side, origin undef)', async (t) => {
 })
 
 test('Fetch (server-side, origin defined)', async (t) => {
-  const ctx = {}
+  process.client = false
+  NodeFetch = (await import('#root/lib/utils/fetch.server.js')).default // redefines global.fetch
+  const ctx = {
+    fetched: {}
+  }
   const frontMatter = {
     fetch: {
-      hi: '/hi?msg=world | json'
+      hi: '/hi?msg=world | json',
+      myXml: '/some.xml | xml'
     }
   }
-  await FetchSvc.fetch({
+  const resp = await NodeFetch({
     fetchInfo: frontMatter.fetch,
     origin: 'http://localhost:3002',
     ctx,
-    notify ({ key, resp }) {
-      t.is(key, 'hi')
-      t.is(resp.msg, 'world')
-    }
+    notify ({ key, resp }) {}
   })
-  t.pass()
+  t.is(resp.hi.msg, 'world')
+  t.is(resp.myXml.xml, 'Some XML here')
 })

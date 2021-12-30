@@ -2,7 +2,6 @@ import { defineNuxtConfig } from '@nuxt/bridge'
 
 /** @type {import('./lib/types').moduleOptions} */
 const storiesOpts = {
-  dynamicImport: true,
   forceBuild: true,
   staticHost: process.env.NODE_ENV === 'production'
 }
