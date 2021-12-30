@@ -29,6 +29,10 @@ If CRUD operations are enabled, the appropriate control shall be revealed on sto
 
 The Sidenav makes use of the `<NuxtStoriesCollapse/>` wrapper component to accomplish the task of collapsing / expanding the story children. (That component works by setting a CSS transition on the "height" property, and then simply toggling that height from 0px to the element's scrollHeight.)
 
+## Future consideration
+
+May want also allow drag-n-drop to control the ordering of stories in the sidenav.
+
 # Demo
 
 <NuxtStoriesSideNav />
