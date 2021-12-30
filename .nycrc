@@ -12,8 +12,11 @@
     "lib/io.js",
     "lib/module.js",
     "lib/plugin.js",
+    "lib/store/nuxtStories.js",
     "lib/utils/fetch.js",
     "lib/utils/markdown.js",
+    "lib/utils/storage.js",
+    "lib/utils/storyFactory.js",
     "postinstall.js"
   ],
   "extension": [".js", ".mjs", ".vue"]

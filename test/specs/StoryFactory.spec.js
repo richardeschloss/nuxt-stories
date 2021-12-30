@@ -1,7 +1,9 @@
-import { serial as test } from 'ava'
+import 'jsdom-global/register.js'
+import ava from 'ava'
 import VueDist from 'vue/dist/vue.common.js'
-import StoryFactory from '@/lib/utils/storyFactory'
-require('jsdom-global')()
+import StoryFactory from '#root/lib/utils/storyFactory.js'
+
+const { serial: test } = ava
 
 function initStores () {
   global.localStorage = {
@@ -24,7 +26,7 @@ function initStores () {
 const currentRoute = {
   path: '/some/path'
 }
-const res = VueDist.compile(`<div>Story</div>`)
+const res = VueDist.compile('<div>Story</div>')
 const stores = ['localStorage', 'sessionStorage']
 const _dispatched = []
 const vuexStore = {
@@ -70,29 +72,17 @@ test('Defaults (stores defined)', (t) => {
   t.is(_dispatched.length, 0)
 })
 
-test('Defaults (fetch enabled, dynamicImport disabled, frontMatter undefined)', (t) => {
-  const cfg = { fetch: true, dynamicImport: false }
-  const compiled = StoryFactory({ cfg, ...res })
-  const vm = new VueDist(compiled)
-  vm.$route = currentRoute
-  vm.$store = vuexStore
-  vm.$fetch = compiled.fetch
-  vm.$fetch()
-  t.is(_dispatched.length, 0)
-})
-
-test('Defaults (fetch enabled, dynamicImport enabled, frontMatter undefined)', (t) => {
-  const cfg = { fetch: true, dynamicImport: true }
-  const compiled = StoryFactory({ cfg, ...res })
-  const vm = new VueDist(compiled)
-  vm.$route = currentRoute
-  vm.$store = vuexStore
-  vm.$fetch = compiled.fetch
-  vm.$fetch()
-  t.is(_dispatched.length, 0)
-})
-
 test('Defaults (fetch enabled, frontMatter defined)', async (t) => {
+  global.fetch = async () => {
+    return {
+      json () {
+        return { abc: 123 }
+      },
+      text () {
+        return 'json in text form'
+      }
+    }
+  }
   const frontMatter = {
     fetch: {
       someJson: '/path/to/json1'
@@ -110,117 +100,7 @@ test('Defaults (fetch enabled, frontMatter defined)', async (t) => {
   await vm.$fetch()
   t.is(_dispatched[0].action, '$nuxtStories/FETCH')
   t.is(_dispatched[0].msg.fetchInfo.someJson2, frontMatter.nodeFetch.someJson2)
-})
 
-test('Fetch NPMS and ESMS', async (t) => {
-  const _dispatched = []
-  const cfg = { fetch: true, dynamicImport: true }
-  const frontMatter = {
-    npm: [
-      'lodash-es'
-    ]
-  }
-
-  let compiled = StoryFactory({ cfg, frontMatter, ...res })
-  let vm = new VueDist(compiled)
-  vm.$route = currentRoute
-  vm.$store = {
-    state: {
-      $nuxtStories: {}
-    },
-    dispatch (action, msg) {
-      _dispatched.push({ action, msg })
-      if (action === '$nuxtStories/FETCH_NPMS') {
-        return ['/urlPath/to/lodash-es']
-      }
-    }
-  }
-  vm.$fetch = compiled.fetch
-  await vm.$fetch()
-  t.is(_dispatched[0].action, '$nuxtStories/FETCH_NPMS')
-  t.is(_dispatched[0].msg.items.length, frontMatter.npm.length)
-  t.is(_dispatched[1].action, '$nuxtStories/FETCH_ESMS')
-  t.is(_dispatched[1].msg.items.length, frontMatter.npm.length)
-
-  frontMatter.esm = ['/Example2.mjs']
-  compiled = StoryFactory({ cfg, frontMatter, ...res })
-  vm = new VueDist(compiled)
-  vm.$route = currentRoute
-  vm.$store = {
-    state: {
-      $nuxtStories: {}
-    },
-    dispatch (action, msg) {
-      _dispatched.push({ action, msg })
-      if (action === '$nuxtStories/FETCH_NPMS') {
-        return ['/urlPath/to/lodash-es']
-      }
-    }
-  }
-  vm.$fetch = compiled.fetch
-  await vm.$fetch()
-  t.is(_dispatched[2].action, '$nuxtStories/FETCH_ESMS')
-  t.is(_dispatched[2].msg.items.length, frontMatter.esm.length + frontMatter.npm.length)
-
-  await vm.$fetch()
-  t.is(_dispatched.length, 3)
-  t.is(_dispatched[2].msg.items[0], '/Example2.mjs')
-  t.is(_dispatched[2].msg.items[1], '/urlPath/to/lodash-es')
-})
-
-test('Fetch Script', async (t) => {
-  const _dispatched = []
-  const vuexStore2 = {
-    state: {
-      $nuxtStories: {}
-    },
-    dispatch (action, msg) {
-      _dispatched.push({ action, msg })
-    }
-  }
-  const frontMatter = {
-    script: [
-      '/url/to/script.js'
-    ]
-  }
-  const cfg = { fetch: true, dynamicImport: true }
-  const compiled = StoryFactory({ cfg, frontMatter, ...res })
-  const vm = new VueDist(compiled)
-  vm.$route = currentRoute
-  vuexStore2.state.$nuxtStories.esmsFetched = {}
-  vm.$store = vuexStore2
-  vm.$fetch = compiled.fetch
-  await vm.$fetch()
-  t.is(_dispatched[0].action, '$nuxtStories/FETCH_SCRIPTS')
-  t.is(_dispatched[0].msg.items.length, frontMatter.script.length)
-
-  vm.$fetch()
-  t.is(_dispatched.length, 1)
-})
-
-test('Fetch Components', async (t) => {
-  const _dispatched = []
-  const vuexStore2 = {
-    state: {
-      $nuxtStories: {}
-    },
-    dispatch (action, msg) {
-      _dispatched.push({ action, msg })
-    }
-  }
-  const frontMatter = {
-    components: [
-      '/url/to/component.vue'
-    ]
-  }
-  const cfg = { fetch: true, dynamicImport: true }
-  const compiled = StoryFactory({ cfg, frontMatter, ...res })
-  const vm = new VueDist(compiled)
-  vm.$route = currentRoute
-  vuexStore2.state.$nuxtStories.esmsFetched = {}
-  vm.$store = vuexStore2
-  vm.$fetch = compiled.fetch
-  await vm.$fetch()
-  t.is(_dispatched[0].action, '$nuxtStories/FETCH_COMPONENTS')
-  t.is(_dispatched[0].msg.items.length, frontMatter.components.length)
+  const componentNames = vm.componentNames()
+  t.true(componentNames.length > 0)
 })
