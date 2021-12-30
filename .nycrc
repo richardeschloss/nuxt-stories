@@ -12,6 +12,7 @@
     "lib/io.js",
     "lib/module.js",
     "lib/plugin.js",
+    "lib/utils/markdown.js",
     "postinstall.js"
   ],
   "extension": [".js", ".mjs", ".vue"]
