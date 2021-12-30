@@ -6,8 +6,7 @@ export type moduleOptions = {
   storiesAnchor?: String;
   ioOpts?;
   markdown?;
-  staticHost?: Boolean;
+  staticHost?: Boolean | String | Object;
   fetch?: Boolean;
-  dynamicImport?: Boolean;
   watchStories?: Boolean;
 }
