@@ -1,10 +1,15 @@
-import { serial as test } from 'ava'
-import { storeData } from '@/lib/utils/storage'
+import ava from 'ava'
+import { storeData, getData } from '#root/lib/utils/storage.js'
+
+const { serial: test } = ava
 
 test('Storage', (t) => {
   const _localSet = []; const _sessionSet = []
   global.window = {
     localStorage: {
+      getItem (lookupKey) {
+        return JSON.stringify(_localSet.find(({ key }) => key === lookupKey))
+      },
       setItem (key, val) {
         _localSet.push({ key, val })
       }
@@ -46,4 +51,15 @@ test('Storage', (t) => {
 
   t.is(_sessionSet[0].key, 'fetched')
   t.is(_sessionSet[0].val, '{"en/somePath":{"myData":321}}')
+
+  const stored = getData('localStorage', {
+    item: 'fetched',
+    path: 'val'
+  })
+  t.truthy(stored)
+
+  const notStored = getData('localStorage', {
+    item: 'fetchedX'
+  })
+  t.falsy(notStored)
 })
