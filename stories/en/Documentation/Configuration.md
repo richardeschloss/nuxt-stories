@@ -34,7 +34,6 @@ stories: { /* stories options here */ }
 | `ioOpts` | socket.io server options | See below |
 | `staticHost` | static host options | See below |
 | `fetch` | fetch feature enable, see [Fetching Data](/stories/en/Documentation/Fetching%20Data) | true |
-| `dynamicImport` | dynamic import feature, see [Dynamic Import](/stories/en/Dynamic%20Import) | null |
 | `watchStories` | enables filesystem watching of stories | `!staticHost` |
 | `inputDebounceMs` | Debounce time for the text input to the editor | 350 ms |
 | `titleDebounceMs` | Debounce time for renaming the story when the frontmatter title is changed | 700 ms |  

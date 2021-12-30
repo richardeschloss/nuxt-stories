@@ -5,6 +5,8 @@ order: 0
 
 # My Ideal Workflow
 
+Rant warning: this is mostly a rant. You may wish to start with the [Documentation](/stories/en/Documentation)
+
 ## What I want
 I want to be able to develop applications at the speed of thought. I want those applications to aggregate information and display that information in a manner that suits my specific personal preferences. I want those applications to just work and be easy to maintain. But, if I think of every application as a collection of components strung together, it's really perfectly ironed out components I want that are easy to design, tweak and reuse anytime.
 
