@@ -182,6 +182,7 @@ test('Remove Story', async (t) => {
 
 test('Load story', async (t) => {
   await db.load()
+  await dbClient.load()
   const s1 = await db.loadStory('/stories/en/Todo')
   const s2 = await db.loadStory('/stories/en/Something/Module')
   const s3 = await db.loadStory('/stories/en/Something')
@@ -193,6 +194,8 @@ test('Load story', async (t) => {
   t.true(existsSync(pResolve('./stories/en/Something/Module.md')))
   t.true(existsSync(pResolve('./stories/en/Something.md')))
   t.false(existsSync(pResolve('./stories/en/Some/Deep/Tree/Example.md')))
+  const s5 = await dbClient.loadStory({ href: '/stories/en/Documentation' })
+  t.truthy(s5)
   execSync('rm -rf ./stories/en/Something ./stories/en/Something.md')
 })
 

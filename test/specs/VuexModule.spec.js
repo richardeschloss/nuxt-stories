@@ -131,8 +131,18 @@ test('Mutation: SET_FETCHED', (t) => {
 
 test('Action: FETCH_STORY', async (t) => {
   const emitted = {}
+  global.fetch = async function (url) {
+    t.is(url, '/nuxtStories/stories.db')
+    return {
+      json () {},
+      text () {}
+    }
+  }
   global.window = {
     $nuxt: {
+      $config: {
+        nuxtStories: {}
+      },
       $nuxtSocket (cfg) {
         return {
           async emitP (evt, msg) {
@@ -148,6 +158,13 @@ test('Action: FETCH_STORY', async (t) => {
     t.is(data.name, 'example story')
   }
   await actions.FETCH_STORY(store, '/stories/en/Fetch')
+
+  window.$nuxt.$config.nuxtStories.staticHost = true
+  try {
+    await actions.FETCH_STORY(store, '/stories/en/Fetch')
+  } catch (e) {
+
+  }
 })
 
 test('Action: FETCH', async (t) => {

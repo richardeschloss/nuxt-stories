@@ -35,17 +35,12 @@ test('Module (enabled, ssr mode)', async (t) => {
   expMods.forEach((mod, idx) => {
     t.is(nuxt.options.modules[idx], mod)
   })
-  const expHooks = ['components:dirs', 'modules:done']
+  const expHooks = ['modules:done']
   expHooks.forEach((h) => {
     t.truthy(nuxt[h])
   })
 
   t.is(nuxt.options.serverMiddleware[0].path, '/nuxtStories')
-
-  const dirs = []
-  nuxt['components:dirs'](dirs)
-  t.is(dirs[0].path, path.resolve(__dirname, 'components'))
-  t.is(dirs[0].prefix, 'NuxtStories')
 
   const routes = []
   const moduleContainer = {

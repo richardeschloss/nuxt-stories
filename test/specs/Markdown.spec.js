@@ -16,7 +16,7 @@ Finally the markdown '
 })
 
 test('Markdown: Parse and Save (server-side)', (t) => {
-  const mdPath = pResolve('./stories/en/Examples/Example1.md')
+  const mdPath = pResolve('./stories/en/Documentation.md')
   const contents = readFileSync(mdPath, { encoding: 'utf-8' })
   const { toc, md, compiled, frontMatter } = Markdown.parse(contents)
   t.truthy(toc)
