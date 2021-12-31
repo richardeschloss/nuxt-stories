@@ -1,8 +1,8 @@
 <template>
   <div class="app-container w-50 nuxt-stories-demo">
     <div>
-      <NuxtStoriesLogo width="100" class="py-2" />
-      <NuxtStoriesReadme />
+      <Logo width="100" class="py-2" />
+      <Readme />
       <div class="pt-4 links">
         <button
           v-for="link in links"
@@ -17,7 +17,13 @@
 </template>
 
 <script>
+import Logo from '@/lib/components/Logo.js'
+import Readme from '@/lib/components/Readme.js'
 export default {
+  components: {
+    Logo,
+    Readme
+  },
   data () {
     const { storiesAnchor, lang } = this.$config.nuxtStories
     return {
@@ -82,8 +88,6 @@ export default {
 </style>
 
 <style scoped>
-@import "bootstrap/dist/css/bootstrap.min.css";
-
 .links {
   position: fixed;
   top: 0;
