@@ -9,8 +9,8 @@ order: 5
   - [x] Fetch
   - [x] Node-fetch
   - [x] ~~Dynamic import~~ deprecated (potentially unsafe feature, and benefit not worth it. Vite is now here and fast enough)
-* [ ] Update tests (and perhaps use this time to tinker with test-scaffolding)
-* [ ] Update README.md and docs. 
+* [x] Update tests (and perhaps use this time to tinker with test-scaffolding)
+* [x] Update README.md and docs. 
   * [x] Scrub out deprecated info
   * [x] Perhaps remove duplicated stories; for example. README.md and Documentation are pretty much identical. 
 * [x] Scrub out nuxtStories store... some dead stuff in there.

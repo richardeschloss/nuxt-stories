@@ -5,11 +5,9 @@ order: 0
 
 # My Ideal Workflow
 
-Rant warning: this is mostly a rant. You may wish to start with the [Documentation](/stories/en/Documentation)
 
 ## What I want
 I want to be able to develop applications at the speed of thought. I want those applications to aggregate information and display that information in a manner that suits my specific personal preferences. I want those applications to just work and be easy to maintain. But, if I think of every application as a collection of components strung together, it's really perfectly ironed out components I want that are easy to design, tweak and reuse anytime.
-
 
 My existing workflow for solving problems is flawed. It might involve manual data entry into outdated spreadsheets, or manually navigating to multiple websites for information I want, or jumping in and out of mobile apps. The workflow is made even slower when those websites don't prioritize the delivery of content.
 
@@ -48,15 +46,9 @@ Lastly, I realized that I greatly underestimated the need for content search and
 
 * When I make changes to code or to styles, I don't want wait forever to see the changes on the UI. I want to see the changes quickly. 
 
-
 * I don't want to have to keep clicking the document reload button or having the app do it. I just want to go to the desired route *now* and not wait for the entire DOM tree to load! I know I can do better. 
 
-
 * DevTools in the drawer or separate screen can be useful, but if possible, I want to avoid the need to switch between the tools and the application. Sometimes I want to inspect an element or component without having to drill down to it each time. Same goes for global state. I'd rather just map the state used by a given component, and see that, rather than drilling through all of Vuex. (But, there are times where I'm glad I have Vue devTools so that I can see the full state!)
-
-
-* I don't want my dependencies (and waiting for them to install) to keep screwing me over. The process for installing dependencies is slow and painful. If possible, I'd prefer to download and cache only the dependencies I need and then run at light speed. 
-
 
 * I don't want to be limited to a small set of controls, styles, tools, fonts, whatever. The INTERNET is global and filled with resources and growing. I want my design palette to feel infinite. This means, when it comes to styling my components, I'm not limited to "text-white" or "text-primary", but I can use a color picker that easily lets me pick colors and gradients. If there's a component that exists on Bit or NPM, I would want to be able to quickly download and use it (and understand, my standard for "quick". I want really fast).
 
