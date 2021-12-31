@@ -25,9 +25,9 @@
     "dev": "nuxi dev",
     "build": "nuxi build",
     "start": "nuxi preview",
-    "generate": "nuxt generate && npm run mkDirs && npm run cpFiles",
-    "mkDirs": "mkdir -p dist/nuxtStories dist/nuxtStories/svg",
-    "cpFiles": "cp -rf stories/* dist/nuxtStories && cp -rf lib/assets/svg/* dist/nuxtStories/svg ",
+    "generate": "npm run mkDirs && npm run cpFiles && nuxi generate --verbose",
+    "mkDirs": "mkdir -p static/nuxtStories static/nuxtStories/svg",
+    "cpFiles": "cp -rf stories/* static/nuxtStories && cp -rf lib/assets/svg/* static/nuxtStories/svg && cp ./README.md ./static/nuxtStories ",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "test": "ava --colors --watch --timeout=10m",
     "test:cov": "c8 ava --timeout=10m"

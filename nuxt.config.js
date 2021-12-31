@@ -7,27 +7,26 @@ const storiesOpts = {
 }
 
 export default defineNuxtConfig({
+  ssr: process.env.NODE_ENV !== 'production',
+  components: false,
   bridge: {
     vite: true
   },
   vite: {
+    build: {
+      chunkSizeWarningLimit: 2e6
+    },
     optimizeDeps: {
       include: ['deepmerge', 'parseuri', '@socket.io/component-emitter', 'parseqs', 'yeast', 'engine.io-client',
         'backo2', 'debug', 'tiny-emitter/instance.js']
     }
   },
   css: [
-    // 'bootstrap/dist/css/bootstrap-reboot.min.css',
-    // 'highlight.js/styles/base16/darcula.css'
+    './lib/assets/css/vendor.min.css'
   ],
-  components: true,
-  telemetry: false,
   target: process.env.NODE_ENV === 'production'
     ? 'static'
     : 'server',
-  /*
-   ** Headers of the page
-   */
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -41,22 +40,10 @@ export default defineNuxtConfig({
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
-  /*
-   ** Customize the progress-bar color
-   */
-  loading: { color: '#fff' },
-  /*
-   ** Plugins to load before mounting the App
-   */
   plugins: [],
-  /*
-   ** Nuxt.js dev-modules
-   */
   buildModules: [
-    // Doc: https://github.com/richardeschloss/nuxt-stories
-    '~/lib/module.js' // Ok
-    // 'nuxt-stories/module.js' // Ok too
+    '~/lib/module.js'
   ],
-  stories: storiesOpts
-  // watch: ['~/lib/*.js', '~/README.md'],
+  stories: storiesOpts,
+  telemetry: false
 })

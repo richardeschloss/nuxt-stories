@@ -99,3 +99,4 @@ lib/archive
 lib/templates
 stories/stories.db
 .output
+static/nuxtStories
