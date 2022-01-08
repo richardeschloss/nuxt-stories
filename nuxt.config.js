@@ -8,7 +8,7 @@ const storiesOpts = {
 
 export default defineNuxtConfig({
   ssr: process.env.NODE_ENV !== 'production',
-  components: false,
+  components: true,
   bridge: {
     vite: true
   },
