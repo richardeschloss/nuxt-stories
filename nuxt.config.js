@@ -1,4 +1,4 @@
-import { defineNuxtConfig } from '@nuxt/bridge'
+import { defineNuxtConfig } from 'nuxt3'
 
 /** @type {import('./lib/types').moduleOptions} */
 const storiesOpts = {
@@ -8,10 +8,6 @@ const storiesOpts = {
 
 export default defineNuxtConfig({
   ssr: process.env.NODE_ENV !== 'production',
-  components: true,
-  bridge: {
-    vite: true
-  },
   vite: {
     build: {
       chunkSizeWarningLimit: 2e6
@@ -22,7 +18,7 @@ export default defineNuxtConfig({
     }
   },
   css: [
-    './lib/assets/css/vendor.min.css'
+    '~/lib/assets/css/vendor.min.css'
   ],
   target: process.env.NODE_ENV === 'production'
     ? 'static'

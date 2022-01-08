@@ -50,20 +50,19 @@
     "highlight.js": "^11.3.1",
     "les-utils": "^2.0.4",
     "marked": "^4.0.3",
-    "nuxt-socket-io": "git+https://github.com/richardeschloss/nuxt-socket-io.git#feat/nuxt-edge",
+    "nuxt-socket-io": "github:richardeschloss/nuxt-socket-io#feat/nuxt3",
     "sass": "^1.45.1",
     "sass-loader": "^12.4.0",
     "vue-json-pretty": "^1.8.2",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "@nuxt/bridge": "npm:@nuxt/bridge-edge@^3.0.0-27338323.1e98259",
     "@nuxtjs/eslint-config": "^6.0.1",
     "ava": "^3.15.0",
     "c8": "^7.10.0",
     "eslint": "^7.32.0",
     "jsdom-global": "^3.0.2",
-    "nuxt-edge": "^2.16.0-27347055.777a4b7f",
+    "nuxt3": "^3.0.0-27356801.e9128f3",
     "tap-json": "^1.0.0"
   }
 }
