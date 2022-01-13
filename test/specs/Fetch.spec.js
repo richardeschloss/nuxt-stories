@@ -114,7 +114,7 @@ test('Fetch (client-side)', async (t) => {
     },
     ctx,
     notify (key, resp) {
-      console.log(key, resp)
+      // console.log(key, resp)
     }
   })
   t.is(_opts.length, 2)
@@ -148,7 +148,7 @@ test('Fetch (server-side, origin undef)', async (t) => {
     ctx,
     notify ({ key, resp }) {
       t.is(key, 'myUrl')
-      t.is(resp, 'Only absolute URLs are supported')
+      t.is(resp, 'Invalid URL')
     }
   })
 })
