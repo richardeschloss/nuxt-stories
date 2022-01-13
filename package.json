@@ -50,7 +50,6 @@
     "highlight.js": "^11.3.1",
     "les-utils": "^2.0.4",
     "marked": "^4.0.3",
-    "nuxt-socket-io": "github:richardeschloss/nuxt-socket-io#feat/nuxt3",
     "sass": "^1.45.1",
     "sass-loader": "^12.4.0",
     "vue-json-pretty": "^2.0.6",
@@ -62,6 +61,7 @@
     "c8": "^7.10.0",
     "eslint": "^7.32.0",
     "jsdom-global": "^3.0.2",
+    "nuxt-socket-io": "^3.0.1",
     "nuxt3": "^3.0.0-27356801.e9128f3",
     "tap-json": "^1.0.0"
   }

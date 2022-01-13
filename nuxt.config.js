@@ -11,10 +11,6 @@ export default defineNuxtConfig({
   vite: {
     build: {
       chunkSizeWarningLimit: 2e6
-    },
-    optimizeDeps: {
-      include: ['deepmerge', 'parseuri', 'parseuri/index.js', '@socket.io/component-emitter', 'parseqs', 'yeast', 'engine.io-client',
-        'backo2', 'debug', 'tiny-emitter/instance.js']
     }
   },
   css: [

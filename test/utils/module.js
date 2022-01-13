@@ -8,8 +8,7 @@ export { useNuxt }
 export function initNuxt () {
   nuxtCtx.unset()
   const nuxt = {
-    __nuxt2_shims_key__: true,
-    version: '2.x',
+    version: '3.x',
     hooks: {
       addHooks: (hooks) => {
         Object.assign(useNuxt(), hooks)
@@ -19,6 +18,7 @@ export function initNuxt () {
       nuxtCtx.use().hooks[evt] = cb
     },
     options: {
+      target: 'server',
       css: [],
       srcDir,
       plugins: [],

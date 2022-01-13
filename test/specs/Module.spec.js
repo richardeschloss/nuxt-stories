@@ -35,19 +35,13 @@ test('Module (enabled, ssr mode)', async (t) => {
   expMods.forEach((mod, idx) => {
     t.is(nuxt.options.modules[idx], mod)
   })
-  
+
   t.is(nuxt.options.serverMiddleware[0].path, '/nuxtStories')
 
   const routes = []
-  const moduleContainer = {
-    nuxt,
-    extendRoutes (cb) {
-      cb(routes)
-    }
-  }
+  nuxt.hooks['pages:extend'](routes)
 
-  await nuxt.hooks['modules:done'](moduleContainer)
-  t.is(nuxt.options.plugins[0].src, path.resolve(__dirname, 'plugin.js'))
+  t.is(nuxt.options.plugins.at(-1).src, path.resolve(__dirname, 'plugin.js'))
   t.is(routes[0].name, 'stories')
   t.is(routes[0].path, '/stories')
 
@@ -55,50 +49,76 @@ test('Module (enabled, ssr mode)', async (t) => {
   const [{ name, url }] = nuxt.options.io.sockets
   t.is(name, 'nuxtStories')
   t.is(url, 'http://localhost:3100')
+
+  const readmeMware = nuxt.options.serverMiddleware.find(({ path }) =>
+    path === '/nuxtStories/README.md'
+  )
+  let callCnt = 0
+  readmeMware.handler(null, {
+    write (contents) {
+      t.true(contents.length > 0)
+    },
+    end () { callCnt++ }
+  }, () => { callCnt++ })
+  t.is(callCnt, 2)
 })
 
 test('Module (enabled, various ioOpts)', async (t) => {
+  initNuxt()
+  const nuxt = useNuxt()
+  nuxt.options.io = { server: false }
   await Module({
     forceBuild: true,
     ioOpts: {
       host: 'localhost',
-      port: 3001
+      port: 4000
     }
-  }, useNuxt())
+  }, nuxt)
   const [{ name, url }] = useNuxt().options.io.sockets
   t.is(name, 'nuxtStories')
-  t.is(url, 'http://localhost:3001')
+  t.is(url, 'http://localhost:4000')
 
   initNuxt()
   await Module({
     forceBuild: true,
-    ioOpts: { url: 'https://localhost:3001' }
+    ioOpts: { url: 'https://localhost:3002' }
   }, useNuxt())
+
   const [{ name: name2, url: url2 }] = useNuxt().options.io.sockets
   t.is(name2, 'nuxtStories')
-  t.is(url2, 'https://localhost:3001')
+  t.is(url2, 'https://localhost:3002')
 
   initNuxt()
   // @ts-ignore
   useNuxt()
     .options.server = {
       https: true,
-      port: 3001,
+      port: 4001,
       host: 'localhost'
     }
 
   await Module({
-    forceBuild: true
-    // ioOpts: { host: 'https://localhost:3001' }
+    forceBuild: true,
+    ioOpts: { url: 'https://localhost:4101' }
   }, useNuxt())
+
   const [{ name: name3, url: url3 }] = useNuxt().options.io.sockets
   t.is(name3, 'nuxtStories')
-  t.is(url3, 'https://localhost:3101')
+  t.is(url3, 'https://localhost:4101')
 
   // Attempt to register io again...
   // It should catch error
-  register.io(useNuxt())
+  await register.ioServer(useNuxt())
+  // debug logs and coverage report shows it's caught
   t.pass()
+
+  initNuxt()
+  useNuxt().options.target = 'static'
+  await Module({
+    forceBuild: true,
+    ioOpts: { url: 'https://localhost:4101' }
+  }, useNuxt())
+  t.false(nuxt.options.io.server)
 })
 
 test('Module (enabled, static host)', async (t) => {
@@ -128,7 +148,9 @@ test('Register.routes', async (t) => {
   }
   const routes = await register.routes(cfg)
   t.is(routes.path, '/stories')
-  t.is(routes.children[0].path, ':lang?/*')
+  t.is(routes.children[0].path, ':lang')
+  t.is(routes.path, '/stories')
+  t.is(routes.children[0].children[0].path, ':catchAll(.*)*')
 })
 
 test('Register.stories (requires db)', async (t) => {
