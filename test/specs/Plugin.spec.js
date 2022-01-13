@@ -3,9 +3,7 @@
 import { readFileSync } from 'fs'
 import ava from 'ava'
 import { pluginCtx, pluginDef } from '../utils/plugin.js'
-
-// @ts-ignore
-import Plugin from '#root/lib/plugin.js'
+import '#root/lib/plugin.js'
 
 const { serial: test } = ava
 
@@ -21,99 +19,59 @@ global.fetch = async function (url) {
   }
 }
 
-test('Plugin (dynamic host)', (t) => {
-  const routes = []
+test('Plugin (dynamic host)', async (t) => {
   const ctx = pluginCtx()
-  Object.assign(ctx, {
-    nuxt2Context: {
-      app: {
-        router: {
-          beforeEach (cb) {
-            // _beforeEachCb = cb
-            cb(
-              {
-                path: '/stories/en/',
-                params: {}
-              },
-              null,
-              () => {}
-            )
-            t.is(routes.length, 0)
-
-            cb(
-              {
-                path: '/stories',
-                params: {}
-              },
-              null,
-              () => {}
-            )
-            t.is(routes[0], '/stories/en/')
-
-            cb(
-              {
-                path: '/stories/en',
-                params: {}
-              },
-              null,
-              () => {}
-            )
-            t.is(routes[1], '/stories/en/')
-
-            cb(
-              {
-                path: '/stories/',
-                params: {}
-              },
-              null,
-              () => {}
-            )
-            t.is(routes[2], '/stories/en/')
-          },
-          push (route) {
-            routes.push(route)
-          }
-        }
-      },
-      $config: {
-        nuxtStories: {
-          storiesAnchor: 'stories',
-          storiesDir: 'stories',
-          lang: 'en'
-        }
-      },
-      store: ctx.store
+  Object.assign(ctx.vueApp.$nuxt, {
+    $config: {
+      nuxtStories: {
+        storiesAnchor: 'stories',
+        storiesDir: 'stories',
+        lang: 'en'
+      }
     }
   })
+  await pluginDef(ctx)
+  const ctx2 = pluginCtx()
 
-  pluginDef(ctx)
-  t.truthy(ctx.components.Json)
-  t.truthy(ctx.$store.state.$nuxtStories)
+  t.truthy(ctx2.vueApp.config.errorHandler)
+  t.truthy(ctx2.vueApp.config.warnHandler)
+  t.truthy(ctx2.vueApp.components.Json)
+  t.truthy(ctx2.$nuxtStories)
+
+  ctx2.vueApp.config.errorHandler(new Error('something'))
+  ctx2.vueApp.config.warnHandler(new Error('something'))
+  try {
+    ctx2.vueApp.config.errorHandler(new Error('render'), null, 'render')
+  } catch (err) {
+    t.is(err.message, 'Error: render')
+  }
+  ctx2.vueApp.config.warnHandler(new Error('something'), null, 'VueJsonPretty')
+
+  try {
+    ctx2.vueApp.config.warnHandler(new Error('Error compiling template'))
+  } catch (err) {
+    t.is(err.message, 'Error: Error compiling template')
+  }
 })
 
 test('Plugin (static host)', async (t) => {
   const ctx = pluginCtx()
-  Object.assign(ctx, {
-    nuxt2Context: {
-      app: {
-        router: {
-          beforeEach () {}
-        }
-      },
-      $config: {
-        nuxtStories: {
-          staticHost: true,
-          storiesAnchor: 'stories',
-          storiesDir: 'stories',
-          lang: 'en'
-        }
-      },
-      store: ctx.store
+  Object.assign(ctx.vueApp.$nuxt, {
+    $config: {
+      nuxtStories: {
+        staticHost: true,
+        storiesAnchor: 'stories',
+        storiesDir: 'stories',
+        lang: 'en'
+      }
     }
   })
-  ctx.$config = ctx.nuxt2Context.$config
-
   await pluginDef(ctx)
-  t.truthy(ctx.$config.nuxtStories.db)
+  const ctx2 = pluginCtx()
+
+  t.truthy(ctx2.vueApp.$nuxt.$config.nuxtStories.db)
   t.is(fetched, '/nuxtStories/stories.db')
+
+  const state = ctx2.$nuxtStories().value
+  t.truthy(state.stories)
 })
