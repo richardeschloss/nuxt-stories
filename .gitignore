@@ -91,7 +91,6 @@ sw.*
 
 lib/stories.plugin.compiled.js
 
-public
 pages/storiesx
 stories/stories.json
 components/nuxtStories

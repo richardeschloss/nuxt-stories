@@ -6,6 +6,7 @@ order: 5
 # Date 01-13-2022
 * [x] May want to have a version select dropdown in the navbar
   - [x] It's prop would be Array<Record<version, url>> and clicking on non-current ones would open in target _blank
+* [ ] Bug: for some reason, the io service for running tests *with coverage* fails when the app runs. Sometimes works, sometimes doesn't.
 
 # Date 12-16-2021
 

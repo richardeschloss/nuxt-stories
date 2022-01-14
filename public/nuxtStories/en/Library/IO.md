@@ -12,3 +12,9 @@ On a high level, it supports the CRUD operations for all the stories, as well as
 When file changes are made to the system, socket.io is used to communicate those changes to the client.
 
 And recently, a testing interface was added so that tests could be triggered from the client. The server side spawns the child process and returns the results.
+
+# Tests
+[Omitted since the tests may conflict with this app]
+
+# Coverage
+<TestCoverage file="lib/io.js" />

@@ -3,6 +3,10 @@ title: Todo
 order: 5
 ---
 
+# Date 01-13-2022
+* [x] May want to have a version select dropdown in the navbar
+  - [x] It's prop would be Array<Record<version, url>> and clicking on non-current ones would open in target _blank
+
 # Date 12-16-2021
 
 * [x] Re-add the story factory features

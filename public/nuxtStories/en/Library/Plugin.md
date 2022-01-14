@@ -8,13 +8,13 @@ order: 2
 ## Normal Mode
 | Requirement | Description | Notes |
 | --- | --- | --- |
-| JSON component | It shall register [vue-json-pretty](https://www.npmjs.com/package/vue-json-pretty) as "json" | It works if we see Pretty json: <json :data="{ some: 'data' }" /> |
-| Route Guards | Since the story fetching relies on `$route.params.lang` being defined, we need to check the "to" path for the language and if it's missing, add it as well as appending a trailing slash. | |
+| Register components | It shall register [vue-json-pretty](https://www.npmjs.com/package/vue-json-pretty) as "json". It may also register TestRunner, TestCoverage and Readme components | It works if we see Pretty json: <json :data="{ some: 'data' }" />. The other components are used/viewed throughout these stories |
 | Client-side database (static host) | Register LokiDB which is used for the fetching of stories and full text search | |
-| Vuex Module | Register $nuxtStories vuex module | Current state: <json :data="$store.state.$nuxtStories" :deep="0" /> |
+| Stories State | Register $nuxtStories state with `useState` | Current state: <json :data="$nuxtStories().value" :deep="1" /> |
+| error and warn handlers | Register `nuxtApp.vueApp.errorHandler` and `nuxtApp.vueApp.warnHandler` since we're compiling on-the-fly and will want to gracefully handle errors | 
 
 # Tests
-<NuxtStoriesTestRunner testFile="test/specs/Plugin.spec.js" :coverage="true" /> 
+<TestRunner testFile="test/specs/Plugin.spec.js" :coverage="true" /> 
 
 # Coverage
-<NuxtStoriesTestCoverage file="plugin.js" />
+<TestCoverage file="lib/plugin.js" />
