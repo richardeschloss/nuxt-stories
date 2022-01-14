@@ -36,8 +36,14 @@ See it in ACTION: [DEMO @ Netlify](https://nuxt-stories.netlify.com) (Ctrl+Click
 
 1. Add `nuxt-stories` dependency to your project
 
+* Nuxt 3.x
 ```bash
-yarn add --dev nuxt-stories # or npm i -D nuxt-stories
+npm i -D nuxt-stories@next
+```
+
+* Nuxt 2.x
+```bash
+npm i -D nuxt-stories
 ```
 
 You may also need to install the following deps if they didn't get installed when you first created your nuxt app:
