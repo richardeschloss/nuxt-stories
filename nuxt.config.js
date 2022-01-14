@@ -3,12 +3,19 @@ import { defineNuxtConfig } from 'nuxt3'
 /** @type {import('./lib/types').moduleOptions} */
 const storiesOpts = {
   forceBuild: true,
-  staticHost: process.env.NODE_ENV === 'production'
+  staticHost: process.env.NODE_ENV === 'production',
+  versions: [{
+    version: '3.x (current)'
+  }, {
+    version: '2.x',
+    url: 'https://deploy-preview-93--nuxt-stories.netlify.app/stories'
+  }]
 }
 
 export default defineNuxtConfig({
   components: [{
-    path: '~/lib/components'
+    path: '~/lib/components',
+    prefix: 'NuxtStories'
   }],
   ssr: process.env.NODE_ENV !== 'production',
   vite: {

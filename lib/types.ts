@@ -9,4 +9,5 @@ export type moduleOptions = {
   staticHost?: Boolean | String | Object;
   fetch?: Boolean;
   watchStories?: Boolean;
+  versions: Array<{version: string, url?: string}>;
 }
