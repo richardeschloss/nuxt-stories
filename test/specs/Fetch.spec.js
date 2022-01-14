@@ -1,6 +1,7 @@
 import http from 'http'
 import ava from 'ava'
 import Fetch from '#root/lib/utils/fetch.js'
+import { useState } from '#app'
 
 const { serial: test, before, after } = ava
 
@@ -74,19 +75,9 @@ test('Fetch (client-side)', async (t) => {
     $route: {
       path: '/some/story'
     },
-    $store: {
-      state: {
-        fetched: {
-          '/some/story': {}
-        }
-      },
-      commit (mutation, { path, key, resp }) {
-        t.is(mutation, '$nuxtStories/SET_FETCHED')
-        t.is(path, ctx.$route.path)
-        ctx.$store.state.fetched[ctx.$route.path][key] = resp
-        ctx.fetched[key] = resp
-      }
-    }
+    $nuxtStories: () => useState('$nuxtStories', () => ({
+      fetched: {}
+    }))
   }
   process.env.API_KEY = 'openSesame123'
   const frontMatter = {
@@ -105,7 +96,7 @@ test('Fetch (client-side)', async (t) => {
     }
   }
 
-  await Fetch({
+  const fetched = await Fetch({
     fetchInfo: frontMatter.fetch,
     fetchOpts: {
       myUrl: { headers: { accept: 'abc123' } },
@@ -117,26 +108,44 @@ test('Fetch (client-side)', async (t) => {
       // console.log(key, resp)
     }
   })
+  const state = ctx.$nuxtStories().value
   t.is(_opts.length, 2)
   t.is(_opts[0].headers.accept, 'abc123')
   t.is(_opts[1].accept, '123')
-  t.is(ctx.fetched.myUrl, '/someUrl: some text resp')
-  t.is(ctx.fetched.wParam, '/someUrl/231/GreatBook: some text resp')
-  t.is(ctx.fetched.wEnvVar, '/someApi/?key=openSesame123: some text resp')
-  t.is(ctx.fetched.someJson['/someJson'], 'some json resp')
-  t.is(ctx.fetched.someCsv[0].hdr1, 'data1')
-  t.is(ctx.fetched.someCsv[0].hdr2, 'data2')
-  // t.is(ctx.fetched.someXML.xml, 'Some XML resp')
-  const localFetched = JSON.stringify(ctx.fetched)
-  const vuexFetched = JSON.stringify(ctx.$store.state.fetched[ctx.$route.path])
-  t.is(localFetched, vuexFetched)
+  t.is(fetched.myUrl, '/someUrl: some text resp')
+  t.is(fetched.wParam, '/someUrl/231/GreatBook: some text resp')
+  t.is(fetched.wEnvVar, '/someApi/?key=openSesame123: some text resp')
+  t.is(fetched.someJson['/someJson'], 'some json resp')
+  t.is(fetched.someCsv[0].hdr1, 'data1')
+  t.is(fetched.someCsv[0].hdr2, 'data2')
+  const localFetched = JSON.stringify(fetched)
+  const globalFetched = JSON.stringify(state.fetched[ctx.$route.path])
+  t.is(localFetched, globalFetched)
+
+  // Attempt to change activeStory frontMatter
+  state.activeStory = {
+    frontMatter: {
+      fetch: {
+        myUrl: '/someUrl'
+      }
+    }
+  }
+  await Fetch({
+    fetchInfo: frontMatter.fetch,
+    ctx
+  })
+  t.is(state.fetched[ctx.$route.path].myUrl, '/someUrl: some text resp')
+  t.falsy(state.fetched[ctx.$route.path].wParam)
 })
 
 test('Fetch (server-side, origin undef)', async (t) => {
   NodeFetch = (await import('#root/lib/utils/fetch.server.js')).default // redefines global.fetch
   process.client = false
   const ctx = {
-    fetched: {}
+    fetched: {},
+    $nuxtStories: () => useState('$nuxtStories', () => ({
+      fetched: {}
+    }))
   }
   const frontMatter = {
     fetch: {
@@ -157,7 +166,13 @@ test('Fetch (server-side, origin defined)', async (t) => {
   process.client = false
   NodeFetch = (await import('#root/lib/utils/fetch.server.js')).default // redefines global.fetch
   const ctx = {
-    fetched: {}
+    fetched: {},
+    $route: {
+      path: '/some/story'
+    },
+    $nuxtStories: () => useState('$nuxtStories', () => ({
+      fetched: {}
+    }))
   }
   const frontMatter = {
     fetch: {
