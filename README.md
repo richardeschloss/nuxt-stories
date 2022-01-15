@@ -12,7 +12,7 @@
 
 ## Video overview
 
-[TBD]
+<img src="/demo.gif" style="width: 50vw;" />
 
 ## Features
 * ✅ Insanely fast configuration and usage (one install, one line in config, and you're good to go!)
