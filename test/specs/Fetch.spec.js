@@ -1,6 +1,6 @@
 import http from 'http'
 import ava from 'ava'
-import Fetch from '#root/lib/utils/fetch.js'
+import Fetch, { initTransformers } from '#root/lib/utils/fetch.js'
 import { useState } from '#app'
 
 const { serial: test, before, after } = ava
@@ -30,6 +30,7 @@ after(() => _server.close())
 
 test('Fetch (client-side)', async (t) => {
   process.client = true
+  await initTransformers()
   const urlResp = {
     '/someCsv': 'hdr1,hdr2\r\ndata1,data2'
   }
@@ -141,6 +142,7 @@ test('Fetch (client-side)', async (t) => {
 test('Fetch (server-side, origin undef)', async (t) => {
   NodeFetch = (await import('#root/lib/utils/fetch.server.js')).default // redefines global.fetch
   process.client = false
+  await initTransformers()
   const ctx = {
     fetched: {},
     $nuxtStories: () => useState('$nuxtStories', () => ({
@@ -148,12 +150,12 @@ test('Fetch (server-side, origin undef)', async (t) => {
     }))
   }
   const frontMatter = {
-    fetch: {
+    nodeFetch: {
       myUrl: '/someUrl'
     }
   }
   await NodeFetch({
-    fetchInfo: frontMatter.fetch,
+    fetchInfo: frontMatter.nodeFetch,
     ctx,
     notify ({ key, resp }) {
       t.is(key, 'myUrl')
