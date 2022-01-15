@@ -9,7 +9,7 @@
   nodeFetch:
     someJson2: /someJson.json | json > sS
 ---
-
+{{ localStorage.fetched }}
 # Fetching Data
 
 A special fetch feature is introduced and enabled by default in v2.0.13 of nuxt-stories. It will respect two properties "fetch" and "nodeFetch" in the frontMatter. The syntax for both is identical, with the main difference being *where* the fetch is initiated: client or server.
@@ -27,13 +27,13 @@ The most basic format is this:
 ---
 ```
 
-The results will be merged into a property "fetched" that will contain the responses. The response will also be stored in vuex so other stories can easily access it.
+The results will be merged into the component's data set. The response will also be stored in shared state so other stories can easily access it.
 
 The supported formats are: 
 * text - default
 * csv 
 * json
-* xml
+* xml - server side only (issues in Vite)
 
 The supported destinations are:
 * localStorage (alias "lS")
@@ -53,19 +53,17 @@ To analyze this line-by-line, this means to:
 1. Fetch "/someFile.csv", then parse the response as csv (with the "| csv") and store the json result in this component's fetched (`this.fetched.csv`).
 Here is the response: 
 
-> Input: {{ fetched.csvIn }}
+> Input: {{ csvIn }}
 
-> Output: {{ fetched.csv }}
+> Output: {{ csv }}
 
 2. Fetch "/someJson.json", then parse the response as json (with the "| json"), store the json result in `this.fetched.someJson` and then also send that response to localStorage (with the "> lS", using the alias):
 
-> Input: {{ fetched.someJsonIn }}
+> Input: {{ someJsonIn }}
 
-> Output: {{ fetched.someJson }}
+> Output: {{ someJson }}
 
-> Also stored in: (remove ticks to see it)
-
-`{{` localStorage.fetched[$route.path] `}}`
+> Also stored in: localStorage..
 
 ## Node fetch example
 
@@ -81,10 +79,6 @@ This story's frontMatter also contains the following nodeFetch entries:
 It is important to note that the responses from both `fetch` and `nodeFetch` get merged into a single `this.fetched` object, so the property names need to be unique. Since `fetch` already specified "someJson", we can't re-use that in `nodeFetch`. We have to give it a unique name, for example "someJson2".
 
 In this example, it's very similar to the one before, but instead of sending the response to localStorage, we send it to sessionStorage (using the alias "sS").
-
-> You can see it below: (remove tick marks)
-
-`{{` sessionStorage.fetched `}}`
 
 Also, as a convenience to the user, while node-fetch normally requires the hostname to be provided, the nuxt-stories plugin handles this for you. If you provide relative path, it will prepend `window.location.origin` to satisfy node-fetch's requirement.
 
@@ -153,8 +147,10 @@ The above can get quite tedious to write, so as an initial convenience, option s
 
 Here, `someHostOpts` is now defined on the component and can be re-used with ":someHostOpts" in the "fetchOpts" frontMatter.
 
-## Accessing from Vuex
+## Shared state
 
-As mentioned before, all the responses are contained in this components `this.fetched` object. This actually is a computed property, which simply pulls from the Vuex store, keying off the current route `$route.path`. Therefore, if any other story needs to access what was fetched in one story, it can with `$store.state.$nuxtStories.fetched[story relative path]`:
+Data is persisted in `ctx.$nuxtStories().value.fetched`
 
-{{ $store.state.$nuxtStories.fetched }}
+<json :data="$nuxtStories().value.fetched" :deep="1" />
+
+
