@@ -5,7 +5,6 @@ order: 0
 
 # My Ideal Workflow
 
-
 ## What I want
 I want to be able to develop applications at the speed of thought. I want those applications to aggregate information and display that information in a manner that suits my specific personal preferences. I want those applications to just work and be easy to maintain. But, if I think of every application as a collection of components strung together, it's really perfectly ironed out components I want that are easy to design, tweak and reuse anytime.
 
@@ -86,7 +85,3 @@ In both the above cases, see what drag it is to write a test just for a button c
 
 
 It depends what I'm building. If I'm building a library, that library will have documentation written for it, and I'll want to host that documentation to some static site. I.e., that documentation would just be a static hosted version of the stories I write. If there has been a major set of features released worth discussing, that's when I like to publish an article about it on popular websites such as Medium.com or dev.to. But really, I think I'd be more helpful to the reader if I just published the working stories. This way, the reader could just try out features in the browser and tweak 
-
-
-At the same time though, as I'm building my library and its UI components, 
-

@@ -23,7 +23,6 @@
 * ✅ Ordering of stories using story frontMatter.
 * ✅ Instant updating of table of contents as you type the headers
 * ✅ Auto importing of components. Just place components in your components directory and just use them!
-* ✅ Vue in Markdown or Markdown in Vue! You're in complete control! (I prefer Vue-in-Markdown ;))
 * ✅ Emoji support! Don't believe it? Just look at this bulleted list!
 * ✅ Built-in json viewer. Just type `<json :data="[your data]"/>` to see the tree.
 * ✅ The perfect development tool for rapidly jotting down notes, gameplans, or even writing official documentation! Documentation that is also *functional*. 
@@ -50,7 +49,7 @@ You may also need to install the following deps if they didn't get installed whe
 
 After installing, a postinstall script will run to "gently copy" sample stories, assets, and layout(s) to your workspace to get you setup asap.  It will also create a "components" directory if it doesn't already exist.
 
-1. Add `nuxt-stories` to the `buildModules` section of `nuxt.config.js`
+2. Add `nuxt-stories` to the `buildModules` section of `nuxt.config.js`
 
 ```js
 {
@@ -62,16 +61,6 @@ After installing, a postinstall script will run to "gently copy" sample stories,
   }
 }
 ```
-
-Also make sure you have Vuex enabled the "Nuxt way", since nuxt-stories will register a vuex module for persisting stories, table of contents and selected view mode. After you install nuxt-stories, a postinstall script will automatically try to create the following for you, if your store hasn't yet been enabled:
-
-store/index.js:
-```js
-export const state = () => ({})
-```
-
-If this already exists, it won't get overwritten.
-
 
 3. There is no step 3! You're good to go! Try it out!
 

@@ -37,8 +37,10 @@ stories: { /* stories options here */ }
 | `watchStories` | enables filesystem watching of stories | `!staticHost` |
 | `inputDebounceMs` | Debounce time for the text input to the editor | 350 ms |
 | `titleDebounceMs` | Debounce time for renaming the story when the frontmatter title is changed | 700 ms |  
-
-
+| `rootComponent` | Root component to use at the stories root route | [this lib]/components/Root.js |
+| `langComponent` | Language component | [empty placeholder, this library's root imports its dependencies and uses them] |
+| `storyComponent` | Story component |  [empty placeholder, this library's root imports its dependencies and uses them] |
+ 
 ### IO Options
 
 By default, if a static host is not specified, the nuxt-stories module will start a socket.io server and will add a special "nuxtStories" socket.io client when your app starts up. The IO server is used to respond requests from the client to perform the following actions:
@@ -49,8 +51,6 @@ By default, if a static host is not specified, the nuxt-stories module will star
 - Fetch story
 - Fetch all stories
 - Saving markdown-based story
-
-The CRUD (Create, Update, Delete) features only work properly for Markdown-first stories. They haven't been designed to work for Vue-first stories, and it is not planned to support Vue-first, since I think most users will go with Markdown-first.
 
 The IO options takes the following options:
 
