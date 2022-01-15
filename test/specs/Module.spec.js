@@ -55,6 +55,7 @@ test('Module (enabled, ssr mode)', async (t) => {
   )
   let callCnt = 0
   readmeMware.handler(null, {
+    writeHead () {},
     write (contents) {
       t.true(contents.length > 0)
     },
