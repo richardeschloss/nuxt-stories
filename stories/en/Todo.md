@@ -6,6 +6,10 @@ order: 5
 # Date 01-13-2022
 * [x] May want to have a version select dropdown in the navbar
   - [x] It's prop would be Array<Record<version, url>> and clicking on non-current ones would open in target _blank
+* [x] Fix the handling of file change event. Active story needs to update.
+* [x] Fix the scrolling. It's supposed to update the active state in toc.
+* [x] Fix the viewer component when stories changes. Sometimes selecting the story updates the editor, but not the viewer. Seems to only hang when fetch is hung.
+* [ ] For some reason, the navigating in the side bar became less smooth. Hmm...
 * [ ] Bug: for some reason, the io service for running tests *with coverage* fails when the app runs. Sometimes works, sometimes doesn't.
 
 # Date 12-16-2021

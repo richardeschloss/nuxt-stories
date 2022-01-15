@@ -16,10 +16,10 @@ Write some markdown:
 * item 2
 
 Write a vue component:
-<stories-logo />
+<NuxtStoriesLogo />
 
 See compilation in action, by removing the tick marks below:
-`<stories-logo />`
+`<NuxtStoriesLogo />`
 
 ## Folder structure
 
@@ -35,7 +35,7 @@ To see that everything got setup correctly, you should be able to see the sample
 
 Whenever in doubt, just look at this github repo! These hosted docs use that directly so you know the repo will have working code!
 
-### Markdown-first
+### Markdown first
 
 This approach means the stories will take a "Markdown first", which I think is extremely powerful. Markdown, in my opinion, is a format that allows one to *write* ideas much faster than *markup*. It feels more natural, but we still want to see compiled *markup* because it's, cleaner, visually appealing, and functional. Plus, with "Markdown first", we can write *frontmatter* and then use that data for our Vue components really easily. 
 

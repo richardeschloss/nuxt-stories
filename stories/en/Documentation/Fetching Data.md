@@ -9,7 +9,7 @@
   nodeFetch:
     someJson2: /someJson.json | json > sS
 ---
-{{ localStorage.fetched }}
+
 # Fetching Data
 
 A special fetch feature is introduced and enabled by default in v2.0.13 of nuxt-stories. It will respect two properties "fetch" and "nodeFetch" in the frontMatter. The syntax for both is identical, with the main difference being *where* the fetch is initiated: client or server.

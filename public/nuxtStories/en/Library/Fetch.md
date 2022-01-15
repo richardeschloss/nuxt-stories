@@ -3,6 +3,8 @@ title: Fetch
 order: Infinity
 fetch:
   someCsv: /someFile.csv | csv
+nodeFetch:
+  someJson: /someJson.json | json
 ---
 
 # Design
@@ -18,7 +20,9 @@ For each URL and corresponding set of fetch options, if any, fetch the URL and i
 Still though, provide the full set of responses
 
 ## Local state
-<json :data="someCsv" />
+* Fetched
+  - someCsv: <json :data="someCsv" />
+  - someJson: <json :data="someJson" />
 
 ## Fetched shared state
 
