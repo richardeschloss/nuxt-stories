@@ -13,10 +13,6 @@ const storiesOpts = {
 }
 
 export default defineNuxtConfig({
-  components: [{
-    path: '~/lib/components',
-    prefix: 'NuxtStories'
-  }],
   ssr: process.env.NODE_ENV !== 'production',
   vite: {
     build: {
