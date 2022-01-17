@@ -5,6 +5,8 @@ order: 5
 
 # Deploying stories to a static site:
 
+!! NOTE: `nuxt generate` is still being developed for nuxt3 !!
+
 1. Force the build of stories:
 
 ```js

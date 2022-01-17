@@ -6,6 +6,9 @@ order: Infinity
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## v3.x - TBD
+* on-going 3.x support... 
+
 ## v2.5.0 - TBD
 * Major change to ESM from commonjs.
 * Major UI design changes to scope styles to nuxt-stories and carry in some styles I liked from bootstrap-docs. Cleaned up the UI and how the SCSS files are organized. It's much cleaner now. The module no longer adds the styles globally, but rather *only* the Nuxt-stories root component imports the styles it needs.

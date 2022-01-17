@@ -7,5 +7,5 @@ versions:
 ---
 
 <div style="background: black;">
-<VersionSelect :versions="versions" />
+<NuxtStoriesVersionSelect :versions="versions" />
 </div>

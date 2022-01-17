@@ -12,6 +12,6 @@ Clicking on the logo when it sits in the header shall navigate to the stories ro
 # Demo
 
 Normal size:
-<Logo />
+<NuxtStoriesLogo />
 
-Larger Size: <Logo width="300" />
+Larger Size: <NuxtStoriesLogo width="300" />

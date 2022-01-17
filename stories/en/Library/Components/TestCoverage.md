@@ -18,4 +18,4 @@ The file is relative to the coverage directory, and for simplicity, leave off th
 
 # Demo
 
-<NuxtStoriesTestCoverage file="module.js" />
+<NuxtStoriesTestCoverage file="lib/module.js" />

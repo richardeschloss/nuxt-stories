@@ -16,5 +16,7 @@ And recently, a testing interface was added so that tests could be triggered fro
 # Tests
 [Omitted since the tests may conflict with this app]
 
+<TestRunner testFile="test/specs/IO.spec.js" />
+
 # Coverage
 <TestCoverage file="lib/io.js" />

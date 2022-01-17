@@ -21,4 +21,7 @@ Recall it is the viewer that keeps track of the active header. It communicates t
 | activeHdr | String | Active header within the story |
 | viewerScrolling | Boolean | Viewer is scrolling. If it's not scrolling update the internal "navigating" boolean to false. (Clicking on one of the toc headers sets "navigating" to true |
 
+# Demo
+
+<NuxtStoriesToc :story="$nuxtStories().value.activeStory" />
 

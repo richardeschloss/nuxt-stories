@@ -6,7 +6,9 @@ order: 5
 # Date 01-17-2022
 * [x] Lang select almost working, but for some reason, the $route.hash is not clearing and it's doing this weird thing holding onto the viewer component.
 * [x] Bring back the sidenav in mobile view. (It's code was disabled)
-* [ ] Bug: for some reason, the io service for running tests *with coverage* fails when the app runs. Sometimes works, sometimes doesn't.
+* [x] ~~Bug: for some reason, the io service for running tests *with coverage* fails when the app runs. Sometimes works, sometimes doesn't.~~ Seems to work now.
+* [x] Chore: update the docs / stories as needed.
+* [ ] Feature: may want to auto scroll into view the side nav
 
 # Date 01-13-2022
 * [x] May want to have a version select dropdown in the navbar
