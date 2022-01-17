@@ -8,7 +8,7 @@ order: 5
 * [x] Bring back the sidenav in mobile view. (It's code was disabled)
 * [x] ~~Bug: for some reason, the io service for running tests *with coverage* fails when the app runs. Sometimes works, sometimes doesn't.~~ Seems to work now.
 * [x] Chore: update the docs / stories as needed.
-* [ ] Feature: may want to auto scroll into view the side nav
+* [x] Feature: may want to auto scroll into view the side nav
 
 # Date 01-13-2022
 * [x] May want to have a version select dropdown in the navbar
