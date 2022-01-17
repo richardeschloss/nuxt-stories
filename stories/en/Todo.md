@@ -3,6 +3,11 @@ title: Todo
 order: 5
 ---
 
+# Date 01-17-2022
+* [x] Lang select almost working, but for some reason, the $route.hash is not clearing and it's doing this weird thing holding onto the viewer component.
+* [ ] Bring back the sidenav in mobile view. (It's code was disabled)
+* [ ] Bug: for some reason, the io service for running tests *with coverage* fails when the app runs. Sometimes works, sometimes doesn't.
+
 # Date 01-13-2022
 * [x] May want to have a version select dropdown in the navbar
   - [x] It's prop would be Array<Record<version, url>> and clicking on non-current ones would open in target _blank
@@ -10,7 +15,6 @@ order: 5
 * [x] Fix the scrolling. It's supposed to update the active state in toc.
 * [x] Fix the viewer component when stories changes. Sometimes selecting the story updates the editor, but not the viewer. Seems to only hang when fetch is hung. Fixed by resetting the active story.
 * [x] For some reason, the navigating in the side bar became less smooth. Hmm...(Update 01/16/2022: I fixed the quirkiness by updating the collapse component's initial values)
-* [ ] Bug: for some reason, the io service for running tests *with coverage* fails when the app runs. Sometimes works, sometimes doesn't.
 
 # Date 12-16-2021
 
