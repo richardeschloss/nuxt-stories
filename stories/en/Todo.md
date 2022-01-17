@@ -5,7 +5,7 @@ order: 5
 
 # Date 01-17-2022
 * [x] Lang select almost working, but for some reason, the $route.hash is not clearing and it's doing this weird thing holding onto the viewer component.
-* [ ] Bring back the sidenav in mobile view. (It's code was disabled)
+* [x] Bring back the sidenav in mobile view. (It's code was disabled)
 * [ ] Bug: for some reason, the io service for running tests *with coverage* fails when the app runs. Sometimes works, sometimes doesn't.
 
 # Date 01-13-2022
