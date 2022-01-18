@@ -4,11 +4,12 @@ order: 5
 ---
 
 # Date 01-18-2022
+* [ ] Test in app (test from node_modules).
+
+# Date 01-17-2022
 * [x] Fixed a bunch of scrolling / re-rendering issues by simply placing the fixed components into a stories layout. The root component is now just a placeholder that uses that stories layout.
 * [x] Updated plugin to register the NuxtStories components. Prefer this over auto importing all NuxtStories components to improve cold boot loading time.
 * [x] ~~stories layout will need a postInstall script to copy it over.~~ (No need for this! Nuxt3 lets you specify custom layouts on the fly; even though it's not documented...it's possible! Hopefully this feature sticks).
-
-# Date 01-17-2022
 * [x] Lang select almost working, but for some reason, the $route.hash is not clearing and it's doing this weird thing holding onto the viewer component.
 * [x] Bring back the sidenav in mobile view. (It's code was disabled)
 * [x] ~~Bug: for some reason, the io service for running tests *with coverage* fails when the app runs. Sometimes works, sometimes doesn't.~~ Seems to work now.
