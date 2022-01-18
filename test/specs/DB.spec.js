@@ -217,7 +217,7 @@ test('Watch file changes (user-triggered)', async (t) => {
     content: 'some content here'
   }
   writeFileSync(newStory.file, newStory.content)
-  let stories = await p
+  let stories = (await p).stories
   let fnd = stories.find(({ href }) => href === '/stories/en/NewStory0')
   t.truthy(fnd)
   t.is(fnd.name, 'NewStory0')
@@ -225,14 +225,14 @@ test('Watch file changes (user-triggered)', async (t) => {
   p = waitForFileChanged()
   newStory.content = 'changed content here'
   writeFileSync(newStory.file, newStory.content)
-  stories = await p
+  stories = (await p).stories
 
   const fndDoc = db.findOne({ href: '/stories/en/NewStory0' })
   t.is(fndDoc.content, newStory.content)
 
   p = waitForFileChanged()
   unlinkSync(newStory.file)
-  stories = await p
+  stories = (await p).stories
   fnd = stories.find(({ href }) => href === '/stories/en/NewStory0')
   t.falsy(fnd)
 
@@ -247,7 +247,7 @@ test('Watch file changes (user-triggered)', async (t) => {
   }
   p = waitForFileChanged()
   writeFileSync(deepStory.file, deepStory.content)
-  stories = await p
+  stories = (await p).stories
   fnd = stories.find(({ href }) => href === '/stories/en/Some')
   t.is(stories.depth, 3)
   t.truthy(fnd)
