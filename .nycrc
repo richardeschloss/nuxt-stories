@@ -1,7 +1,10 @@
 {
   "all": false,
   "reporter": ["html", "text"],
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules", 
+    "lib/components"
+  ],
   "include": [
     "components",
     "lib/components/Root.js",

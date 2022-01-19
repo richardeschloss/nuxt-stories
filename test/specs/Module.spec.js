@@ -176,7 +176,7 @@ test('Watch Stories', async (t) => {
   const p = waitForFileChanged(db)
   const tmpStory = path.resolve('./stories/en/Tmp.md')
   writeFileSync(tmpStory, 'Some content')
-  const stories = await p
+  const stories = (await p).stories
   const fnd = stories.find(({ name }) => name === 'Tmp')
   t.truthy(fnd)
   unlinkSync(tmpStory)
