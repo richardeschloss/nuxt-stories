@@ -39,7 +39,8 @@
   ],
   "imports": {
     "#root/*": "./*",
-    "#app": "./test/utils/plugin.js"
+    "#app": "./test/utils/plugin.js",
+    "#build/layouts": "./test/utils/layouts.js"
   },
   "dependencies": {
     "@lokidb/fs-storage": "^2.1.0",

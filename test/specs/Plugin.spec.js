@@ -3,7 +3,7 @@
 import { readFileSync } from 'fs'
 import ava from 'ava'
 import { pluginCtx, pluginDef } from '../utils/plugin.js'
-import '#root/lib/plugin.js'
+import { nuxtStories as $nuxtStories } from '#root/lib/plugin.js'
 
 const { serial: test } = ava
 
@@ -28,7 +28,8 @@ test('Plugin (dynamic host)', async (t) => {
         storiesDir: 'stories',
         lang: 'en'
       }
-    }
+    },
+    $nuxtStories
   })
   await pluginDef(ctx)
   const ctx2 = pluginCtx()
@@ -38,20 +39,18 @@ test('Plugin (dynamic host)', async (t) => {
   t.truthy(ctx2.vueApp.components.Json)
   t.truthy(ctx2.$nuxtStories)
 
-  ctx2.vueApp.config.errorHandler(new Error('something'))
-  ctx2.vueApp.config.warnHandler(new Error('something'))
-  try {
-    ctx2.vueApp.config.errorHandler(new Error('render'), null, 'render')
-  } catch (err) {
-    t.is(err.message, 'Error: render')
-  }
-  ctx2.vueApp.config.warnHandler(new Error('something'), null, 'VueJsonPretty')
+  ctx2.vueApp.config.errorHandler(new Error('something')) // debug print only
+  ctx2.vueApp.config.errorHandler(new Error('render'), null, 'render')
+  t.is(ctx2.$nuxtStories().value.compilationError, 'render')
 
-  try {
-    ctx2.vueApp.config.warnHandler(new Error('Error compiling template'))
-  } catch (err) {
-    t.is(err.message, 'Error: Error compiling template')
-  }
+  ctx2.vueApp.config.warnHandler('something') // console.warn only
+  ctx2.vueApp.config.warnHandler('something', null, 'VueJsonPretty')
+  ctx2.vueApp.config.warnHandler('Template compilation error')
+  t.is(ctx2.$nuxtStories().value.compilationError, 'Template compilation error')
+  ctx2.vueApp.config.warnHandler('not defined on instance')
+  t.is(ctx2.$nuxtStories().value.compilationError, 'not defined on instance')
+  ctx2.vueApp.config.warnHandler('Vue received a Component which was made a reactive object')
+  t.falsy(ctx2.$nuxtStories().value.compilationError)
 })
 
 test('Plugin (static host)', async (t) => {

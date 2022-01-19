@@ -48,7 +48,7 @@ export function resolve (specifier, context, defaultResolve) {
 }
 
 export async function load (url, context, defaultLoad) {
-  if (url.endsWith('vue.runtime.esm.js')) {
+  if (url.endsWith('vue.runtime.esm.js') || url.endsWith('vue.esm-bundler.js')) {
     const { source } = await defaultLoad(url, { format: 'module' })
     return {
       format: 'module',
