@@ -12,7 +12,7 @@
 
 ## Video overview
 
-<img src="/demo.gif" style="width: 50vw;" />
+<img src="https://raw.githubusercontent.com/richardeschloss/nuxt-stories/feat/nuxt3/public/demo.gif" style="width: 50vw;" />
 
 ## Features
 * ✅ Insanely fast configuration and usage (one install, one line in config, and you're good to go!)
