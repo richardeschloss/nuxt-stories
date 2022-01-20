@@ -44,6 +44,7 @@ test('Module (enabled, ssr mode)', async (t) => {
   t.is(nuxt.options.plugins.at(-1).src, path.resolve(__dirname, 'plugin.js'))
   t.is(routes[0].name, 'stories')
   t.is(routes[0].path, '/stories')
+  t.is(routes[0].meta.layout, 'stories')
 
   t.truthy(nuxt.options.publicRuntimeConfig.nuxtStories)
   const [{ name, url }] = nuxt.options.io.sockets
