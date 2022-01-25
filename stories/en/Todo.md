@@ -3,8 +3,11 @@ title: Todo
 order: 5
 ---
 
+# Date 01-24-2022
+* [x] Update les-utils, get fetch XML to work again in the client.
+
 # Date 01-18-2022
-* [ ] Test in app (test from node_modules).
+* [x] Test in app (test from node_modules).
 
 # Date 01-17-2022
 * [x] Fixed a bunch of scrolling / re-rendering issues by simply placing the fixed components into a stories layout. The root component is now just a placeholder that uses that stories layout.

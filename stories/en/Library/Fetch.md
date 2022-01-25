@@ -3,6 +3,7 @@ title: Fetch
 order: Infinity
 fetch:
   someCsv: /someFile.csv | csv
+  someXml: /nuxt-stories.svg | xml
 nodeFetch:
   someJson: /someJson.json | json
 ---
@@ -23,6 +24,7 @@ Still though, provide the full set of responses
 * Fetched
   - someCsv: <json :data="someCsv" />
   - someJson: <json :data="someJson" />
+  - someXml: <json :data="someXml" :deep="0" />
 
 ## Fetched shared state
 
