@@ -11,3 +11,9 @@ export type moduleOptions = {
   watchStories?: Boolean;
   versions: Array<{version: string, url?: string}>;
 }
+
+declare module '@nuxt/schema' {
+  interface NuxtConfig {
+    stories?: moduleOptions
+  }
+}
