@@ -25,6 +25,7 @@
     "dev": "nuxi dev",
     "build": "nuxi build",
     "start": "nuxi preview",
+    "io": "nodemon lib/standalone.js",
     "generate": "npm run mkDirs && npm run cpFiles && nuxi generate --verbose",
     "mkDirs": "mkdir -p public/nuxtStories public/nuxtStories/svg",
     "cpFiles": "cp -rf stories/* public/nuxtStories && cp -rf lib/assets/svg/* public/nuxtStories/svg && cp ./README.md ./public/nuxtStories ",

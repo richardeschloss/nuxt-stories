@@ -2,10 +2,9 @@ import { defineNuxtConfig } from 'nuxt3'
 
 export default defineNuxtConfig({
   components: [{
-    path: '~/lib/components', // For the demo
+    path: '~/lib/components', // Keep this in for the demo
     prefix: 'NuxtStories'
   }],
-  ssr: process.env.NODE_ENV !== 'production',
   vite: {
     build: {
       chunkSizeWarningLimit: 2e6
@@ -14,9 +13,6 @@ export default defineNuxtConfig({
   css: [
     '~/lib/assets/css/vendor.min.css'
   ],
-  target: process.env.NODE_ENV === 'production'
-    ? 'static'
-    : 'server',
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -34,8 +30,9 @@ export default defineNuxtConfig({
     '~/lib/module.js'
   ],
   stories: {
-    // forceBuild: true,
-    staticHost: process.env.NODE_ENV === 'production',
+    forceBuild: true,
+    watchStories: process.env.NODE_ENV !== 'production',
+    staticHost: false,
     versions: [{
       version: '3.x (current)'
     }, {
