@@ -1,10 +1,6 @@
 import { defineNuxtConfig } from 'nuxt3'
 
 export default defineNuxtConfig({
-  components: [{
-    path: '~/lib/components', // Keep this in for the demo
-    prefix: 'NuxtStories'
-  }],
   vite: {
     build: {
       chunkSizeWarningLimit: 2e6
