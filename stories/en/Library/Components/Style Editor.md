@@ -19,6 +19,17 @@ The tricky part seems to be, we can easily edit the style but then...how or wher
 - If the element has class names, save the style with the class names joined (css selector = '.' + elm.classList.join('.'))
 - If the element has neither of these things, then we can perhaps still allow for quick-and-dirty styling, but without the auto saving of the styles. With Vite, the HMR is pretty fast too when we change css there...
 
+The modal-header shall show the element (css selector) currently being edited.
+
+Standard formatting buttons for B / I / U should be in a toolbar for the selected element. Will probably also want to have
+* [x] B (font-weight: bold;)
+* [x] I (font-style: italic;)
+* [x] U (text-decoration: underline;)
+* [x] FG (color: [selectedFGColor])
+* [x] BG (background-color: [selectedBGColor])
+- [ ] Font-Family select
+- [ ] Gradient editor?
+
 # State
 
 | Prop | Description | Value |
