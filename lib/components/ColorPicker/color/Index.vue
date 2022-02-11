@@ -7,10 +7,9 @@
     <button
       class="btn btn-dark btn-close btn-outline-light float-end active"
       style="margin-top: -4px;"
-      @click="$emit('close')"
+      @click="close"
     />
     <div
-      v-if="label !== ''"
       class="text-start"
       :style="isLightTheme ? 'color: black;': 'color: white;'"
     >
@@ -201,6 +200,11 @@ export default {
     })
   },
   methods: {
+    close (evt) {
+      this.$emit('close')
+      evt.preventDefault()
+      evt.stopPropagation()
+    },
     selectSaturation (color) {
       const { r, g, b, h, s, v } = this.setColorValue(color)
       Object.assign(this, { r, g, b, h, s, v })
