@@ -2,13 +2,13 @@
   <div
     class="hu-color-picker"
     :class="{ light: isLightTheme }"
-    :style="{ width: totalWidth + 'px' }"
+    :xstyle="{ width: totalWidth + 'px' }"
   >
-    <button
+    <input
       class="btn btn-dark btn-close btn-outline-light float-end active"
       style="margin-top: -4px;"
       @click="close"
-    />
+    >
     <div
       class="text-start"
       :style="isLightTheme ? 'color: black;': 'color: white;'"
