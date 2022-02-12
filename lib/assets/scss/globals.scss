@@ -9,6 +9,11 @@ body {
 @import "../css/vendor.min.css"; // Works (we'll lazyLoad globals.scss)
 
 .nuxt-stories {
+  .disabled { 
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  
   .hljs {
     font-family: Consolas, Monaco, monospace !important;
   }
