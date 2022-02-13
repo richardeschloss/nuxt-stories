@@ -4,16 +4,11 @@ order: Infinity
 ---
 
 # Design
+The style editor is meant to help with editing styles for elements in the Nuxt Stories *Viewer* (this can include Vue components). It shall rest in the lower right corner, behind the component browser. It shall expand out and move in front of the component browser on mouseenter (and collapse back on mouseleave). 
 
-The style editor is meant to help with editing styles for components (and elements?) in the Nuxt Stories *Viewer*. It shall rest in the lower right corner, behind the component browser. It shall expand out and move in front of the component browser on mouseenter (and collapse back on mouseleave). 
+Hovering over an element in the viewer shall bring up the tooltip "DblClick to edit style" (or similar) if and only if the element does not currently have it's "title" attribute set.
 
-Hovering over an element in the viewer shall bring up the tooltip "Ctrl + dblClick to edit style" (or similar) if and only if the element does not currently have it's "title" attribute set.
-
-The element to be styled shall be on "Ctrl + dblclick" event for the following reasons:
-- It seems like it's rare enough where it wouldn't interfere with a component's own event. But, even if it interferes, our event handler should not prevent propagation (so that other event handlers should work too). Here, the purpose to just set a property in Nuxt stories' internal state and move on. 
-- Ctrl + dblclick seems like it's better than dblclick, since dblclick is more common for other actions. The addition of "ctrl" requires a bit more thought and intention.  
-
-The tricky part seems to be, we can easily edit the style but then...how or where to save it? My initial thoughts are:
+For now, it seems the most reliable way to have this work is to only style elements with either "id", "classList" (or maybe even component name). This way, it's easy to organize styles based on the specific css selector, and quickly see the applied styles that would eventually be merged in to the corresponding css selector (id or class name)
 
 - If the element has an id, save the style with that id (css selector '#' + id)
 - If the element has class names, save the style with the class names joined (css selector = '.' + elm.classList.join('.'))
@@ -27,26 +22,34 @@ Standard formatting buttons for B / I / U should be in a toolbar for the selecte
 * [x] U (text-decoration: underline;)
 * [x] FG (color: [selectedFGColor])
 * [x] BG (background-color: [selectedBGColor])
-- [ ] Font-Family select
-- [ ] Gradient editor?
+- [x] Font-Family select
+- [x] Font-size select
+- ~~[ ] Gradient editor~~. Maybe someday.
+  - Docs for [linear-gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient())
+  - Docs for [radial-gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/radial-gradient())
+- [x] Fix some of the quirky buggy behavior
+- [ ] Update this story / docs
+
 
 # State
 
 | Prop | Description | Value |
 | --- | --- | --- |
-| stylingElm | The HTML element currently being styled | {{ $nuxtStories().value.stylingElm?.outerHTML }} <br> id: {{ $nuxtStories().value.stylingElm?.id }} <br> classList: {{ $nuxtStories().value.stylingElm?.classList }}  |
 | stylingSelector | The CSS selector of the element being styled | {{ $nuxtStories().value.stylingSelector }} |
 | styles | saved styles, keys are css selectors | <json :data="$nuxtStories().value.styles" /> |
 
 # Lifecycle and Events
 
-When the style editor first mounts, load the styles from localStorage and apply the styles. 
+When the style editor first mounts, load the styles from localStorage and apply the styles. When either the styling selector changes or Viewer gets re-compiled, also re-init the styles.
 
 # Demo
 
-Here is a paragraph from markdown (no id or class)
-
+## Can edit
 <p id="my-p">My paragraph</p>
 
 The `<hello />` component with id="hello-id":
-<Hello xid="my-id" />
+<hello id="my-id" />
+
+## Can not edit
+Here is a paragraph from markdown (no id or class; so style editor will have no effect on this)
+
