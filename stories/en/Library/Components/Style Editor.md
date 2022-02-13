@@ -28,7 +28,8 @@ Standard formatting buttons for B / I / U should be in a toolbar for the selecte
   - Docs for [linear-gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient())
   - Docs for [radial-gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/radial-gradient())
 - [x] Fix some of the quirky buggy behavior
-- [ ] Update this story / docs
+- [x] Update this story / docs
+- [ ] Test deploy
 
 
 # State
