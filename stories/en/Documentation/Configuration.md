@@ -40,6 +40,7 @@ stories: { /* stories options here */ }
 | `rootComponent` | Root component to use at the stories root route | [this lib]/components/Root.js |
 | `langComponent` | Language component | [empty placeholder, this library's root imports its dependencies and uses them] |
 | `storyComponent` | Story component |  [empty placeholder, this library's root imports its dependencies and uses them] |
+| appliedStyles | css file to save the applied styles used by the style editor | [this lib]/assets/appliedStylies.css | 
  
 ### IO Options
 

@@ -96,6 +96,7 @@ stories/stories.json
 components/nuxtStories
 lib/archive
 lib/templates
+lib/assets/css/appliedStyles.css
 stories/stories.db
 .output
 static/nuxtStories
