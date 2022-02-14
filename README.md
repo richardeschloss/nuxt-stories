@@ -27,6 +27,7 @@
 * ✅ Built-in json viewer. Just type `<json :data="[your data]"/>` to see the tree.
 * ✅ The perfect development tool for rapidly jotting down notes, gameplans, or even writing official documentation! Documentation that is also *functional*. 
 * ✅ Built-in fetch. Quickly fetch on the client or server side, right in your story! (v2.0.13+)
+* ✅ Component-browser and style-editor with direct tie-in to Google fonts.
 
 ## Demo
 See it in ACTION: [DEMO @ Netlify](https://nuxt-stories.netlify.com) (Ctrl+Click for new tab)
