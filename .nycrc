@@ -13,6 +13,7 @@
     "lib/store/db.server.js",
     "lib/store/db.client.js",
     "lib/io.js",
+    "lib/io/styles.js",
     "lib/module.js",
     "lib/plugin.js",
     "lib/store/nuxtStories.js",
