@@ -11,7 +11,7 @@ export default {
     'test/specs/VuexModule.spec.js',
     'test/specs/StoryFactory.spec.js'
   ],
-  ignoredByWatcher: ['stories'],
+  ignoredByWatcher: ['stories', 'lib'],
   nodeArguments: [
     '--experimental-loader=./test/utils/loaders.js'
   ],

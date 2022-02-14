@@ -8,11 +8,15 @@ import Module, { register, db } from '#root/lib/module.js'
 global.__dirname = 'lib'
 const srcDir = path.resolve('.')
 
-const { beforeEach } = ava
+const { beforeEach, after } = ava
 const test = ava
 
 beforeEach('Init Nuxt', () => {
   initNuxt()
+})
+
+after(() => {
+  unlinkSync(path.resolve('./lib/assets/css/appliedStyles.css'))
 })
 
 test('Module (disabled mode)', async (t) => {
@@ -40,6 +44,10 @@ test('Module (enabled, ssr mode)', async (t) => {
 
   const routes = []
   nuxt.hooks['pages:extend'](routes)
+  const dirs = []
+  nuxt.hooks['components:dirs'](dirs)
+  const fnd = dirs.find(({ prefix }) => prefix === 'NuxtStories')
+  t.truthy(fnd)
 
   t.is(nuxt.options.plugins.at(-1).src, path.resolve(__dirname, 'plugin.js'))
   t.is(routes[0].name, 'stories')
