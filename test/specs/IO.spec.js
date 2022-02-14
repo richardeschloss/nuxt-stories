@@ -1,4 +1,4 @@
-import { writeFileSync, unlinkSync } from 'fs'
+import { readFileSync, writeFileSync, unlinkSync, existsSync } from 'fs'
 import { resolve } from 'path'
 import ava from 'ava'
 import { delay } from 'les-utils/utils/promise.js'
@@ -72,4 +72,31 @@ test('IO (frontMatter fetch)', async (t) => {
   })
   await delay(200)
   t.truthy(emitted.fmFetched)
+})
+
+test('IO (/styles)', async (t) => {
+  global.__dirname = resolve(srcDir, 'lib/io')
+  const cssFile = resolve(srcDir, 'lib/assets/css/appliedStyles.css')
+  if (!existsSync(cssFile)) {
+    writeFileSync(cssFile, '')
+  }
+  const { default: stylesSvc } = await import('#root/lib/io/styles.js')
+  const svc = stylesSvc()
+  svc.updateStyle({
+    selector: '#design',
+    style: { 'font-weight': 'bold' }
+  })
+  const css = readFileSync(cssFile, {
+    encoding: 'utf-8'
+  })
+  t.true(css.includes('font-weight: bold;'))
+  svc.updateStyle({
+    selector: '#design',
+    style: { 'font-size': '16px' }
+  })
+  const css2 = readFileSync(cssFile, {
+    encoding: 'utf-8'
+  })
+  t.true(css2.includes('font-weight: bold;') && css2.includes('font-size: 16px;'))
+  unlinkSync(cssFile)
 })
