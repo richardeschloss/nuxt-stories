@@ -101,3 +101,5 @@ stories/stories.db
 .output
 static/nuxtStories
 public
+.nuxt
+.nuxt/tsconfig.json
