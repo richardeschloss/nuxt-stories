@@ -47,6 +47,7 @@
     "@lokidb/fs-storage": "^2.1.0",
     "@lokidb/full-text-search": "^2.1.0",
     "@lokidb/loki": "^2.1.0",
+    "@nuxt/kit": "^3.0.0-rc.1",
     "bootstrap": "^5.1.3",
     "c8": "^7.11.0",
     "dompurify": "^2.3.3",
@@ -55,7 +56,8 @@
     "highlight.js": "^11.3.1",
     "les-utils": "^2.0.6",
     "marked": "^4.0.3",
-    "nuxt-socket-io": "^3.0.2",
+    "nuxt": "^3.0.0-rc.1",
+    "nuxt-socket-io": "^3.0.9",
     "sass": "^1.45.1",
     "sass-loader": "^12.4.0",
     "tap-json": "^1.0.0",
@@ -64,10 +66,10 @@
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^6.0.1",
+    "autoprefixer": "^10.4.5",
     "ava": "^3.15.0",
     "browser-env": "^3.3.0",
     "eslint": "^7.32.0",
-    "jsdom-global": "^3.0.2",
-    "nuxt3": "^3.0.0-27376999.6abf75d"
+    "jsdom-global": "^3.0.2"
   }
 }

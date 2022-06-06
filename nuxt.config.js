@@ -1,6 +1,10 @@
-import { defineNuxtConfig } from 'nuxt3'
+import { defineNuxtConfig } from 'nuxt'
 
 export default defineNuxtConfig({
+  components: [{
+    global: true,
+    path: '~/components'
+  }],
   vite: {
     build: {
       chunkSizeWarningLimit: 2e6
