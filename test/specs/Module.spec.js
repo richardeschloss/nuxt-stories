@@ -62,6 +62,20 @@ test('Module (enabled, ssr mode)', async (t) => {
   const readmeMware = nuxt.options.devServerHandlers.find(({ route }) =>
     route === '/nuxtStories/README.md'
   )
+  const mockRes = {
+    pathname: '/',
+    write () {},
+    writeHead () {},
+    end () {}
+  }
+  let handled = 0
+  nuxt.options.devServerHandlers.forEach(({ handler }) => {
+    // @ts-ignore
+    handler({ method: 'POST' }, mockRes, () => {
+      handled++
+    })
+  })
+  t.is(handled, 4)
   let callCnt = 0
   readmeMware.handler(null, {
     writeHead () {},
