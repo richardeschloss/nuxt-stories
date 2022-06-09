@@ -1,18 +1,16 @@
 import { defineNuxtConfig } from 'nuxt'
 
 export default defineNuxtConfig({
-  components: [{
+  components: {
     global: true,
-    path: '~/components'
-  }],
+    dirs: ['~/components']
+  },
   vite: {
     build: {
       chunkSizeWarningLimit: 2e6
     }
   },
-  css: [
-    '~/lib/assets/css/vendor.min.css'
-  ],
+  css: [],
   head: {
     title: process.env.npm_package_name || '',
     meta: [

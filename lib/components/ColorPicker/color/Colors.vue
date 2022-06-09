@@ -67,6 +67,7 @@ export default {
     this.colorsHistory = JSON.parse(localStorage.getItem(this.colorsHistoryKey)) || []
   },
   created () {
+    if (!process.client) { return }
     this.imgAlphaBase64 = this.createAlphaSquare(4).toDataURL()
   },
   destroyed () {
