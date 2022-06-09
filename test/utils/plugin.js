@@ -1,6 +1,9 @@
 import { reactive, toRef, isReactive } from 'vue'
 const ctx = {
   vueApp: {
+    _context: {
+      components: []
+    },
     config: {},
     $nuxt: {},
     components: {},
@@ -12,7 +15,9 @@ const ctx = {
   provide (label, fn) {
     ctx['$' + label] = fn
   },
-  $config: {}
+  $config: {
+    public: {}
+  }
 }
 
 export let pluginDef

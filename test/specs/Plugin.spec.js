@@ -23,10 +23,12 @@ test('Plugin (dynamic host)', async (t) => {
   const ctx = pluginCtx()
   Object.assign(ctx.vueApp.$nuxt, {
     $config: {
-      nuxtStories: {
-        storiesAnchor: 'stories',
-        storiesDir: 'stories',
-        lang: 'en'
+      public: {
+        nuxtStories: {
+          storiesAnchor: 'stories',
+          storiesDir: 'stories',
+          lang: 'en'
+        }
       }
     },
     $nuxtStories
@@ -57,18 +59,20 @@ test('Plugin (static host)', async (t) => {
   const ctx = pluginCtx()
   Object.assign(ctx.vueApp.$nuxt, {
     $config: {
-      nuxtStories: {
-        staticHost: true,
-        storiesAnchor: 'stories',
-        storiesDir: 'stories',
-        lang: 'en'
+      public: {
+        nuxtStories: {
+          staticHost: true,
+          storiesAnchor: 'stories',
+          storiesDir: 'stories',
+          lang: 'en'
+        }
       }
     }
   })
   await pluginDef(ctx)
   const ctx2 = pluginCtx()
 
-  t.truthy(ctx2.vueApp.$nuxt.$config.nuxtStories.db)
+  t.truthy(ctx2.vueApp.$nuxt.$config.public.nuxtStories.db)
   t.is(fetched, '/nuxtStories/stories.db')
 
   const state = ctx2.$nuxtStories().value
