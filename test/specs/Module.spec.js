@@ -21,7 +21,7 @@ after(() => {
 
 test('Module (disabled mode)', async (t) => {
   await Module({ forceBuild: false }, useNuxt())
-  t.falsy(useNuxt().options.publicRuntimeConfig.nuxtStories)
+  t.falsy(useNuxt().options.runtimeConfig.public.nuxtStories)
 })
 
 test('Module (enabled, ssr mode)', async (t) => {
@@ -40,7 +40,7 @@ test('Module (enabled, ssr mode)', async (t) => {
     t.is(nuxt.options.modules[idx], mod)
   })
 
-  t.is(nuxt.options.serverMiddleware[0].path, '/nuxtStories')
+  t.is(nuxt.options.devServerHandlers[0].route, '/nuxtStories')
 
   const routes = []
   nuxt.hooks['pages:extend'](routes)
@@ -54,13 +54,13 @@ test('Module (enabled, ssr mode)', async (t) => {
   t.is(routes[0].path, '/stories')
   t.is(routes[0].meta.layout, 'stories')
 
-  t.truthy(nuxt.options.publicRuntimeConfig.nuxtStories)
+  t.truthy(nuxt.options.runtimeConfig.public.nuxtStories)
   const [{ name, url }] = nuxt.options.io.sockets
   t.is(name, 'nuxtStories')
   t.is(url, 'http://localhost:3100')
 
-  const readmeMware = nuxt.options.serverMiddleware.find(({ path }) =>
-    path === '/nuxtStories/README.md'
+  const readmeMware = nuxt.options.devServerHandlers.find(({ route }) =>
+    route === '/nuxtStories/README.md'
   )
   let callCnt = 0
   readmeMware.handler(null, {

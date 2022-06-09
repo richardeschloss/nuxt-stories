@@ -3,7 +3,7 @@ import { URL, pathToFileURL } from 'url'
 import { parse, compileTemplate } from '@vue/compiler-sfc' // /dist/compiler-sfc.js' // '@vue/component-compiler-utils'
 
 const baseURL = pathToFileURL(`${process.cwd()}/`).href
-const regex = /(\.ts|\.css|\.vue)$/
+const regex = /(\.ts|\.css|\.vue|\.json)$/
 
 function transformVue (source, url) {
   const filename = '/' + url.split(baseURL)[1]
@@ -67,6 +67,11 @@ export async function load (url, context, defaultLoad) {
       source: source.toString()
     }
   } else if (url.endsWith('.css')) {
+    return {
+      format: 'module',
+      source: 'export default {}'
+    }
+  } else if (url.endsWith('.json')) {
     return {
       format: 'module',
       source: 'export default {}'

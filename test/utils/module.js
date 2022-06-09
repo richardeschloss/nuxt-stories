@@ -23,12 +23,14 @@ export function initNuxt () {
       srcDir,
       plugins: [],
       modules: [],
-      serverMiddleware: [],
+      devServerHandlers: [],
       build: {
         transpile: [],
         templates: []
       },
-      publicRuntimeConfig: {}
+      runtimeConfig: {
+        public: {}
+      }
     }
   }
   // @ts-ignore
