@@ -35,9 +35,7 @@
     "test:cov": "c8 ava --timeout=10m"
   },
   "files": [
-    "lib",
-    "layouts/stories.js",
-    "postInstall.js"
+    "lib"
   ],
   "imports": {
     "#root/*": "./*",
