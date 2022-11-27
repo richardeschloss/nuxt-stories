@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import '~/lib/assets/css/vendor.min.css'
 import Logo from '@/lib/components/Logo.js'
 import Readme from '@/lib/components/Readme.js'
 export default {
