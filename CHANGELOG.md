@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.0.14] - 2022-11-30
+### Added
+- Support for Nuxt3 stable release
+
 ## [2.0.17] - 2021-06-16
 ### Changed
 - Improved error handling for the autoImport feature.
