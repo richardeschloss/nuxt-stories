@@ -5,7 +5,7 @@ order: 1
 
 # Module Options
 
-See <NuxtLink to="/stories/en/Documentation/Configuration#module-options">Module Options</NuxtLink>
+See <RouterLink to="/stories/en/Documentation/Configuration#module-options">Module Options</RouterLink>
 
 # Requirements
 
