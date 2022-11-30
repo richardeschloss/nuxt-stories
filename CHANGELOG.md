@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [3.0.14] - 2022-11-30
+## [3.0.16] - 2022-11-30
 ### Added
 - Support for Nuxt3 stable release
 
