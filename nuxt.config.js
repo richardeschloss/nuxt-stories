@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   stories: {
     forceBuild: true,
     watchStories: process.env.NODE_ENV !== 'production',
-    staticHost: false,
+    staticHost: process.env.NODE_ENV === 'production',
     versions: [{
       version: '3.x (current)'
     }, {
