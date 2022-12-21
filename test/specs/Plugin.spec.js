@@ -56,6 +56,7 @@ test('Plugin (dynamic host)', async (t) => {
 })
 
 test('Plugin (static host)', async (t) => {
+  process.client = true
   const ctx = pluginCtx()
   Object.assign(ctx.vueApp.$nuxt, {
     $config: {
@@ -77,4 +78,5 @@ test('Plugin (static host)', async (t) => {
 
   const state = ctx2.$nuxtStories().value
   t.truthy(state.stories)
+  process.client = false
 })
