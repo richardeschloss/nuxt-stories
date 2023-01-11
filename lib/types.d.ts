@@ -11,6 +11,9 @@ export type moduleOptions = {
   watchStories?: Boolean;
   versions?: Array<{version: string, url?: string}>;
   appliedStyles?: String;
+  editable?: Boolean;
+  styleEditor?: Boolean;
+  componentBrowser?: Boolean;
 }
 
 declare module '@nuxt/schema' {
