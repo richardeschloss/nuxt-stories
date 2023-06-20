@@ -69,13 +69,13 @@ test('StoryFactory (various opts)', (t) => {
 
 test('Load Deps (fetch, nodeFetch)', async (t) => {
   const $config = {
-    nuxtStories: {}
+    public: { nuxtStories: {} }
   }
   const resp = await LoadDeps({
     ctx: { $config }
   })
   t.falsy(resp)
-  $config.nuxtStories.fetch = true
+  $config.public.nuxtStories.fetch = true
   const resp2 = await LoadDeps({
     ctx: { $config }
   })

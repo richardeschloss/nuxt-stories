@@ -18,6 +18,8 @@ export function initNuxt () {
       nuxtCtx.use().hooks[evt] = cb
     },
     options: {
+      modulesDir: [],
+      extensions: ['.ts', '.mjs', '.cjs', '.json'],
       target: 'server',
       css: [],
       srcDir,
