@@ -5,7 +5,6 @@ export default defineNuxtConfig({
     global: true,
     dirs: ['~/components']
   },
-  css: [],
   modules: [
     '~/lib/module.js'
   ],

@@ -26,7 +26,7 @@ export default {
     Readme
   },
   data () {
-    const { storiesAnchor, lang } = this.$config.nuxtStories
+    const { storiesAnchor, lang } = this.$config.public.nuxtStories
     return {
       links: [{
         text: 'Demo',

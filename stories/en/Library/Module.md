@@ -13,7 +13,7 @@ See <RouterLink to="/stories/en/Documentation/Configuration#module-options">Modu
 
 | Title | Description | Current Value |
 | --- | --- | --- |
-| Runtime config | The module shall pass the moduleOptions to the public runtime config. It shall also attach the stories tree to that runtime config. This config will be available at: `this.$config.nuxtStories` from any Vue component | <json :data="$config.nuxtStories" :deep="1" /> |
+| Runtime config | The module shall pass the moduleOptions to the public runtime config. It shall also attach the stories tree to that runtime config. This config will be available at: `this.$config.public.nuxtStories` from any Vue component | <json :data="$config.nuxtStories" :deep="1" /> |
 | DB (Server-side) | It shall register the LokiDB. If `watchStories` is set, it shall enable filesystem watching | |
 | Routes | It shall register the story routes (in Nuxt3, this is done with `extendPages`) | Routes: <json :data="$config.nuxtStories.routes" />, Current parameters: <json :data="$route.params" /> |
 | Modules | It shall register modules ['nuxt-socket-io'] if running with `target` is "server". Otherwise, that module shall not be installed. The stories socket.io server by default will run at port = Nuxt's port + 100 (3100). If `staticHost` is unset, the socket.io-client configuration for storiesSocket (name === 'nuxtStories') shall also be added | Modules installed: <json :data="$config.nuxtStories.modulesAdded" /><br/>Sockets: <json  :data="$config.nuxtSocketIO" /> |
