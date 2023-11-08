@@ -1,7 +1,7 @@
 import http from 'http'
 import ava from 'ava'
 import Fetch, { initTransformers } from '#root/lib/utils/fetch.js'
-import { useState } from '#app'
+import { useState } from '#imports'
 
 const { serial: test, before, after } = ava
 
