@@ -3,7 +3,7 @@ import ava from 'ava'
 import { compile, createApp, h } from 'vue'
 import BrowserEnv from 'browser-env'
 import StoryFactory, { LoadDeps } from '#root/lib/utils/storyFactory.js'
-import { useState } from '#app'
+import { useState } from '#imports'
 BrowserEnv({})
 
 const { serial: test } = ava
